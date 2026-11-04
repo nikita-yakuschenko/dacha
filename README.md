@@ -38,6 +38,8 @@ npm run dev
 
 Локальный адрес: http://127.0.0.1:3000. Production: `npm run build`, затем `npm run start`.
 
+Docker: `docker compose up --build -d`. Инструкция и параметры: [docs/DOCKER.md](docs/DOCKER.md).
+
 Проверки: `npm run lint`, `npm run typecheck`, `npm run test:ui` (сначала `npx playwright install chromium`).
 
 Главная `/` — лендинг. Проекты открываются в крупном диалоговом окне внутри страницы; отдельных маршрутов проектов нет. Страница `/contacts` сохранена. Блок быстрого выбора в hero временно закомментирован по указанию пользователя.
