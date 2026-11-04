@@ -25,7 +25,11 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
   const id = useId();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  // Ошибки по полям показываем в строке подписи, чтобы форма не меняла высоту
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  const [sendFailed, setSendFailed] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const requestId = useRef<string | null>(null);
   const live = Boolean(siteConfig.endpoint && siteConfig.policyUrl);
@@ -34,8 +38,13 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "sending") return;
-    if (phone.replace(/\D/g, "").length !== 11) { setError("Введите номер полностью: +7 и 10 цифр"); return; }
-    setError(null);
+    const found = {
+      name: name.trim() ? undefined : "Укажите имя",
+      phone: phone.replace(/\D/g, "").length === 11 ? undefined : "Нужно 10 цифр после +7",
+    };
+    setErrors(found);
+    setSendFailed(false);
+    if (found.name || found.phone) { (found.name ? nameRef : phoneRef).current?.focus(); return; }
     if (!live) { setStatus("done"); return; }
     setStatus("sending");
     requestId.current ||= crypto.randomUUID();
@@ -46,7 +55,7 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
       track({ event: "lead_accepted", project: project?.slug ?? selection.project, format });
       setStatus("done");
     } catch {
-      setError("Не получилось отправить. Проверьте соединение и нажмите ещё раз.");
+      setSendFailed(true);
       setStatus("idle");
     }
   }
@@ -58,10 +67,15 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
   </div>;
 
   return <form className="lead-form" onSubmit={submit} noValidate>
-    <div className="lead-field"><label htmlFor={`${id}-name`}>Имя</label><input id={`${id}-name`} value={name} onChange={e => setName(e.target.value.slice(0, 80))} autoComplete="given-name" placeholder="Ваше имя" /></div>
-    <div className="lead-field"><label htmlFor={`${id}-phone`}>Телефон</label><input id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setError(null); }} type="tel" inputMode="tel" autoComplete="tel" placeholder="+7 (999) 123-45-67" aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined} /></div>
-    {error && <p className="lead-error" id={`${id}-error`} role="alert">{error}</p>}
-    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : <>Получить расчёт<IconArrowRight size={20} /></>}</button>
+    <div className="lead-field">
+      <div className="lead-field-head"><label htmlFor={`${id}-name`}>Имя</label>{errors.name && <span className="lead-error" id={`${id}-name-error`} role="alert">{errors.name}</span>}</div>
+      <input ref={nameRef} id={`${id}-name`} value={name} onChange={e => { setName(e.target.value.slice(0, 80)); setErrors(prev => ({ ...prev, name: undefined })); }} autoComplete="given-name" placeholder="Ваше имя" aria-invalid={!!errors.name} aria-describedby={errors.name ? `${id}-name-error` : undefined} />
+    </div>
+    <div className="lead-field">
+      <div className="lead-field-head"><label htmlFor={`${id}-phone`}>Телефон</label>{errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}</div>
+      <input ref={phoneRef} id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setErrors(prev => ({ ...prev, phone: undefined })); }} type="tel" inputMode="tel" autoComplete="tel" placeholder="+7 (999) 123-45-67" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-error` : undefined} />
+    </div>
+    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>Получить расчёт<IconArrowRight size={20} /></>}</button>
     <p className="lead-legal">Нажимая кнопку, вы соглашаетесь на обработку персональных данных{siteConfig.policyUrl && <> — <a href={siteConfig.policyUrl} target="_blank" rel="noopener noreferrer">политика</a></>}.</p>
   </form>;
 }

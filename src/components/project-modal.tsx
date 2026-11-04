@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Dialog } from "radix-ui";
 import Image from "next/image";
 import { IconX, IconArrowRight } from "@tabler/icons-react";
-import { formatPrice, priceFor, projects, type ProjectId } from "@/lib/data";
+import { assemblyPrice, priceFor, projects, terracePrice, type ProjectId } from "@/lib/data";
+import { AnimatedPrice } from "./animated-price";
 import { Plan } from "./plan";
 import { ProjectPackages } from "./project-packages";
 import { ProjectLeadForm } from "./project-lead-form";
@@ -64,17 +65,19 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const project = projects.find(item => item.slug === slug);
   if (!project) return null;
   const format = selection.format === "assembly" ? "assembly" : "kit";
-  const price = formatPrice(priceFor(project, format, selection.terrace));
+  const total = priceFor(project, format, selection.terrace);
   // Позиции чека: добавки всегда в разметке, выключенные плавно свёрнуты
   const receipt = [
     { name: "Домокомплект", price: project.prices.kit, on: true },
-    { name: "Терраса", price: project.terracePrices[format], on: selection.terrace },
-    { name: "Сборка", price: project.prices.assembly - project.prices.kit, on: format === "assembly" },
+    { name: "Терраса", price: terracePrice(project), on: selection.terrace },
+    { name: "Сборка", price: assemblyPrice(project, selection.terrace), on: format === "assembly" },
   ];
   // Короткая подпись для нижней панели на телефоне
   const extras = [selection.terrace && "террасой", format === "assembly" && "сборкой"].filter(Boolean);
   const shortVariant = extras.length ? `${extras[0] === "сборкой" ? "Со" : "С"}\u00a0${extras.join(" и\u00a0")}` : "Домокомплект";
-  function showSlide(target: number, gallery: HTMLElement | null) { gallery?.scrollTo({ left: target * gallery.clientWidth, behavior: "smooth" }); }
+  const slides = ["Фото", "Планировка"];
+  const planSlide = slides.length - 1;
+  function showSlide(target: number, from: HTMLElement) { const gallery = from.closest(".project-media")?.querySelector(".project-media-track"); gallery?.scrollTo({ left: target * gallery.clientWidth, behavior: "smooth" }); }
   function openLead() {
     const lead = document.querySelector<HTMLElement>(".project-modal .lead-panel");
     lead?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -91,23 +94,28 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
           <figure className="project-photo"><Image src={project.thumbnail} alt={project.name} fill sizes="(max-width: 767px) 100vw, 34vw" priority /><button type="button" className="project-media-open" aria-label="Открыть фото" onClick={e => openViewer("photo", e.currentTarget)} /></figure>
           <figure className="project-plan"><Plan project={project} /><button type="button" className="project-media-open" aria-label="Открыть планировку" onClick={e => openViewer("plan", e.currentTarget)} /></figure>
         </div>
-        <div className="project-media-dots">{["Фото", "Планировка"].map((label, i) => <button key={label} type="button" aria-label={label} aria-current={slide === i} onClick={e => showSlide(i, e.currentTarget.parentElement?.previousElementSibling as HTMLElement | null)} />)}</div>
+        <button type="button" className="project-media-switch" data-hidden={slide === planSlide} inert={slide === planSlide} onClick={e => showSlide(planSlide, e.currentTarget)}>Планировка</button>
+        <div className="project-media-dots">{slides.map((label, i) => <button key={label} type="button" aria-label={label} aria-current={slide === i} onClick={e => showSlide(i, e.currentTarget)} />)}</div>
       </section>
       <section className="project-config" aria-label="Комплектация и цены"><ProjectPackages project={project} /></section>
       <aside className="lead-panel" ref={leadRef} aria-label="Заявка на расчёт">
         <h3>Заявка на расчёт</h3>
         <ul className="lead-receipt">{receipt.map(line => <li key={line.name} data-on={line.on} inert={!line.on}><div><p>
           <strong>{line.name}</strong>
-          <span className="lead-receipt-price">{formatPrice(line.price)}</span>
+          <span className="lead-receipt-price"><AnimatedPrice value={line.price} /></span>
         </p></div></li>)}</ul>
-        <p className="lead-total"><span>Итого</span><strong className="lead-price swap-in" key={price}>{price}</strong></p>
+        <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} /></strong></p>
         <ProjectLeadForm project={project} />
       </aside>
       <div className="project-viewer" data-open={viewerOpen} data-item={viewerItem} inert={!viewerOpen} role="group" aria-label={viewerItem === "photo" ? "Фото" : "Планировка"} onClick={closeViewer}>
-        <div className="project-viewer-stage">{viewerItem === "photo" ? <Image src={project.thumbnail} alt={project.name} fill sizes="(max-width: 1023px) 100vw, 1360px" /> : <Plan project={project} />}</div>
+        <div className="project-viewer-stage"><div className="project-viewer-item" key={viewerItem}>{viewerItem === "photo" ? <Image src={project.thumbnail} alt={project.name} fill sizes="(max-width: 1023px) 100vw, 1360px" /> : <Plan project={project} />}</div></div>
+        {/* Миниатюры: переключают картинку и не закрывают просмотр */}
+        <div className="project-viewer-thumbs" onClick={event => event.stopPropagation()}>{(["photo", "plan"] as const).map(item => <button key={item} type="button" aria-label={item === "photo" ? "Фото" : "Планировка"} aria-current={viewerItem === item} onClick={() => setViewerItem(item)}>
+          {item === "photo" ? <Image src={project.thumbnail} alt="" fill sizes="80px" /> : <Plan project={project} />}
+        </button>)}</div>
         <button ref={viewerClose} type="button" className="project-viewer-close" aria-label="Закрыть просмотр"><IconX size={20} /></button>
       </div>
     </div>
-    <div className="project-modal-cta" data-hidden={leadVisible} inert={leadVisible}><p><strong>{price}</strong><span>{shortVariant}</span></p><button type="button" onClick={openLead}>Оставить заявку<IconArrowRight size={18} /></button></div>
+    <div className="project-modal-cta" data-hidden={leadVisible} inert={leadVisible}><p><strong><AnimatedPrice value={total} /></strong><span>{shortVariant}</span></p><button type="button" onClick={openLead}>Оставить заявку<IconArrowRight size={18} /></button></div>
   </Dialog.Content></Dialog.Portal></Dialog.Root>;
 }

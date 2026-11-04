@@ -1,16 +1,17 @@
 "use client";
 import { IconCheck, IconPackage, IconTruck } from "@tabler/icons-react";
-import { formatPrice, specification, type Project } from "@/lib/data";
+import { assemblyPrice, formatPrice, specification, terracePrice, type Project } from "@/lib/data";
 import { track } from "@/lib/analytics";
 import { useSelection } from "./selection";
+import { AnimatedPrice } from "./animated-price";
 
 // База — домокомплект; сборка и терраса — одинаковые переключатели-добавки
 export function ProjectPackages({ project }: { project: Project }) {
   const { selection, update } = useSelection();
   const format = selection.format === "assembly" ? "assembly" : "kit";
   const addons = [
-    { name: "Добавить террасу", add: project.terracePrices[format], checked: selection.terrace, toggle: (on: boolean) => update({ terrace: on }) },
-    { name: "Добавить сборку", add: project.prices.assembly - project.prices.kit, checked: format === "assembly", toggle: (on: boolean) => { const next = on ? "assembly" : "kit"; update({ format: next }); track({ event: "format_select", format: next }); } },
+    { name: "Добавить террасу", add: terracePrice(project), checked: selection.terrace, toggle: (on: boolean) => update({ terrace: on }) },
+    { name: "Добавить сборку", add: assemblyPrice(project, selection.terrace), checked: format === "assembly", toggle: (on: boolean) => { const next = on ? "assembly" : "kit"; update({ format: next }); track({ event: "format_select", format: next }); } },
   ];
   return <div className="project-packages">
     <h3 className="package-heading">Комплектация</h3>
@@ -19,7 +20,7 @@ export function ProjectPackages({ project }: { project: Project }) {
       <span className="package-price">{formatPrice(project.prices.kit)}</span>
     </div>
     <div className="package-addons">{addons.map(addon => <label className="addon-switch" key={addon.name}>
-      <span><strong>{addon.name}</strong><small className="swap-in" key={addon.add}>{"+\u00a0"}{formatPrice(addon.add)}</small></span>
+      <span><strong>{addon.name}</strong><small>{"+\u00a0"}<AnimatedPrice value={addon.add} /></small></span>
       <input type="checkbox" role="switch" checked={addon.checked} onChange={e => addon.toggle(e.target.checked)} />
     </label>)}</div>
     <h3 className="package-heading">Что входит</h3>

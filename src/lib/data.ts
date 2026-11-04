@@ -24,6 +24,9 @@ const pricesFor = (area: number) => ({ kit: roundPrice(area * 19500 + 60000), as
 const terracePricesFor = (width: number) => ({ kit: roundPrice(width * 2 * 9000), assembly: roundPrice(width * 2 * 14000) });
 // Итоговая цена варианта с учётом террасы
 export const priceFor = (project: Project, format: "kit" | "assembly", terrace: boolean) => project.prices[format] + (terrace ? project.terracePrices[format] : 0);
+// Терраса стоит одинаково при любом варианте; её сборка входит в стоимость сборки
+export const terracePrice = (project: Project) => project.terracePrices.kit;
+export const assemblyPrice = (project: Project, terrace: boolean) => project.prices.assembly - project.prices.kit + (terrace ? project.terracePrices.assembly - project.terracePrices.kit : 0);
 export const formatPrice = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)}\u00a0руб.`;
 export const projects: Project[] = sizes.map(([width, depth, description], i) => ({ slug: `dacha-${width * depth}`, name: `Просто дача\u00a0${width * depth}`, width, depth, area: width * depth, description, prices: pricesFor(width * depth), terracePrices: terracePricesFor(width), plan: null, usableArea: null, wallThickness: null, terraceArea: null, specification: "pending", image: "/images/garden-concept.webp", thumbnail: thumbnails[i % thumbnails.length] }));
 // Группы для фильтра плитки по площади наружного контура

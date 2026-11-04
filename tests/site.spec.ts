@@ -44,7 +44,7 @@ test("Correct model, popup navigation, persisted options and demo form", async (
   await expect(dialog.locator('.lead-receipt li[data-on="true"]')).toHaveText([/^Домокомплект/, /^Терраса/, /^Сборка/]);
   await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
-  await expect(dialog.getByRole("alert")).toContainText("Введите номер");
+  await expect(dialog.getByRole("alert")).toContainText("Нужно 10 цифр");
   await dialog.getByLabel("Телефон", { exact: true }).fill("89991234567");
   await expect(dialog.getByLabel("Телефон", { exact: true })).toHaveValue("+7 (999) 123-45-67");
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
@@ -81,6 +81,11 @@ test("Calculate buttons open lead dialog in place", async ({ page }) => {
   await expect(dialog.locator("input")).toHaveCount(2);
   expect(await page.evaluate(() => scrollY)).toBe(scrollBefore);
   expect((await new AxeBuilder({ page }).include(".lead-dialog").withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
+  const heightBefore = await dialog.evaluate(el => el.getBoundingClientRect().height);
+  await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
+  await expect(dialog.getByRole("alert")).toHaveText(["Укажите имя", /^Нужно 10\s?цифр/]);
+  expect(await dialog.evaluate(el => el.getBoundingClientRect().height)).toBe(heightBefore);
+  await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
   await dialog.getByLabel("Телефон", { exact: true }).fill("9991234567");
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо");
