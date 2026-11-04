@@ -8,3 +8,16 @@ source/extracted/
 .env*
 !.env.example
 *.tsbuildinfo
+
+# Файлы для ИИ-агентов и ассистентов
+AGENTS.md
+CLAUDE.md
+CODEX_PROMPT.md
+DESIGN.md
+PRODUCT.md
+IMPLEMENTATION_REPORT.md
+.impeccable/
+.cursor/
+.claude/
+.agents/
+

@@ -9,10 +9,11 @@ test("Project popups fit required widths and keep landing URL", async ({ page })
     await page.goto("/");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect(page.locator(".quick-projects")).toHaveCount(0);
-    const trigger = page.locator(".project-card").nth(1).getByRole("button", { name: "Подробнее", exact: true });
+    await expect(page.locator(".project-grid > li")).toHaveCount(12);
+    const trigger = page.getByRole("button", { name: /^Просто дача\s24$/ });
     await trigger.click();
     const dialog = page.getByRole("dialog");
-    await expect(dialog.locator(".project-title h2")).toHaveText("Дача 24");
+    await expect(dialog.locator(".project-title h2")).toHaveText(/^Просто дача\s24$/);
     expect(new URL(page.url()).pathname).toBe("/");
     expect(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
     if (width === 390 || width === 1440) await page.screenshot({ path: `.impeccable/review/project-popup-${width}.png` });
@@ -24,36 +25,79 @@ test("Project popups fit required widths and keep landing URL", async ({ page })
 
 test("Correct model, popup navigation, persisted options and demo form", async ({ page }) => {
   await page.goto("/");
-  for (let i = 0; i < 3; i++) {
-    await page.locator(".project-card").nth(i).getByRole("button", { name: "Подробнее", exact: true }).click();
+  for (const name of ["Просто дача\u00a012", "Просто дача\u00a030", "Просто дача\u00a048"]) {
+    await page.getByRole("button", { name, exact: true }).click();
     const dialog = page.getByRole("dialog");
-    await expect(dialog.locator(".project-title h2")).toHaveText(["Дача 20","Дача 24","Дача 30"][i]);
-    await dialog.getByRole("button", { name: "Следующий проект" }).click();
-    await expect(dialog.locator(".project-title h2")).toHaveText(["Дача 24","Дача 30","Дача 20"][i]);
+    await expect(dialog.locator(".project-title h2")).toHaveText(name);
+    await expect(dialog.getByRole("button", { name: "Следующий проект" })).toHaveCount(0);
     await dialog.getByRole("button", { name: "Закрыть проект" }).click();
   }
-  await page.locator(".project-card").first().getByRole("button", { name: "Подробнее", exact: true }).click();
+  await page.locator(".project-tile").nth(4).click({ position: { x: 100, y: 60 } });
+  await expect(page.getByRole("dialog").locator(".project-title h2")).toHaveText(/^Просто дача\s24$/);
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: /^20–25 м²/ }).click();
+  await expect(page.locator(".project-grid > li")).toHaveCount(3);
+  await page.getByRole("button", { name: /^Просто дача\s20$/ }).click();
   const dialog = page.getByRole("dialog");
-  await dialog.getByRole("button", { name: "Дом с монтажом", exact: true }).click();
-  await dialog.getByLabel("Рассчитать террасу отдельно").check();
-  await dialog.getByLabel("Населённый пункт", { exact: true }).fill("Арзамас");
-  await dialog.getByLabel("Telegram", { exact: true }).check();
-  await dialog.getByLabel("Имя пользователя Telegram").fill("@dacha_test");
-  await expect(dialog.getByRole("checkbox", { name: /Согласен на обработку/ })).not.toBeChecked();
-  await dialog.getByRole("checkbox", { name: /Согласен на обработку/ }).check();
-  await dialog.getByRole("button", { name: "Проверить форму", exact: true }).click();
-  await expect(dialog.getByRole("status")).toContainText("заявка не отправлена");
+  await dialog.getByRole("switch", { name: /Добавить сборку/ }).check();
+  await dialog.getByRole("switch", { name: /Добавить террасу/ }).check();
+  await expect(dialog.locator('.lead-receipt li[data-on="true"]')).toHaveText([/^Домокомплект/, /^Терраса/, /^Сборка/]);
+  await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
+  await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
+  await expect(dialog.getByRole("alert")).toContainText("Введите номер");
+  await dialog.getByLabel("Телефон", { exact: true }).fill("89991234567");
+  await expect(dialog.getByLabel("Телефон", { exact: true })).toHaveValue("+7 (999) 123-45-67");
+  await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
+  await expect(dialog.getByRole("status")).toContainText("Спасибо, Тестер");
   const stored = await page.evaluate(() => JSON.stringify(localStorage));
-  expect(stored).not.toContain("dacha_test"); expect(stored).not.toContain("Арзамас");
+  expect(stored).not.toContain("Тестер"); expect(stored).not.toContain("999");
 });
 
-test("Popup keyboard tabs and WCAG AA", async ({ page }) => {
+test("Popup addon switches by keyboard and WCAG AA", async ({ page }) => {
   await page.goto("/");
-  await page.locator(".project-card").first().getByRole("button", { name: "Подробнее", exact: true }).click();
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.getByRole("button", { name: /^Просто дача\s12$/ }).click();
   const dialog = page.getByRole("dialog");
-  await dialog.getByRole("tab", { name: "Характеристики", exact: true }).click();
-  await expect(dialog.getByRole("tabpanel")).toContainText("Толщина стен");
-  await page.keyboard.press("ArrowLeft");
-  await expect(dialog.getByRole("tab", { name: "Контур и размеры" })).toBeFocused();
+  const assembly = dialog.getByRole("switch", { name: /Добавить сборку/ });
+  await expect(assembly).not.toBeChecked();
+  const kitPrice = await dialog.locator(".lead-price").textContent();
+  await assembly.focus();
+  await page.keyboard.press("Space");
+  await expect(assembly).toBeChecked();
+  await expect(dialog.locator(".lead-price")).not.toHaveText(kitPrice!);
+  await expect(dialog.locator(".lead-price")).toHaveText(/^[\d\s]+\sруб\.$/);
   expect((await new AxeBuilder({ page }).withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
+});
+
+test("Calculate buttons open lead dialog in place", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#calculation input")).toHaveCount(2);
+  const trigger = page.locator(".site-header").getByRole("button", { name: "Получить расчёт" });
+  const scrollBefore = await page.evaluate(() => scrollY);
+  await trigger.click();
+  const dialog = page.getByRole("dialog", { name: "Заявка на расчёт" });
+  await expect(dialog.getByLabel("Имя", { exact: true })).toBeFocused();
+  await expect(dialog.locator("input")).toHaveCount(2);
+  expect(await page.evaluate(() => scrollY)).toBe(scrollBefore);
+  expect((await new AxeBuilder({ page }).include(".lead-dialog").withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
+  await dialog.getByLabel("Телефон", { exact: true }).fill("9991234567");
+  await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
+  await expect(dialog.getByRole("status")).toContainText("Спасибо");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test("Section navigation scrolls via JS without hash links", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('a[href*="#"]')).toHaveCount(0);
+  await page.locator(".site-header nav").getByRole("button", { name: "Комплектация" }).click();
+  await expect.poll(() => page.evaluate(() => Math.abs(document.getElementById("specification")!.getBoundingClientRect().top) < 140)).toBe(true);
+  expect(page.url()).not.toContain("#");
+  await page.goto("/contacts");
+  await expect(page.locator('a[href*="#"]')).toHaveCount(0);
+  await page.locator(".site-header nav").getByRole("button", { name: "Проекты" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect.poll(() => page.evaluate(() => Math.abs(document.getElementById("projects")?.getBoundingClientRect().top ?? 9999) < 140)).toBe(true);
 });

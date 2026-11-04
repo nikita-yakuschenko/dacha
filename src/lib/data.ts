@@ -1,27 +1,53 @@
 export type Format = "kit" | "assembly" | "help";
-export type ProjectId = "dacha-20" | "dacha-24" | "dacha-30" | "custom";
-export type Project = { slug: Exclude<ProjectId, "custom">; name: string; width: number; depth: number; area: number; description: string; price: number | null; plan: string | null; usableArea: number | null; wallThickness: number | null; terraceArea: number | null; specification: "pending"; image: string; thumbnail: string };
-export const projects: Project[] = [
-  { slug: "dacha-20", thumbnail: "/images/dacha-20-thumbnail.webp", name: "Дача 20", width: 4, depth: 5, area: 20, description: "Небольшой дом для вашего места за городом.", price: null, plan: null, usableArea: null, wallThickness: null, terraceArea: null, specification: "pending", image: "/images/garden-concept.webp" },
-  { slug: "dacha-24", thumbnail: "/images/dacha-24-thumbnail.webp", name: "Дача 24", width: 4, depth: 6, area: 24, description: "Чуть больше пространства для дачных выходных.", price: null, plan: null, usableArea: null, wallThickness: null, terraceArea: null, specification: "pending", image: "/images/garden-concept.webp" },
-  { slug: "dacha-30", thumbnail: "/images/dacha-30-thumbnail.webp", name: "Дача 30", width: 5, depth: 6, area: 30, description: "Самый просторный из трёх пилотных размеров.", price: null, plan: null, usableArea: null, wallThickness: null, terraceArea: null, specification: "pending", image: "/images/garden-concept.webp" },
+export type ProjectId = string;
+export type Project = { slug: string; name: string; width: number; depth: number; area: number; description: string; prices: { kit: number; assembly: number }; terracePrices: { kit: number; assembly: number }; plan: string | null; usableArea: number | null; wallThickness: number | null; terraceArea: number | null; specification: "pending"; image: string; thumbnail: string };
+// Размеры-заглушки, кроме 4×5, 4×6 и 5×6 из брифа; заменить на утверждённую линейку
+const sizes: [width: number, depth: number, description: string][] = [
+  [3, 4, "Минимальный домик для инструмента и отдыха."],
+  [3, 5, "Компактный дом для небольшого участка."],
+  [4, 4, "Квадратный план для одной комнаты."],
+  [4, 5, "Небольшой дом для вашего места за городом."],
+  [4, 6, "Чуть больше пространства для дачных выходных."],
+  [5, 5, "Просторная комната в квадратном контуре."],
+  [4, 7, "Вытянутый план для двух зон."],
+  [5, 6, "Место для семьи на дачный сезон."],
+  [6, 6, "Большой квадратный дом для компании."],
+  [5, 8, "Длинный дом под несколько комнат."],
+  [6, 7, "Простор для гостей и хранения."],
+  [6, 8, "Самый большой дом в линейке."],
 ];
-export const formats: Record<Format, string> = { kit: "Комплект с доставкой", assembly: "Дом с монтажом", help: "Нужна помощь с выбором" };
+const thumbnails = ["/images/dacha-20-thumbnail.webp", "/images/dacha-24-thumbnail.webp", "/images/dacha-30-thumbnail.webp"];
+// Цены-заглушки от площади; заменить на утверждённый прайс
+const roundPrice = (value: number) => Math.round(value / 5000) * 5000;
+const pricesFor = (area: number) => ({ kit: roundPrice(area * 19500 + 60000), assembly: roundPrice(area * 27500 + 110000) });
+// Терраса-заглушка: площадка 2 м вдоль фасада
+const terracePricesFor = (width: number) => ({ kit: roundPrice(width * 2 * 9000), assembly: roundPrice(width * 2 * 14000) });
+// Итоговая цена варианта с учётом террасы
+export const priceFor = (project: Project, format: "kit" | "assembly", terrace: boolean) => project.prices[format] + (terrace ? project.terracePrices[format] : 0);
+export const formatPrice = (value: number) => `${new Intl.NumberFormat("ru-RU").format(value)}\u00a0руб.`;
+export const projects: Project[] = sizes.map(([width, depth, description], i) => ({ slug: `dacha-${width * depth}`, name: `Просто дача\u00a0${width * depth}`, width, depth, area: width * depth, description, prices: pricesFor(width * depth), terracePrices: terracePricesFor(width), plan: null, usableArea: null, wallThickness: null, terraceArea: null, specification: "pending", image: "/images/garden-concept.webp", thumbnail: thumbnails[i % thumbnails.length] }));
+// Группы для фильтра плитки по площади наружного контура
+export const areaGroups = [
+  { id: "all", label: "Все", test: () => true },
+  { id: "xs", label: "До 16 м²", test: (p: Project) => p.area <= 16 },
+  { id: "s", label: "20–25 м²", test: (p: Project) => p.area >= 17 && p.area <= 25 },
+  { id: "m", label: "28–36 м²", test: (p: Project) => p.area >= 26 && p.area <= 36 },
+  { id: "l", label: "От 40 м²", test: (p: Project) => p.area >= 37 },
+] as const;
+export const formats: Record<Format, string> = { kit: "Комплект с доставкой", assembly: "Дом с монтажом", help: "Нужна помощь с выбором" };
 export const specification = [
-  { name: "Стены и перегородки", note: "Сечение, профиль и состав — по проекту" },
-  { name: "Обвязка, лаги и пол", note: "Конструкция и настил — после согласования" },
-  { name: "Крыша и кровля", note: "Материал, марка и основание уточняются" },
-  { name: "Окна и двери", note: "Размеры, количество и материал уточняются" },
-  { name: "Крепёж и документация", note: "Ведомость и инструкция — по спецификации" },
+  { name: "Стены и перегородки", note: "Профилированный мини-брус по проекту" },
+  { name: "Обвязка, лаги и пол", note: "Несущее основание и настил пола" },
+  { name: "Крыша и кровля", note: "Стропильная система и кровельное покрытие" },
+  { name: "Окна и двери", note: "Оконные и дверные блоки" },
+  { name: "Крепёж и документация", note: "Крепёж, ведомость и инструкция по сборке" },
 ];
-export const separate = ["Основание и подготовка участка", "Доставка и разгрузка", "Монтаж и покраска", "Электрика, вода и канализация"];
+export const separate = ["Доставка", "Монтаж и покраска"];
 export const faq = [
-  ["Можно ли жить в таком доме зимой?", "Базовая линейка — сезонные дома из одинарного мини-бруса. Для зимнего проживания нужна отдельно спроектированная утеплённая конструкция. Одного утепления пола и крыши недостаточно."],
-  ["Что входит в стоимость?", "Цена пока не утверждена. Точный состав материалов и работ фиксируется в спецификации выбранного дома. Доставка, разгрузка, основание и монтаж должны быть явно включены или рассчитаны отдельно."],
-  ["Какой нужен фундамент?", "Основание подбирается по проекту и условиям участка. Для расчёта потребуются место установки и доступные сведения о грунте. Отсутствие капитального фундамента не обещаем."],
-  ["Кто организует разгрузку?", "Способ разгрузки согласуется до отгрузки. Он зависит от размеров упаковки, транспорта и подъезда к участку; стоимость указывается отдельно."],
-  ["Можно ли собрать комплект самостоятельно?", "Можно выбрать поставку комплекта для самостоятельной сборки. Состав документации, необходимые инструменты и формат поддержки нужно согласовать до заказа."],
-  ["Какие гарантийные условия и уход?", "Гарантийные условия должны быть закреплены в договоре, рекомендации по защитной обработке и уходу — в документации к дому. Конкретные сроки ещё не утверждены."],
+  ["Можно ли жить в таком доме зимой?", "Нет. Дачный дом подразумевает пребывание в тёплое время года. Если на улице непогода, можно воспользоваться обогревателем, но для пребывания в холодное время года в штатной комплектации дом не пригоден."],
+  ["Что входит в стоимость комплекта?", "Комплектация включает стеновой комплект из мини-бруса, элементы стропильной системы и кровли, элементы цокольного перекрытия, окна, двери, крепёж и документацию по сборке дома. Доставка рассчитывается отдельно, дополнительно можно заказать сборку."],
+  ["Можно ли собрать комплект самостоятельно?", "Да. Комплект изначально рассчитан на самостоятельную сборку или сборку лицами, не обладающими глубокими техническими знаниями и навыками в области строительства. Вся необходимая документация и инструкции прилагаются к поставке."],
+  ["Какие гарантийные условия и уход?", "Гарантийные обязательства устанавливаются договором и зависят от формата поставки. Кроме того, приложения к договору содержат рекомендации и правила по эксплуатации и уходу за домом."],
 ];
 export const siteConfig = { endpoint: process.env.NEXT_PUBLIC_LEAD_ENDPOINT || null, policyUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || null, siteUrl: process.env.NEXT_PUBLIC_SITE_URL || null };
 
