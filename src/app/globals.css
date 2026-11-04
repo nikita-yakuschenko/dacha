@@ -572,7 +572,7 @@ input::placeholder { color: #6c7363; }
 .lead-dialog-close:active { transform: scale(0.94); }
 @media (hover: hover) and (pointer: fine) { .lead-dialog-close:hover { background: #fffdf838; } }
 @media (max-width: 767px) {
-  .lead-panel.lead-dialog { inset: auto 0 0; width: 100%; margin: 0; border-radius: var(--r-card) var(--r-card) 0 0; padding: 28px 20px calc(24px + env(safe-area-inset-bottom)); animation: sheet-in 460ms var(--ease-drawer); max-height: calc(var(--viewport, 100dvh) - 10px); transform: translateY(calc(var(--keyboard, 0px) * -1)); }
+  .lead-panel.lead-dialog { inset: auto 0 0; width: 100%; margin: 0; border-radius: var(--r-card) var(--r-card) 0 0; padding: 28px 20px calc(24px + max(env(safe-area-inset-bottom), var(--keyboard, 0px))); animation: sheet-in 460ms var(--ease-drawer); max-height: calc(var(--viewport, 100dvh) + var(--keyboard, 0px) - 10px); transform: none; transition: padding-bottom 320ms var(--ease-drawer), max-height 320ms var(--ease-drawer); }
   .lead-panel.lead-dialog h3 { font-size: 26px; }
   .lead-dialog-close { top: 18px; right: 16px; }
 }
