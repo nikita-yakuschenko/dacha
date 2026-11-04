@@ -8,6 +8,20 @@ import { track } from "@/lib/analytics";
 import { ProjectLeadForm } from "./project-lead-form";
 import { useSelection } from "./selection";
 
+// Окно держится над экранной клавиатурой: запоминаем её высоту и видимую высоту экрана
+function liftAboveKeyboard(node: HTMLDivElement | null) {
+  const viewport = window.visualViewport;
+  if (!node || !viewport) return;
+  function fit() {
+    node!.style.setProperty("--keyboard", `${Math.max(0, window.innerHeight - viewport!.height - viewport!.offsetTop)}px`);
+    node!.style.setProperty("--viewport", `${viewport!.height}px`);
+  }
+  fit();
+  viewport.addEventListener("resize", fit);
+  viewport.addEventListener("scroll", fit);
+  return () => { viewport.removeEventListener("resize", fit); viewport.removeEventListener("scroll", fit); };
+}
+
 // Кнопка расчёта открывает окно с формой заявки прямо на месте
 export function CalculateButton({ children = "Получить расчёт", project, format, className, variant = "default" }: { children?: ReactNode; project?: ProjectId; format?: Format; className?: string; variant?: "default" | "outline" | "ghost" | "light" }) {
   const { selection, update } = useSelection();
@@ -19,7 +33,7 @@ export function CalculateButton({ children = "Получить расчёт", pr
     <Dialog.Trigger asChild><Button className={className} variant={variant}>{children}<IconArrowUpRight size={18} aria-hidden="true" /></Button></Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="project-modal-overlay" />
-      <Dialog.Content className="lead-panel lead-dialog" aria-describedby={undefined}>
+      <Dialog.Content ref={liftAboveKeyboard} className="lead-panel lead-dialog" aria-describedby={undefined} onOpenAutoFocus={event => { event.preventDefault(); (event.currentTarget as HTMLElement).focus(); }}>
         <Dialog.Title asChild><h3>Заявка на расчёт</h3></Dialog.Title>
         <ProjectLeadForm />
         <Dialog.Close className="lead-dialog-close" aria-label="Закрыть"><IconX size={20} /></Dialog.Close>

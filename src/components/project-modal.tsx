@@ -81,7 +81,6 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   function openLead() {
     const lead = document.querySelector<HTMLElement>(".project-modal .lead-panel");
     lead?.scrollIntoView({ behavior: "smooth", block: "start" });
-    lead?.querySelector("input")?.focus({ preventScroll: true });
   }
   return <Dialog.Root open onOpenChange={open => { if (!open) onClose(); }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={fitRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
     <header className="project-modal-header">

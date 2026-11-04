@@ -77,7 +77,7 @@ test("Calculate buttons open lead dialog in place", async ({ page }) => {
   const scrollBefore = await page.evaluate(() => scrollY);
   await trigger.click();
   const dialog = page.getByRole("dialog", { name: "Заявка на расчёт" });
-  await expect(dialog.getByLabel("Имя", { exact: true })).toBeFocused();
+  await expect(dialog).toBeFocused();
   await expect(dialog.locator("input")).toHaveCount(2);
   expect(await page.evaluate(() => scrollY)).toBe(scrollBefore);
   expect((await new AxeBuilder({ page }).include(".lead-dialog").withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
