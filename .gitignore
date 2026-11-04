@@ -21,3 +21,7 @@ IMPLEMENTATION_REPORT.md
 .claude/
 .agents/
 
+
+# Референсы и исходники дизайна: сайту не нужны, держим только локально
+references/
+docs/
