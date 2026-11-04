@@ -1,0 +1,107 @@
+[
+  {
+    "path": "CODEX_PROMPT.md",
+    "bytes": 25700,
+    "sha256": "f13ef9c85c0aa63c315e01486e26686466a2f184290d678057d6532e3e81a5ab"
+  },
+  {
+    "path": "README.md",
+    "bytes": 2820,
+    "sha256": "484f7625000d25f403113d8b8bac33613598a55b8511d43e1e8ce250efc2fb38"
+  },
+  {
+    "path": "references/logo/approved-logo-source.png",
+    "bytes": 273186,
+    "sha256": "db319d15791e0ba938d9308e6378aa29b48f562061da648e21dea17814c19454"
+  },
+  {
+    "path": "references/logo/prosto-dacha-horizontal-dark.svg",
+    "bytes": 13490,
+    "sha256": "d01dd976032058c70b7280fec857a2610a54a2819d6e2cb903027da1ffcd1de2"
+  },
+  {
+    "path": "references/logo/prosto-dacha-horizontal-light.svg",
+    "bytes": 13441,
+    "sha256": "9b5a4a2b95489a6db06de7c2d8d03e6babb0261cc154680e4d9393713ffbf1b9"
+  },
+  {
+    "path": "references/logo/prosto-dacha-horizontal-white.svg",
+    "bytes": 13441,
+    "sha256": "41dd0786c3e62124377105c66b4781a7d7526d5e5107d207e42bd17f610ee731"
+  },
+  {
+    "path": "references/logo/prosto-dacha-symbol-dark.svg",
+    "bytes": 2589,
+    "sha256": "923e59a775c0aa610e7d9f82f74564f1c5df7518a9c27bba0aefe1229492cc96"
+  },
+  {
+    "path": "references/logo/prosto-dacha-symbol-green.svg",
+    "bytes": 2589,
+    "sha256": "b79e5c5e1db2b407762db77958238cc7417cb77c5983736007a75e776ab5e47d"
+  },
+  {
+    "path": "references/visual-concepts/01-hero-desktop.png",
+    "bytes": 2367669,
+    "sha256": "bb0f07096e8bf2fd53aff5cafe94fbefb2da66e731eebee4e6f0262e284ac52d"
+  },
+  {
+    "path": "references/visual-concepts/02-projects-grid-desktop.png",
+    "bytes": 2356938,
+    "sha256": "613351cf8017988291572f19e013d0012662ef2ae1e8a7d6ec849af0ffb54528"
+  },
+  {
+    "path": "references/visual-concepts/03-project-details-desktop.png",
+    "bytes": 2136374,
+    "sha256": "d7bb74ade33c2d4c3a1a5b966eee76dd7a461ae1cd03b6c5daab55becc20de03"
+  },
+  {
+    "path": "references/visual-concepts/04-package-comparison-desktop.png",
+    "bytes": 1999577,
+    "sha256": "eb079f703b9fa8e9730a3d555cdb65f0588747438304058320164cb27fcb6372"
+  },
+  {
+    "path": "references/visual-concepts/05-minibrus-technology-desktop.png",
+    "bytes": 1858429,
+    "sha256": "64703a5265a7c2d1d5a9fb561bd654b08f1ecb44144c7f2b0e8525fa99d89afa"
+  },
+  {
+    "path": "references/visual-concepts/06-production-desktop.png",
+    "bytes": 2276191,
+    "sha256": "628abfaeeb899734fa0d95f29440631100953dd36c57cd6261f4ce3f357de1df"
+  },
+  {
+    "path": "references/visual-concepts/07-calculation-form-desktop.png",
+    "bytes": 2155512,
+    "sha256": "896603a5f1becbf8dccaf467abbaba04d8971e6a78c7212364a4529a8e50d5bf"
+  },
+  {
+    "path": "references/visual-concepts/08-logistics-and-process-desktop.png",
+    "bytes": 2034368,
+    "sha256": "859a2100a4806982d6a9b227ff9158ce83398193f1eaf72f31fba8ae00027b9a"
+  },
+  {
+    "path": "references/visual-concepts/09-faq-and-final-cta-desktop.png",
+    "bytes": 2015399,
+    "sha256": "5f876101889fd2ae75b4c05f0459f17868d9fa2f8d0b8a9d93a23d24bfc6dcea"
+  },
+  {
+    "path": "source/minibrus-garden-houses-standalone.html",
+    "bytes": 44356,
+    "sha256": "f28760a29dc34635a54376ecaff88d6138f79caeb1ef53b0c3eb10795d98eb0c"
+  },
+  {
+    "path": "source/minibrus-landing-brief.md",
+    "bytes": 36301,
+    "sha256": "e265c497340d884d535faaba28f35118c0e2be962dcfa80ab7c734e157dd351d"
+  },
+  {
+    "path": "source/minibrus-landing-concept (2).zip",
+    "bytes": 31576,
+    "sha256": "bd0848fbee43c87d115fc8cc58537426c89f290f80dce304dbed2e3f99f733f8"
+  },
+  {
+    "path": "source/minibrus-landing-concept.zip",
+    "bytes": 31734,
+    "sha256": "e86e413ae90f7584608abe93029bb28fc877eed8f978f36e40ad1f8bee91aadc"
+  }
+]
