@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProjectTrigger } from "./project-trigger";
-import { areaGroups, formatPrice, projects } from "@/lib/data";
+import { areaGroups, formatMeters, formatPrice, projects } from "@/lib/data";
 
 export function ProjectGrid() {
   const [groupId, setGroupId] = useState<(typeof areaGroups)[number]["id"]>("all");
@@ -14,10 +14,10 @@ export function ProjectGrid() {
     </div>
     <ul className="project-grid">
       {visible.map(p => <li key={p.slug}><article className="project-tile">
-        <div className="project-tile-image"><Image src={p.thumbnail} alt="" fill sizes="(max-width: 767px) 50vw, (max-width: 1200px) 33vw, 340px" /></div>
+        <div className="project-tile-image"><Image src={p.thumbnail} alt="" fill sizes="(max-width: 767px) 50vw, (max-width: 1200px) 33vw, 480px" unoptimized /></div>
         <div className="project-tile-body">
           <h3><ProjectTrigger project={p.slug} className="project-tile-trigger">{"Просто дача\u00a0"}<span className="name-mark">{p.area}</span></ProjectTrigger></h3>
-          <span>{p.width} × {p.depth} м · {p.area} м²</span>
+          <span>{formatMeters(p.width)} × {formatMeters(p.depth)} м · {p.area} м²</span>
           <strong className="project-tile-price">от {formatPrice(p.prices.kit)}</strong>
         </div>
       </article></li>)}

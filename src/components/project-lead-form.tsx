@@ -25,11 +25,13 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
   const id = useId();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState(false);
   // Ошибки по полям показываем в строке подписи, чтобы форма не меняла высоту
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; phone?: string; consent?: string }>({});
   const [sendFailed, setSendFailed] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const requestId = useRef<string | null>(null);
   const live = Boolean(siteConfig.endpoint && siteConfig.policyUrl);
@@ -41,15 +43,16 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
     const found = {
       name: name.trim() ? undefined : "Укажите имя",
       phone: phone.replace(/\D/g, "").length === 11 ? undefined : "Нужно 10 цифр после +7",
+      consent: consent ? undefined : "Нужно согласие",
     };
     setErrors(found);
     setSendFailed(false);
-    if (found.name || found.phone) { (found.name ? nameRef : phoneRef).current?.focus(); return; }
+    if (found.name || found.phone || found.consent) { (found.name ? nameRef : found.phone ? phoneRef : consentRef).current?.focus(); return; }
     if (!live) { setStatus("done"); return; }
     setStatus("sending");
     requestId.current ||= crypto.randomUUID();
     try {
-      const response = await fetch(siteConfig.endpoint!, { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: project?.slug ?? selection.project, format, terrace: selection.terrace, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
+      const response = await fetch(siteConfig.endpoint!, { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: project?.slug ?? selection.project, format, terrace: selection.terrace, extras: selection.extras, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: project?.slug ?? selection.project, format });
@@ -67,15 +70,20 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
   </div>;
 
   return <form className="lead-form" onSubmit={submit} noValidate>
-    <div className="lead-field">
-      <div className="lead-field-head"><label htmlFor={`${id}-name`}>Имя</label>{errors.name && <span className="lead-error" id={`${id}-name-error`} role="alert">{errors.name}</span>}</div>
-      <input ref={nameRef} id={`${id}-name`} value={name} onChange={e => { setName(e.target.value.slice(0, 80)); setErrors(prev => ({ ...prev, name: undefined })); }} autoComplete="given-name" placeholder="Ваше имя" aria-invalid={!!errors.name} aria-describedby={errors.name ? `${id}-name-error` : undefined} />
+    <div className="lead-field" data-filled={name.length > 0} data-invalid={!!errors.name}>
+      <input ref={nameRef} id={`${id}-name`} value={name} onChange={e => { setName(e.target.value.slice(0, 80)); setErrors(prev => ({ ...prev, name: undefined })); }} autoComplete="given-name" aria-invalid={!!errors.name} aria-describedby={errors.name ? `${id}-name-error` : undefined} />
+      <label htmlFor={`${id}-name`}>Имя</label>
+      {errors.name && <span className="lead-error" id={`${id}-name-error`} role="alert">{errors.name}</span>}
     </div>
-    <div className="lead-field">
-      <div className="lead-field-head"><label htmlFor={`${id}-phone`}>Телефон</label>{errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}</div>
-      <input ref={phoneRef} id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setErrors(prev => ({ ...prev, phone: undefined })); }} type="tel" inputMode="tel" autoComplete="tel" placeholder="+7 (999) 123-45-67" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-error` : undefined} />
+    <div className="lead-field" data-filled={phone.length > 0} data-invalid={!!errors.phone}>
+      <input ref={phoneRef} id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setErrors(prev => ({ ...prev, phone: undefined })); }} type="tel" inputMode="tel" autoComplete="tel" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-error` : undefined} />
+      <label htmlFor={`${id}-phone`}>Телефон</label>
+      {errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}
     </div>
     <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>Получить расчёт<IconArrowRight size={20} /></>}</button>
-    <p className="lead-legal">Нажимая кнопку, вы соглашаетесь на обработку персональных данных{siteConfig.policyUrl && <> — <a href={siteConfig.policyUrl} target="_blank" rel="noopener noreferrer">политика</a></>}.</p>
+    <label className="lead-consent" data-invalid={!!errors.consent}>
+      <input ref={consentRef} type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(prev => ({ ...prev, consent: undefined })); }} aria-invalid={!!errors.consent} />
+      <span>Соглашаюсь на обработку персональных данных{siteConfig.policyUrl && <> — <a href={siteConfig.policyUrl} target="_blank" rel="noopener noreferrer">политика</a></>}</span>
+    </label>
   </form>;
 }

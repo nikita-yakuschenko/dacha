@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { formatPrice } from "@/lib/data";
+import { formatAmount, formatPrice } from "@/lib/data";
 
 // Цена досчитывается до нового значения: быстрый старт, плавная остановка, шаг — тысяча рублей
-export function AnimatedPrice({ value }: { value: number }) {
+export function AnimatedPrice({ value, currency = true }: { value: number; currency?: boolean }) {
   const [shown, setShown] = useState(value);
   const current = useRef(value);
   useEffect(() => {
@@ -22,5 +22,5 @@ export function AnimatedPrice({ value }: { value: number }) {
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [value]);
-  return <>{formatPrice(shown)}</>;
+  return <>{currency ? formatPrice(shown) : formatAmount(shown)}</>;
 }

@@ -25,28 +25,28 @@ test("Project popups fit required widths and keep landing URL", async ({ page })
 
 test("Correct model, popup navigation, persisted options and demo form", async ({ page }) => {
   await page.goto("/");
-  for (const name of ["Просто дача\u00a012", "Просто дача\u00a030", "Просто дача\u00a048"]) {
+  for (const name of ["Просто дача\u00a010", "Просто дача\u00a024", "Просто дача\u00a050"]) {
     await page.getByRole("button", { name, exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.locator(".project-title h2")).toHaveText(name);
     await expect(dialog.getByRole("button", { name: "Следующий проект" })).toHaveCount(0);
     await dialog.getByRole("button", { name: "Закрыть проект" }).click();
   }
-  await page.locator(".project-tile").nth(4).click({ position: { x: 100, y: 60 } });
+  await page.getByRole("button", { name: /^Просто дача\s24$/ }).click();
   await expect(page.getByRole("dialog").locator(".project-title h2")).toHaveText(/^Просто дача\s24$/);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: /^20–25 м²/ }).click();
-  await expect(page.locator(".project-grid > li")).toHaveCount(3);
-  await page.getByRole("button", { name: /^Просто дача\s20$/ }).click();
+  await expect(page.locator(".project-grid > li")).toHaveCount(2);
+  await page.getByRole("button", { name: /^Просто дача\s24$/ }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("switch", { name: /Добавить сборку/ }).check();
-  await dialog.getByRole("switch", { name: /Добавить террасу/ }).check();
-  await expect(dialog.locator('.lead-receipt li[data-on="true"]')).toHaveText([/^Домокомплект/, /^Терраса/, /^Сборка/]);
+  await expect(dialog.locator('.lead-receipt li[data-on="true"]')).toHaveText([/^Домокомплект/, /^Сборка/]);
   await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("alert")).toContainText("Нужно 10 цифр");
   await dialog.getByLabel("Телефон", { exact: true }).fill("89991234567");
   await expect(dialog.getByLabel("Телефон", { exact: true })).toHaveValue("+7 (999) 123-45-67");
+  await dialog.getByRole("checkbox", { name: /Соглашаюсь/ }).check();
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо, Тестер");
   const stored = await page.evaluate(() => JSON.stringify(localStorage));
@@ -57,7 +57,7 @@ test("Popup addon switches by keyboard and WCAG AA", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  await page.getByRole("button", { name: /^Просто дача\s12$/ }).click();
+  await page.getByRole("button", { name: /^Просто дача\s10$/ }).click();
   const dialog = page.getByRole("dialog");
   const assembly = dialog.getByRole("switch", { name: /Добавить сборку/ });
   await expect(assembly).not.toBeChecked();
@@ -66,19 +66,19 @@ test("Popup addon switches by keyboard and WCAG AA", async ({ page }) => {
   await page.keyboard.press("Space");
   await expect(assembly).toBeChecked();
   await expect(dialog.locator(".lead-price")).not.toHaveText(kitPrice!);
-  await expect(dialog.locator(".lead-price")).toHaveText(/^[\d\s]+\sруб\.$/);
+  await expect(dialog.locator(".lead-price")).toHaveText(/^[\d\s]+$/);
   expect((await new AxeBuilder({ page }).withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
 });
 
 test("Calculate buttons open lead dialog in place", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("#calculation input")).toHaveCount(2);
+  await expect(page.locator("#calculation input")).toHaveCount(3);
   const trigger = page.locator(".site-header").getByRole("button", { name: "Получить расчёт" });
   const scrollBefore = await page.evaluate(() => scrollY);
   await trigger.click();
   const dialog = page.getByRole("dialog", { name: "Заявка на расчёт" });
   await expect(dialog).toBeFocused();
-  await expect(dialog.locator("input")).toHaveCount(2);
+  await expect(dialog.locator("input")).toHaveCount(3);
   expect(await page.evaluate(() => scrollY)).toBe(scrollBefore);
   expect((await new AxeBuilder({ page }).include(".lead-dialog").withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze()).violations).toEqual([]);
   const heightBefore = await dialog.evaluate(el => el.getBoundingClientRect().height);
@@ -87,6 +87,7 @@ test("Calculate buttons open lead dialog in place", async ({ page }) => {
   expect(await dialog.evaluate(el => el.getBoundingClientRect().height)).toBe(heightBefore);
   await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
   await dialog.getByLabel("Телефон", { exact: true }).fill("9991234567");
+  await dialog.getByRole("checkbox", { name: /Соглашаюсь/ }).check();
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо");
   await page.keyboard.press("Escape");
