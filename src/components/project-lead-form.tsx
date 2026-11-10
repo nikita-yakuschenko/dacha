@@ -3,6 +3,7 @@ import { useId, useRef, useState, type FormEvent } from "react";
 import { IconArrowRight, IconCheck, IconLoader2 } from "@tabler/icons-react";
 import { siteConfig, type Project } from "@/lib/data";
 import { getAttribution, track } from "@/lib/analytics";
+import { leadGoal } from "@/lib/metrika";
 import { useSelection } from "./selection";
 
 // Маска телефона: +7 (999) 123-45-67 из любых введённых цифр
@@ -20,7 +21,7 @@ function maskPhone(value: string) {
   return masked;
 }
 
-export function ProjectLeadForm({ project }: { project?: Project }) {
+export function ProjectLeadForm({ project, formName }: { project?: Project; formName: string }) {
   const { selection } = useSelection();
   const id = useId();
   const [name, setName] = useState("");
@@ -48,7 +49,7 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
     setErrors(found);
     setSendFailed(false);
     if (found.name || found.phone || found.consent) { (found.name ? nameRef : found.phone ? phoneRef : consentRef).current?.focus(); return; }
-    if (!live) { setStatus("done"); return; }
+    if (!live) { leadGoal(formName); setStatus("done"); return; }
     setStatus("sending");
     requestId.current ||= crypto.randomUUID();
     try {
@@ -56,6 +57,7 @@ export function ProjectLeadForm({ project }: { project?: Project }) {
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: project?.slug ?? selection.project, format });
+      leadGoal(formName);
       setStatus("done");
     } catch {
       setSendFailed(true);

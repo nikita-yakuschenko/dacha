@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ProjectTrigger } from "./project-trigger";
 import { areaGroups, formatMeters, formatPrice, projects } from "@/lib/data";
+import { actionGoal, plain } from "@/lib/metrika";
 
 export function ProjectGrid() {
   const [groupId, setGroupId] = useState<(typeof areaGroups)[number]["id"]>("all");
@@ -10,7 +11,7 @@ export function ProjectGrid() {
   const visible = projects.filter(group.test);
   return <>
     <div className="project-filter" role="group" aria-label="Площадь дома">
-      {areaGroups.map(g => <button key={g.id} type="button" aria-pressed={g.id === groupId} onClick={() => setGroupId(g.id)}>{g.label}<span>{projects.filter(g.test).length}</span></button>)}
+      {areaGroups.map(g => <button key={g.id} type="button" aria-pressed={g.id === groupId} onClick={() => { setGroupId(g.id); actionGoal(`Фильтр «${plain(g.label)}»`); }}>{g.label}<span>{projects.filter(g.test).length}</span></button>)}
     </div>
     <ul className="project-grid">
       {visible.map(p => <li key={p.slug}><article className="project-tile">

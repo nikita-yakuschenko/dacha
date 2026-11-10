@@ -3,8 +3,7 @@
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useRef } from "react";
-
-const metrikaId = 114175449;
+import { metrikaId } from "@/lib/metrika";
 
 export function YandexMetrika() {
   const pathname = usePathname();

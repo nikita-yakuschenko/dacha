@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent, type UIEvent } from "react";
 import { flushSync } from "react-dom";
 import { Dialog } from "radix-ui";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { AnimatedPrice } from "./animated-price";
 import { ProjectPackages } from "./project-packages";
 import { ProjectLeadForm } from "./project-lead-form";
 import { useSelection } from "./selection";
+import { actionGoal, plain } from "@/lib/metrika";
 
 export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; onClose: () => void; returnFocus: HTMLElement }) {
   const [slide, setSlide] = useState(0);
@@ -25,9 +26,11 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const viewerClose = useRef<HTMLButtonElement>(null);
   const viewerDrag = useRef<{ x: number; moved: boolean } | null>(null);
   const viewerIgnoreClick = useRef(false);
+  const seenSlide = useRef(0);
   useEffect(() => { if (viewerOpen) viewerClose.current?.focus(); }, [viewerOpen]);
-  function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); }
-  function closeViewer() { setViewerOpen(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
+  function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; actionGoal(index >= photos ? `Открыть планировку, ${houseName}` : `Открыть фото ${index + 1}, ${houseName}`); }
+  function closeViewer() { actionGoal(`Закрыть просмотр, ${houseName}`); setViewerOpen(false); viewerTrigger.current?.focus({ preventScroll: true }); }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
@@ -85,6 +88,10 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     if (track) track.style.transform = "translateX(-100%)";
     sliding.current = false;
   }
+  function goalLand(index: number) {
+    const item = media[index];
+    actionGoal(item.kind === "plan" ? `Листать к планировке, ${houseName}` : `Листать к фото ${index + 1}, ${houseName}`);
+  }
   // Сдвиг на один кадр: лента уезжает, затем кадры переставляются без скачка
   function animateStep(dir: 1 | -1) {
     if (sliding.current) return;
@@ -99,13 +106,14 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   }
   function goViewer(next: number) {
     const index = viewerIndexRef.current;
-    if (next === index) return;
+    if (next === index || sliding.current) return;
+    goalLand(next);
     const forward = (next - index + media.length) % media.length;
     if (forward === 1) animateStep(1);
     else if (forward === media.length - 1) animateStep(-1);
     else { viewerIndexRef.current = next; setViewerIndex(next); }
   }
-  function stepViewer(delta: number) { animateStep(delta < 0 ? -1 : 1); }
+  function stepViewer(delta: number) { if (sliding.current) return; const dir: 1 | -1 = delta < 0 ? -1 : 1; goalLand((viewerIndexRef.current + dir + media.length) % media.length); animateStep(dir); }
   function viewerPointerDown(event: PointerEvent<HTMLElement>) {
     if ((event.target as HTMLElement).closest("button") || event.pointerType !== "touch" || sliding.current) return;
     const width = stageRef.current?.clientWidth ?? 0;
@@ -137,6 +145,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
         return;
       }
       const dir: 1 | -1 = dx < 0 ? 1 : -1;
+      goalLand((viewerIndexRef.current + dir + media.length) % media.length);
       sliding.current = true;
       delete track.dataset.drag;
       track.style.transform = `translateX(calc(-100% + ${dir === 1 ? -width : width}px))`;
@@ -148,17 +157,27 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     window.addEventListener("pointercancel", up);
   }
   function openLead() {
+    actionGoal(`Оставить заявку, ${houseName}`);
     const lead = document.querySelector<HTMLElement>(".project-modal .lead-panel");
     lead?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  return <Dialog.Root open onOpenChange={open => { if (!open) onClose(); }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
+  function onMediaScroll(event: UIEvent<HTMLDivElement>) {
+    const width = event.currentTarget.clientWidth || 1;
+    const next = Math.round(event.currentTarget.scrollLeft / width);
+    if (next === seenSlide.current || !media[next]) return;
+    seenSlide.current = next;
+    setSlide(next);
+    const item = media[next];
+    actionGoal(item.kind === "plan" ? "Показать планировку в карточке" : `Показать фото ${next + 1} в карточке`, { project: houseName });
+  }
+  return <Dialog.Root open onOpenChange={open => { if (!open) { actionGoal(`Закрыть проект «${houseName}»`); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
     <header className="project-modal-header">
       <div className="project-title"><Dialog.Title asChild><h2>{"Просто дача\u00a0"}<span className="name-mark">{project.area}</span></h2></Dialog.Title><p><span>{formatMeters(project.width)} × {formatMeters(project.depth)} м</span><span>{project.area} м²</span></p></div>
       <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
     </header>
     <div className="project-modal-grid">
       <section className="project-media" aria-label="Фото и планировка">
-        <div className="project-media-track" onScroll={e => setSlide(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}>
+        <div className="project-media-track" onScroll={onMediaScroll}>
           {media.map((item, index) => <figure key={item.src} className={item.kind === "plan" ? "project-plan" : "project-photo"}><Image src={item.src} alt={item.kind === "plan" ? `Планировка, ${project.name}` : project.name} fill sizes="(max-width: 1023px) 100vw, 720px" unoptimized priority={index === 0} /><button type="button" className="project-media-open" aria-label={item.open} onClick={e => openViewer(index, e.currentTarget)} /></figure>)}
         </div>
         <button type="button" className="project-media-switch" data-hidden={slide === planSlide} inert={slide === planSlide} onClick={e => showSlide(planSlide, e.currentTarget)}>Планировка</button>
@@ -172,7 +191,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
           <span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span>
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
-        <ProjectLeadForm project={project} />
+        <ProjectLeadForm project={project} formName={`Заявка на расчёт, ${houseName}`} />
       </aside>
     </div>
     <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>

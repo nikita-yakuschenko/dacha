@@ -1,12 +1,15 @@
 "use client";
 import { useId, useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
+import { actionGoal, plain } from "@/lib/metrika";
 
 // Вопросы с плавным раскрытием высоты ответа
 export function FaqList({ items }: { items: readonly (readonly string[])[] }) {
   const id = useId();
   const [open, setOpen] = useState<ReadonlySet<number>>(new Set());
   function toggle(index: number) {
+    const question = plain(items[index][0]);
+    actionGoal(`${open.has(index) ? "Закрыть" : "Открыть"} вопрос «${question}»`);
     setOpen(prev => { const next = new Set(prev); if (!next.delete(index)) next.add(index); return next; });
   }
   return <div className="faq-list">{items.map(([question, answer], i) => {

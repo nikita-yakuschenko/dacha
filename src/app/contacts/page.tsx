@@ -1,3 +1,3 @@
 import { CalculateButton } from "@/components/lead-dialog";
 export const metadata = { title: "Контакты и документы" };
-export default function Contacts() { return <main id="main" className="container section legal-page"><h1>Контакты<br />и документы</h1><p className="intro">Оставьте заявку на расчёт — ответим по телефону или в Telegram.</p><CalculateButton /></main>; }
+export default function Contacts() { return <main id="main" className="container section legal-page"><h1>Контакты<br />и документы</h1><p className="intro">Оставьте заявку на расчёт — ответим по телефону или в Telegram.</p><CalculateButton action="Получить расчёт на странице контактов" /></main>; }
