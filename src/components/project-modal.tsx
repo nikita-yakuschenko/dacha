@@ -9,7 +9,8 @@ import { AnimatedPrice } from "./animated-price";
 import { ProjectPackages } from "./project-packages";
 import { ProjectLeadForm } from "./project-lead-form";
 import { useSelection } from "./selection";
-import { actionGoal, plain } from "@/lib/metrika";
+import { dachaId } from "@/lib/metrika-goals";
+import { metrikaGoal, plain } from "@/lib/metrika";
 
 export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; onClose: () => void; returnFocus: HTMLElement }) {
   const [slide, setSlide] = useState(0);
@@ -29,8 +30,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const seenSlide = useRef(0);
   useEffect(() => { if (viewerOpen) viewerClose.current?.focus(); }, [viewerOpen]);
   const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
-  function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; actionGoal(index >= photos ? `Открыть планировку, ${houseName}` : `Открыть фото ${index + 1}, ${houseName}`); }
-  function closeViewer() { actionGoal(`Закрыть просмотр, ${houseName}`); setViewerOpen(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  const area = slug.replace("dacha-", "");
+  function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; metrikaGoal(index >= photos ? dachaId("open_plan", area) : dachaId(`open_photo_${index + 1}`, area)); }
+  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); setViewerOpen(false); viewerTrigger.current?.focus({ preventScroll: true }); }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
@@ -90,7 +92,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   }
   function goalLand(index: number) {
     const item = media[index];
-    actionGoal(item.kind === "plan" ? `Листать к планировке, ${houseName}` : `Листать к фото ${index + 1}, ${houseName}`);
+    metrikaGoal(item.kind === "plan" ? dachaId("slide_plan", area) : dachaId(`slide_photo_${index + 1}`, area));
   }
   // Сдвиг на один кадр: лента уезжает, затем кадры переставляются без скачка
   function animateStep(dir: 1 | -1) {
@@ -157,7 +159,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     window.addEventListener("pointercancel", up);
   }
   function openLead() {
-    actionGoal(`Оставить заявку, ${houseName}`);
+    metrikaGoal(dachaId("cta", area));
     const lead = document.querySelector<HTMLElement>(".project-modal .lead-panel");
     lead?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -168,9 +170,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     seenSlide.current = next;
     setSlide(next);
     const item = media[next];
-    actionGoal(item.kind === "plan" ? "Показать планировку в карточке" : `Показать фото ${next + 1} в карточке`, { project: houseName });
+    metrikaGoal(item.kind === "plan" ? "card_plan" : `card_photo_${next + 1}`, { project: houseName });
   }
-  return <Dialog.Root open onOpenChange={open => { if (!open) { actionGoal(`Закрыть проект «${houseName}»`); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
+  return <Dialog.Root open onOpenChange={open => { if (!open) { metrikaGoal(dachaId("close", area)); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
     <header className="project-modal-header">
       <div className="project-title"><Dialog.Title asChild><h2>{"Просто дача\u00a0"}<span className="name-mark">{project.area}</span></h2></Dialog.Title><p><span>{formatMeters(project.width)} × {formatMeters(project.depth)} м</span><span>{project.area} м²</span></p></div>
       <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
@@ -191,7 +193,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
           <span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span>
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
-        <ProjectLeadForm project={project} formName={`Заявка на расчёт, ${houseName}`} />
+        <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
       </aside>
     </div>
     <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>

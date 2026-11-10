@@ -17,12 +17,8 @@ export function reachGoal(name: string, params?: Record<string, string>) {
   else ym()(metrikaId, "reachGoal", name);
 }
 
-export function leadGoal(form: string) {
-  reachGoal(`JS:Заявка - "${form}"`);
-}
-
-export function actionGoal(action: string, params?: Record<string, string>) {
-  reachGoal(`JS:Действие - "${action}"`, params);
+export function metrikaGoal(id: string, params?: Record<string, string>) {
+  reachGoal(id, params);
 }
 
 export function plain(text: string) {
