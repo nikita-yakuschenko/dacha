@@ -7,6 +7,7 @@ import { HouseImage } from "@/components/house-image";
 import { ProjectLeadForm } from "@/components/project-lead-form";
 import { specification, separate, faq } from "@/lib/data";
 import { Button } from "@/components/ui/button";
+export const metadata = { alternates: { canonical: "/" } };
 export default function Home() { return <main id="main">
   <section className="container hero" aria-labelledby="hero-title"><div className="hero-main"><div className="hero-copy"><h1 id="hero-title"><span className="hero-title-line">Своя дача</span><span className="hero-title-line">это просто</span></h1><p className="hero-description">Дома из мини-бруса для дачного сезона.<br />Просто выберите проект. Мы его изготовим и доставим, а если нужно, то соберём.</p><div className="hero-actions"><Button asChild><ScrollTo to="projects" goal="choose_house">Выбрать свой дом<IconArrowDown size={18} /></ScrollTo></Button><CalculateButton variant="outline" goal="lead_popup_hero" /></div><ul className="hero-facts"><li><IconLeaf aria-hidden="true" />Просто выбрать</li><li><IconWallet aria-hidden="true" />Доступно купить</li><li><IconTools aria-hidden="true" />Легко собрать</li></ul></div><HouseImage priority src="/images/hero-garden.webp" sizes="(max-width: 767px) 100vw, 1440px" className="hero-image" /></div>{/* <QuickProjects /> — временно отключено до доработки мобильной версии */}</section>
   <section id="projects" className="container section" aria-labelledby="projects-title"><div className="section-heading"><h2 id="projects-title">Просто дачи</h2></div><ProjectGrid /></section>

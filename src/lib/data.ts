@@ -174,5 +174,6 @@ export const faq = [
   ["Можно ли собрать комплект самостоятельно?", "Да. Комплект изначально рассчитан на самостоятельную сборку или сборку лицами, не обладающими глубокими техническими знаниями и навыками в области строительства. Вся необходимая документация и инструкции прилагаются к поставке."],
   ["Какие гарантийные условия и уход?", "Гарантийные обязательства устанавливаются договором и зависят от формата поставки. Кроме того, приложения к договору содержат рекомендации и правила по эксплуатации и уходу за домом."],
 ];
-export const siteConfig = { endpoint: process.env.NEXT_PUBLIC_LEAD_ENDPOINT || null, policyUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || null, siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://dacha-prosto.ru" };
+const configuredSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://dacha-prosto.ru").replace(/\/$/, "");
+export const siteConfig = { endpoint: process.env.NEXT_PUBLIC_LEAD_ENDPOINT || null, policyUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || null, siteUrl: configuredSiteUrl.replace(/^http:\/\/dacha-prosto\.ru/, "https://dacha-prosto.ru") };
 
