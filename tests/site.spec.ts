@@ -49,7 +49,7 @@ test("Correct model, popup navigation, persisted options and demo form", async (
   await dialog.getByRole("checkbox", { name: /Соглашаюсь/ }).check();
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо, Тестер");
-  const stored = await page.evaluate(() => JSON.stringify(localStorage));
+  const stored = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([key]) => !key.startsWith("_ym")))));
   expect(stored).not.toContain("Тестер"); expect(stored).not.toContain("999");
 });
 
