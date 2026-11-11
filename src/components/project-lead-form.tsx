@@ -5,6 +5,7 @@ import { siteConfig, type Project } from "@/lib/data";
 import { getAttribution, track } from "@/lib/analytics";
 import { metrikaGoal } from "@/lib/metrika";
 import { useSelection } from "./selection";
+import { PrivacyLink } from "./privacy-dialog";
 
 // Маска телефона: +7 (999) 123-45-67 из любых введённых цифр
 function maskPhone(value: string) {
@@ -85,7 +86,7 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
     <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>Получить расчёт<IconArrowRight size={20} /></>}</button>
     <label className="lead-consent" data-invalid={!!errors.consent}>
       <input ref={consentRef} type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(prev => ({ ...prev, consent: undefined })); }} aria-invalid={!!errors.consent} />
-      <span>Соглашаюсь на обработку персональных данных{siteConfig.policyUrl && <> — <a href={siteConfig.policyUrl} target="_blank" rel="noopener noreferrer">политика</a></>}</span>
+      <span>Соглашаюсь на <PrivacyLink>обработку персональных данных</PrivacyLink></span>
     </label>
   </form>;
 }

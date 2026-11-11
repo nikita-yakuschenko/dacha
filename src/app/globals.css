@@ -616,7 +616,26 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .lead-submit:disabled { opacity: 0.75; }
 .lead-consent { display: flex; align-items: flex-start; gap: 10px; margin: 0; color: #c9d4be; font-size: 12px; line-height: 1.4; cursor: pointer; }
 .lead-consent input { flex-shrink: 0; width: 16px; height: 16px; margin: 1px 0 0; accent-color: #e3edc7; }
-.lead-consent a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.lead-consent a, .lead-consent .privacy-link { color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.privacy-link { padding: 0; border: 0; background: none; }
+.privacy-overlay { position: fixed; inset: 0; z-index: 70; background: #142219a6; backdrop-filter: blur(3px); }
+.privacy-dialog { position: fixed; inset: 0; z-index: 71; display: flex; flex-direction: column; margin: auto; width: min(760px, calc(100vw - 32px)); height: min(720px, calc(100dvh - 48px)); overflow: hidden; padding: 28px 20px 24px 32px; border-radius: var(--r-card); background: var(--background); color: var(--foreground); box-shadow: 0 30px 90px #14221966; }
+.privacy-dialog:focus { outline: none; }
+.privacy-body { overflow: auto; padding-right: 36px; }
+.privacy-close { position: absolute; top: 16px; right: 16px; z-index: 1; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: #20282010; color: inherit; }
+.privacy-dialog h2 { margin-top: 28px; font-size: 22px; letter-spacing: -0.03em; }
+.privacy-dialog .privacy-title { margin-top: 0; padding-right: 48px; font-size: 24px; }
+.privacy-dialog h3 { margin-top: 18px; font-size: 16px; letter-spacing: -0.02em; }
+.privacy-dialog p, .privacy-dialog li { margin-top: 8px; font-size: 14px; line-height: 1.5; }
+.privacy-dialog ul, .privacy-dialog ol { margin: 8px 0 0; padding-left: 20px; }
+.privacy-dialog a { color: inherit; }
+.privacy-table { margin-top: 12px; overflow-x: auto; }
+.privacy-table table { width: 100%; border-collapse: collapse; font-size: 12px; line-height: 1.4; }
+.privacy-table th, .privacy-table td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; }
+.privacy-table th { font-weight: 600; }
+@media (max-width: 767px) {
+  .privacy-dialog { inset: auto 0 0; width: 100%; height: min(720px, calc(100dvh - 12px)); margin: 0; border-radius: var(--r-card) var(--r-card) 0 0; padding: 28px 20px calc(24px + env(safe-area-inset-bottom)); }
+}
 .lead-consent[data-invalid="true"] { color: #f1a48e; }
 .lead-done { display: grid; justify-items: start; gap: 10px; margin-top: 24px; animation: swap-in 320ms var(--ease-out); }
 .lead-done-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: #e3edc7; color: var(--primary); animation: done-pop 420ms var(--ease-out); }
