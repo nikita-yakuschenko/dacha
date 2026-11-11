@@ -478,6 +478,11 @@ input::placeholder { color: #6c7363; }
   .form-actions [data-slot="button"] { font-size: 10px; padding-inline: 10px; }
   .final-section h2 { font-size: 28px; }
 }
+@media (max-width: 350px) {
+  .package-name svg { display: none; }
+  .package-currency { display: none; }
+  .package-price::after { content: "\00a0₽"; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

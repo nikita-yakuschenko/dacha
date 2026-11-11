@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { IconCheck, IconPackage, IconTruck } from "@tabler/icons-react";
-import { assemblyPrice, formatPrice, specification, terracePrice, type Project } from "@/lib/data";
+import { assemblyPrice, formatAmount, specification, terracePrice, type Project } from "@/lib/data";
 import { track } from "@/lib/analytics";
 import { dachaId, switchGoalId } from "@/lib/metrika-goals";
 import { metrikaGoal, plain } from "@/lib/metrika";
@@ -39,7 +39,7 @@ export function ProjectPackages({ project }: { project: Project }) {
     <div className="package-reveal" ref={revealRef}>
       <button type="button" className="package-base" aria-expanded={kitOpen} onClick={() => { metrikaGoal(dachaId(kitOpen ? "kit_close" : "kit_open", project.area)); setKitOpen(open => !open); }}>
         <strong className="package-name"><IconPackage size={18} stroke={1.6} />Домокомплект</strong>
-        <span className="package-price">{formatPrice(project.prices.kit)}</span>
+        <span className="package-price">{formatAmount(project.prices.kit)}<span className="package-currency">{"\u00a0руб."}</span></span>
         <small className="package-note">{"Комплект для\u00a0сборки самостоятельно"}</small>
         <span className="package-more">Что входит?</span>
       </button>
