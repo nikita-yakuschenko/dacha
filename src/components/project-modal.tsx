@@ -164,8 +164,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     sliding.current = true;
     delete track.dataset.drag;
     track.style.transform = `translateX(calc(-100% + ${dir === 1 ? -width : width}px))`;
-    const finish = () => { track.removeEventListener("transitionend", finish); commitStep(dir); };
+    const finish = () => { if (!sliding.current) return; track.removeEventListener("transitionend", finish); commitStep(dir); };
     track.addEventListener("transitionend", finish);
+    window.setTimeout(finish, 480);
   }
   function goViewer(next: number) {
     const index = viewerIndexRef.current;
@@ -179,6 +180,8 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   function stepViewer(delta: number) { if (sliding.current) return; const dir: 1 | -1 = delta < 0 ? -1 : 1; goalLand((viewerIndexRef.current + dir + media.length) % media.length); animateStep(dir); }
   function viewerPointerDown(event: PointerEvent<HTMLElement>) {
     if ((event.target as HTMLElement).closest("button") || sliding.current) return;
+    // Иначе телефон отдаёт жест прокрутке или перетаскиванию картинки, и лента не едет
+    if (event.pointerType === "touch") { event.preventDefault(); try { event.currentTarget.setPointerCapture(event.pointerId); } catch { /* указатель уже отпущен */ } }
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.current.size >= 2) {
       const [a, b] = [...pointers.current.values()];
@@ -230,6 +233,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
       if (drag.moved) viewerIgnoreClick.current = true;
       if (!track || Math.abs(dx) < Math.min(64, width * 0.16)) {
         if (track) { delete track.dataset.drag; track.style.transform = "translateX(-100%)"; }
+        if (!drag.moved && native.pointerType === "touch") closeViewer();
         return;
       }
       const dir: 1 | -1 = dx < 0 ? 1 : -1;
@@ -237,8 +241,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
       sliding.current = true;
       delete track.dataset.drag;
       track.style.transform = `translateX(calc(-100% + ${dir === 1 ? -width : width}px))`;
-      const finish = () => { track.removeEventListener("transitionend", finish); commitStep(dir); };
+      const finish = () => { if (!sliding.current) return; track.removeEventListener("transitionend", finish); commitStep(dir); };
       track.addEventListener("transitionend", finish);
+      window.setTimeout(finish, 480);
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -284,7 +289,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
       </aside>
     </div>
     <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} data-thumbs={thumbsNear ? "near" : "away"} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerMove={event => { if (event.pointerType !== "mouse") return; const thumbs = event.currentTarget.querySelector(".project-viewer-thumbs"); if (!thumbs) return; const rect = thumbs.getBoundingClientRect(); const pad = 72; const near = event.clientX >= rect.left - pad && event.clientX <= rect.right + pad && event.clientY >= rect.top - pad && event.clientY <= rect.bottom + 24; setThumbsNear(value => value === near ? value : near); }} onPointerLeave={() => setThumbsNear(false)} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>
-      <div className="project-viewer-stage" ref={stageRef}><div className="project-viewer-track" ref={trackRef}>{[media[(viewerIndex - 1 + media.length) % media.length], current, media[(viewerIndex + 1) % media.length]].map((item, slot) => <div className="project-viewer-item" data-kind={item.kind} key={slot}><Image src={item.src} alt={item.kind === "plan" ? `Планировка, ${project.name}` : project.name} fill sizes="1360px" unoptimized /></div>)}</div>
+      <div className="project-viewer-stage" ref={stageRef}><div className="project-viewer-track" ref={trackRef}>{[media[(viewerIndex - 1 + media.length) % media.length], current, media[(viewerIndex + 1) % media.length]].map((item, slot) => <div className="project-viewer-item" data-kind={item.kind} key={slot}><Image src={item.src} alt={item.kind === "plan" ? `Планировка, ${project.name}` : project.name} fill sizes="1360px" draggable={false} unoptimized /></div>)}</div>
         <button type="button" className="project-viewer-nav project-viewer-prev" aria-label="Предыдущее изображение" onPointerDown={event => { event.stopPropagation(); viewerIgnoreClick.current = true; }} onClick={event => { event.stopPropagation(); viewerIgnoreClick.current = false; stepViewer(-1); }}><IconChevronLeft size={22} /></button>
         <button type="button" className="project-viewer-nav project-viewer-next" aria-label="Следующее изображение" onPointerDown={event => { event.stopPropagation(); viewerIgnoreClick.current = true; }} onClick={event => { event.stopPropagation(); viewerIgnoreClick.current = false; stepViewer(1); }}><IconChevronRight size={22} /></button>
       </div>
