@@ -385,8 +385,8 @@ input::placeholder { color: #6c7363; }
   .hero-copy .format-switch svg { width: 16px; }
   .hero h1 { font-size: clamp(39px, 9.3vw, 59px); margin-top: 25px; }
   .hero-description { font-size: 14px; margin-top: 18px; max-width: 44ch; }
-  .hero-actions { margin-top: 22px; gap: 9px; }
-  .hero-actions > * { width: auto; flex: 1; }
+  .hero-actions { margin-top: 22px; gap: 9px; flex-direction: column; }
+  .hero-actions > * { width: 100%; flex: none; }
   .hero-actions [data-slot="button"] { padding-inline: 11px; font-size: 11px; gap: 8px; }
   .hero-facts { display: flex; flex-wrap: nowrap; margin-top: 25px; gap: 18px; font-size: 10px; }
   .hero-facts svg { width: 21px; }
@@ -477,10 +477,6 @@ input::placeholder { color: #6c7363; }
   .hero-facts svg { width: 18px; }
   .form-actions [data-slot="button"] { font-size: 10px; padding-inline: 10px; }
   .final-section h2 { font-size: 28px; }
-}
-@media (width < 370px) {
-  .hero-actions { flex-direction: column; }
-  .hero-actions > * { flex: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
