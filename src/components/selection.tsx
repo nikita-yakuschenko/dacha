@@ -7,9 +7,7 @@ const Context = createContext<{ selection: Selection; update: (patch: Partial<Se
 function safeSelection(value: unknown): Partial<Selection> {
   if (!value || typeof value !== "object") return {};
   const v = value as Record<string, unknown>;
-  const visibleExtras = new Set(projects.flatMap(project => project.extras.map(item => item.id)));
-  const extras = Array.isArray(v.extras) ? v.extras.filter((item): item is string => typeof item === "string" && visibleExtras.has(item)) : undefined;
-  return { ...(v.format === "kit" || v.format === "assembly" || v.format === "help" ? { format: v.format } : {}), ...(v.project === "custom" || projects.some(p => p.slug === v.project) ? { project: v.project as ProjectId } : {}), ...(typeof v.terrace === "boolean" ? { terrace: v.terrace } : {}), ...(extras ? { extras } : {}) };
+  return { ...(v.project === "custom" || projects.some(p => p.slug === v.project) ? { project: v.project as ProjectId } : {}) };
 }
 export function SelectionProvider({ children }: { children: ReactNode }) {
 
@@ -20,7 +18,7 @@ export function SelectionProvider({ children }: { children: ReactNode }) {
 
     dispatch(saved);
   }, []);
-  function update(patch: Partial<Selection>) { dispatch(patch); try { localStorage.setItem("dacha:selection", JSON.stringify({ ...selection, ...patch })); } catch {} }
+  function update(patch: Partial<Selection>) { dispatch(patch); try { localStorage.setItem("dacha:selection", JSON.stringify({ project: patch.project ?? selection.project })); } catch {} }
   return <Context.Provider value={{ selection, update }}>{children}</Context.Provider>;
 }
 export const useSelection = () => useContext(Context);

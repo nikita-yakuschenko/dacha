@@ -26,7 +26,7 @@ const offers: Record<number, { kit: number; build: number }> = {
 const extras: Record<number, { name: string; price: number }[]> = {
   10: [
     { name: "Замена фундамента на винтовые сваи", price: 77000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 43000 },
+    { name: "Утепление пола", price: 43000 },
     { name: "Утепление кровли", price: 49000 },
     { name: "Замена кровли на крашенный профнастил", price: 3000 },
     { name: "Водосточная система ПВХ", price: 33000 },
@@ -35,7 +35,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   16: [
     { name: "Замена фундамента на винтовые сваи", price: 93000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 52000 },
+    { name: "Утепление пола", price: 52000 },
     { name: "Утепление кровли", price: 59000 },
     { name: "Замена кровли на крашенный профнастил", price: 6000 },
     { name: "Водосточная система ПВХ", price: 41000 },
@@ -44,7 +44,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   24: [
     { name: "Замена фундамента на винтовые сваи", price: 145000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 60000 },
+    { name: "Утепление пола", price: 60000 },
     { name: "Утепление кровли", price: 69000 },
     { name: "Замена кровли на крашенный профнастил", price: 11000 },
     { name: "Водосточная система ПВХ", price: 41000 },
@@ -53,7 +53,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   25: [
     { name: "Замена фундамента на винтовые сваи", price: 169000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 62000 },
+    { name: "Утепление пола", price: 62000 },
     { name: "Утепление кровли", price: 68000 },
     { name: "Замена кровли на крашенный профнастил", price: 12000 },
     { name: "Водосточная система ПВХ", price: 43000 },
@@ -62,7 +62,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   26: [
     { name: "Замена фундамента на винтовые сваи", price: 178000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 65000 },
+    { name: "Утепление пола", price: 65000 },
     { name: "Утепление кровли", price: 94000 },
     { name: "Замена кровли на крашенный профнастил", price: 21000 },
     { name: "Водосточная система ПВХ", price: 48000 },
@@ -71,7 +71,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   27: [
     { name: "Замена фундамента на винтовые сваи", price: 145000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 69000 },
+    { name: "Утепление пола", price: 69000 },
     { name: "Утепление кровли", price: 81000 },
     { name: "Замена кровли на крашенный профнастил", price: 14000 },
     { name: "Водосточная система ПВХ", price: 41000 },
@@ -80,7 +80,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   33: [
     { name: "Замена фундамента на винтовые сваи", price: 169000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 75000 },
+    { name: "Утепление пола", price: 75000 },
     { name: "Утепление кровли", price: 88000 },
     { name: "Замена кровли на крашенный профнастил", price: 17000 },
     { name: "Водосточная система ПВХ", price: 41000 },
@@ -89,7 +89,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   36: [
     { name: "Замена фундамента на винтовые сваи", price: 201000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 59000 },
+    { name: "Утепление пола", price: 59000 },
     { name: "Утепление кровли", price: 71000 },
     { name: "Замена кровли на крашенный профнастил", price: 14000 },
     { name: "Водосточная система ПВХ", price: 26000 },
@@ -98,7 +98,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   40: [
     { name: "Замена фундамента на винтовые сваи", price: 187000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 73000 },
+    { name: "Утепление пола", price: 73000 },
     { name: "Утепление кровли", price: 96000 },
     { name: "Замена кровли на крашенный профнастил", price: 24000 },
     { name: "Водосточная система ПВХ", price: 56000 },
@@ -107,7 +107,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   43: [
     { name: "Замена фундамента на винтовые сваи", price: 227000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 81000 },
+    { name: "Утепление пола", price: 81000 },
     { name: "Утепление кровли", price: 93000 },
     { name: "Замена кровли на крашенный профнастил", price: 25000 },
     { name: "Водосточная система ПВХ", price: 50000 },
@@ -116,7 +116,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   47: [
     { name: "Замена фундамента на винтовые сваи", price: 226000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 93000 },
+    { name: "Утепление пола", price: 93000 },
     { name: "Утепление кровли", price: 104000 },
     { name: "Замена кровли на крашенный профнастил", price: 26000 },
     { name: "Водосточная система ПВХ", price: 67000 },
@@ -125,7 +125,7 @@ const extras: Record<number, { name: string; price: number }[]> = {
   ],
   50: [
     { name: "Замена фундамента на винтовые сваи", price: 243000 },
-    { name: "Утепление цокольной панели с пароизоляцией", price: 73000 },
+    { name: "Утепление пола", price: 73000 },
     { name: "Утепление кровли", price: 90000 },
     { name: "Замена кровли на крашенный профнастил", price: 14000 },
     { name: "Водосточная система ПВХ", price: 48000 },
@@ -147,8 +147,8 @@ export const projects: Project[] = Object.keys(offers).map(Number).sort((a, b) =
   const offer = offers[area];
   const photos = [`/images/houses/dacha-${area}-1.webp`, `/images/houses/dacha-${area}-2.webp`];
   const extraIds = ["piles", "plinth", "roof", "deck", "gutters", "windows", "cabin"];
-  // Окна, утепление цоколя и аренда бытовки пока не показываем
-  const hiddenExtras = new Set(["plinth", "windows", "cabin"]);
+  // Окна и аренда бытовки пока не показываем. Утепление цокольной панели в прайсе — это утепление пола.
+  const hiddenExtras = new Set(["windows", "cabin"]);
   return { slug: `dacha-${area}`, name: `Просто дача\u00a0${area}`, width: size.width, depth: size.depth, area, description: "", prices: { kit: offer.kit, assembly: offer.kit + offer.build }, terracePrices: { kit: 0, assembly: 0 }, extras: extras[area].map((item, index) => ({ ...item, id: extraIds[index] })).filter(item => !hiddenExtras.has(item.id)), plan: `/images/houses/dacha-${area}-plan.webp`, photos, usableArea: area, wallThickness: null, terraceArea: null, specification: "pending" as const, image: photos[0], thumbnail: photos[0] };
 });
 // Группы для фильтра плитки по площади наружного контура
@@ -161,9 +161,10 @@ export const areaGroups = [
 ] as const;
 export const formats: Record<Format, string> = { kit: "Комплект с доставкой", assembly: "Дом с монтажом", help: "Нужна помощь с выбором" };
 export const specification = [
-  { name: "Стены и перегородки", note: "Профилированный мини-брус по проекту" },
+  { name: "Фундамент", note: "Точечные блочные опоры" },
+  { name: "Стены и перегородки", note: "Профилированный мини-брус 45×135" },
   { name: "Обвязка, лаги и пол", note: "Несущее основание и настил пола" },
-  { name: "Крыша и кровля", note: "Стропильная система и кровельное покрытие" },
+  { name: "Крыша", note: "Стропильная система и настил кровли" },
   { name: "Окна и двери", note: "Оконные и дверные блоки" },
   { name: "Крепёж и документация", note: "Крепёж, ведомость и инструкция по сборке" },
 ];

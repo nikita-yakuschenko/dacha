@@ -37,18 +37,49 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
-  // Высота окна равна форме со всеми доступными строками чека. Замер не показывается и не анимирует свёртку
+  // Высота окна — чек со всеми строками, но не выше экрана. Если не влезает, ужимаем плотность, а не скроллим
   function lockModalHeight(node: HTMLDivElement) {
     const media = node.querySelector<HTMLElement>(".project-media");
     const desktop = matchMedia("(min-width: 1024px)").matches;
     node.style.height = "";
     if (media) media.style.height = "";
-    if (!desktop) return;
+    if (!desktop) {
+      delete node.dataset.density;
+      delete node.dataset.receipt;
+      return;
+    }
     const generation = ++measureGeneration.current;
+    const max = Math.floor(window.innerHeight - 32);
+    const steps: { density?: string; receipt?: string }[] = [
+      {},
+      { density: "compact" },
+      { density: "compact", receipt: "compact" },
+      { density: "tight", receipt: "compact" },
+      { density: "tight", receipt: "shorter" },
+      { density: "tightest", receipt: "shorter" },
+    ];
+    // Колонки не сжимаются, поэтому высота берётся по ним, а не по уже обрезанному окну
+    const needed = () => {
+      const header = node.querySelector<HTMLElement>(".project-modal-header");
+      const config = node.querySelector<HTMLElement>(".project-config");
+      const lead = node.querySelector<HTMLElement>(".lead-panel");
+      if (!header || !config || !lead) return node.scrollHeight;
+      const headerBlock = header.offsetHeight + parseFloat(getComputedStyle(header).marginBottom);
+      const pad = parseFloat(getComputedStyle(node).paddingBottom);
+      return Math.ceil(headerBlock + Math.max(config.offsetHeight, lead.offsetHeight) + pad);
+    };
     node.dataset.measure = "open";
-    const height = node.scrollHeight;
+    let height = needed();
+    for (const step of steps) {
+      if (step.density) node.dataset.density = step.density;
+      else delete node.dataset.density;
+      if (step.receipt) node.dataset.receipt = step.receipt;
+      else delete node.dataset.receipt;
+      height = needed();
+      if (height <= max) break;
+    }
     node.dataset.measure = "hold";
-    node.style.height = `${height}px`;
+    node.style.height = `${Math.min(height, max)}px`;
     requestAnimationFrame(() => requestAnimationFrame(() => { if (generation === measureGeneration.current) delete node.dataset.measure; }));
   }
   const dialogRef = useCallback((node: HTMLDivElement | null) => { dialogNode.current = node; if (node) lockModalHeight(node); }, []);
@@ -72,7 +103,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     { name: "Домокомплект", price: project.prices.kit, on: true },
     ...(terracePrice(project) > 0 ? [{ name: "Терраса", price: terracePrice(project), on: selection.terrace }] : []),
     { name: "Сборка", price: assemblyPrice(project, selection.terrace), on: format === "assembly" },
-    ...project.extras.map(item => ({ name: item.name, price: item.price, on: selection.extras.includes(item.id) })),
+    ...project.extras.map(item => ({ name: item.id === "piles" ? "Винтовые сваи" : item.id === "deck" ? "Крашенный профнастил" : item.name, price: item.price, on: selection.extras.includes(item.id) })),
   ];
   // Короткая подпись для нижней панели на телефоне
   const parts = [selection.terrace && "террасой", format === "assembly" && "сборкой"].filter(Boolean);
@@ -176,6 +207,8 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   return <Dialog.Root open onOpenChange={open => { if (!open) { metrikaGoal(dachaId("close", area)); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
     <header className="project-modal-header">
       <div className="project-title"><Dialog.Title asChild><h2>{"Просто дача\u00a0"}<span className="name-mark">{project.area}</span></h2></Dialog.Title><p><span>{formatMeters(project.width)} × {formatMeters(project.depth)} м</span><span>{project.area} м²</span></p></div>
+      <p className="project-column-label">Комплектация</p>
+      <p className="project-column-label">Заявка на расчёт</p>
       <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
     </header>
     <div className="project-modal-grid">

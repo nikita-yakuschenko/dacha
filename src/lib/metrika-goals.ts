@@ -33,6 +33,7 @@ const houseKinds: [string, (house: string) => string, "lead" | "action"][] = [
 const switches = [
   ["assembly", "Добавить сборку"],
   ["piles", "Замена фундамента на винтовые сваи"],
+  ["plinth", "Утепление пола"],
   ["roof", "Утепление кровли"],
   ["deck", "Замена кровли на крашенный профнастил"],
   ["gutters", "Водосточная система ПВХ"],
