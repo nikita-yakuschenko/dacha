@@ -136,7 +136,10 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-bento > span { display: contents; }
 .spec-pick { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); }
 .spec-card { display: flex; flex-direction: column; justify-content: flex-end; min-height: 148px; padding: 18px; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; cursor: pointer; text-align: left; transition: box-shadow 160ms ease-out, background-color 160ms ease-out; }
-.spec-card[data-area="foundation"] { grid-area: foundation; }
+.spec-card[data-area="foundation"] { position: relative; overflow: hidden; grid-area: foundation; background: #f4f1e6; }
+.spec-card .spec-figure { object-fit: cover; object-position: center 34%; }
+.spec-card[data-area="foundation"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
+.spec-card[data-area="foundation"] > span { position: relative; z-index: 2; }
 .spec-card[data-area="walls"] { grid-area: walls; }
 .spec-card[data-area="floor"] { grid-area: floor; }
 .spec-card[data-area="roof"] { grid-area: roof; }
@@ -305,6 +308,7 @@ input::placeholder { color: #6c7363; }
   .section { padding-block: 70px; }
   .section-heading > p { max-width: 34ch; font-size: 12px; }
   .spec-bento { grid-template-columns: 1fr 1fr; grid-template-areas: "walls walls" "foundation floor" "roof windows" "fasteners fasteners" "delivery paint"; }
+  .spec-card[data-area="foundation"] { min-height: 280px; }
   .intro { font-size: 15px; }
   .process-list { gap: 15px; }
   .process-list h3 { font-size: 15px; }
