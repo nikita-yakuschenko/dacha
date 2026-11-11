@@ -88,7 +88,7 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .project-tile-image img { object-fit: cover; transition: transform 300ms ease-out; }
 /* Слева название и размеры, справа цена */
 .project-tile-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 16px; padding: 16px 18px 18px; }
-.project-tile h3 { font-size: 20px; }
+.project-tile h3 { font-size: 20px; text-wrap: nowrap; white-space: nowrap; }
 .project-tile-body > span { grid-column: 1; font-size: 13px; color: var(--muted-foreground); }
 .project-tile-price { grid-column: 2; grid-row: 1; align-self: center; font-size: 19px; font-weight: 600; line-height: 1.08; letter-spacing: -0.02em; white-space: nowrap; color: var(--primary); font-variant-numeric: tabular-nums; }
 /* Узкие плитки: цена строкой под размерами */
@@ -442,7 +442,7 @@ input::placeholder { color: #6c7363; }
 /* Шапка: название, размеры и навигация по проектам */
 .project-modal-header { position: sticky; top: 0; z-index: 3; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 26px 0 22px; margin-bottom: 26px; background: var(--background); border-bottom: 1px solid var(--border); }
 .project-title { min-width: 0; }
-.project-title h2 { font-size: 44px; letter-spacing: -0.04em; line-height: 1; }
+.project-title h2 { font-size: 44px; letter-spacing: -0.04em; line-height: 1; text-wrap: nowrap; white-space: nowrap; }
 .project-title p { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 12px; font-size: 15px; color: var(--muted-foreground); }
 .project-title p span { padding: 3px 11px; border-radius: var(--r-control); background: #e3e9d8; color: var(--primary); font-weight: 550; font-variant-numeric: tabular-nums; }
 .project-title p span:last-child { margin-left: 6px; }
