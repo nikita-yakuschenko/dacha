@@ -159,8 +159,8 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-card[data-area="delivery"] > span,
 .spec-card[data-area="floor"] > span,
 .spec-card[data-area="roof"] > span { position: relative; z-index: 2; }
-.spec-card[data-area="walls"] { position: relative; overflow: hidden; grid-area: walls; border-color: #3c5841; }
-.spec-card[data-area="walls"] .spec-figure { object-position: right center; }
+.spec-card[data-area="walls"] { position: relative; overflow: hidden; grid-area: walls; border-color: #004d35; }
+.spec-card[data-area="walls"] .spec-figure { object-position: center; }
 .spec-card[data-area="walls"] > span { position: relative; z-index: 2; }
 .spec-card[data-area="floor"] { grid-area: floor; }
 .spec-card[data-area="roof"] { grid-area: roof; }
