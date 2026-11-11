@@ -444,10 +444,11 @@ input::placeholder { color: #6c7363; }
 }
 @media (max-width: 359px) {
   .container { width: calc(100% - 32px); }
-  .header-inner { gap: 4px; }
+  .header-inner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px; }
   .brand img { width: 64px; }
-  .header-phone { font-size: 9px; }
+  .header-phone { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 9px; }
   .header-cta { font-size: 9px; padding-inline: 4px; }
+  .project-filter { margin-inline: 0; padding-inline: 0; max-width: 100%; }
   .footer-top { gap: 8px; }
   .footer-top img { width: 84px; }
   .footer-phone { font-size: 12px; }
