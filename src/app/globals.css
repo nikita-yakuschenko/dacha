@@ -573,6 +573,7 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
   .project-viewer-track { width: 100%; align-items: flex-start; }
   .project-viewer-track, .project-viewer-item { height: auto; }
   .project-viewer-item { flex: 0 0 100%; min-width: 0; max-width: 100%; align-self: flex-start; border-radius: var(--r-card); }
+  .project-viewer-item:not(:nth-child(2)) { height: 0; min-height: 0; overflow: visible; }
   .project-viewer-item[data-kind="photo"], .project-viewer-item[data-kind="plan"] { background: transparent; }
   .project-viewer-item img { position: relative !important; inset: auto !important; width: 100% !important; height: auto !important; border-radius: var(--r-card); }
   .project-viewer-close { top: 14px; right: 16px; }
