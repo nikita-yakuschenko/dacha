@@ -568,14 +568,12 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .project-viewer-close:active { transform: scale(0.94); }
 @media (hover: hover) and (pointer: fine) { .project-viewer-close:hover { background: #24402f; } }
 @media (max-width: 1023px) {
-  .project-viewer { display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 64px 16px 108px; overflow: hidden; }
-  .project-viewer-stage { position: relative; inset: auto; width: 100%; max-width: 100%; height: auto; flex: none; background: transparent; overflow: hidden; border-radius: var(--r-card); }
-  .project-viewer-track { width: 100%; align-items: flex-start; }
-  .project-viewer-track, .project-viewer-item { height: auto; }
-  .project-viewer-item { flex: 0 0 100%; min-width: 0; max-width: 100%; align-self: flex-start; border-radius: var(--r-card); }
-  .project-viewer-item:not(:nth-child(2)) { height: 0; min-height: 0; overflow: visible; }
+  .project-viewer { display: flex; flex-direction: column; align-items: stretch; padding: 64px 0 108px; overflow: hidden; }
+  .project-viewer-stage, .project-viewer[data-kind="plan"] .project-viewer-stage { position: relative; inset: auto; flex: 1 1 auto; width: 100%; max-width: 100%; height: auto; min-height: 0; background: transparent; overflow: hidden; border-radius: 0; }
+  .project-viewer-track { width: 100%; height: 100%; }
+  .project-viewer-item { flex: 0 0 100%; min-width: 0; height: 100%; border-radius: 0; }
   .project-viewer-item[data-kind="photo"], .project-viewer-item[data-kind="plan"] { background: transparent; }
-  .project-viewer-item img { position: relative !important; inset: auto !important; width: 100% !important; height: auto !important; border-radius: var(--r-card); }
+  .project-viewer-item img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: contain; object-position: center; border-radius: 0; }
   .project-viewer-close { top: 14px; right: 16px; }
   .project-viewer-prev { left: 8px; }
   .project-viewer-next { right: 8px; }
