@@ -84,7 +84,7 @@ export const metrikaGoals: MetrikaGoal[] = [
   action("nav_projects", "Перейти к разделу Проекты"),
   action("nav_specification", "Перейти к разделу Комплектация"),
   action("nav_faq", "Перейти к разделу Вопросы и ответы"),
-  action("choose_house", "Выбрать свой дом"),
+  action("choose_house", "Выбрать свою дачу"),
   action("view_houses", "Посмотреть дома"),
   action("skip_to_content", "Перейти к содержимому"),
   action("logo_header", "Логотип в шапке"),
