@@ -781,6 +781,7 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
   .project-media-track { display: flex; flex-direction: row; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
   .project-media-track::-webkit-scrollbar { display: none; }
   .project-media-track > figure { flex: 0 0 100%; aspect-ratio: 4 / 3; border-radius: var(--r-card); scroll-snap-align: center; }
+  .project-media-track > .project-photo img { object-fit: cover; object-position: center; }
   .project-media-dots { display: flex; justify-content: center; gap: 0; }
   .project-media-dots button { display: grid; place-items: center; width: auto; height: 28px; padding: 0 3px; border: 0; background: transparent; }
   .project-media-dots button::after { content: ""; width: 8px; height: 8px; border-radius: 4px; background: #c3cbb8; transition: width 260ms var(--ease-out), background-color 200ms ease-out; }
