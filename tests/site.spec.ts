@@ -7,7 +7,10 @@ test("Project popups fit required widths and keep landing URL", async ({ page })
   for (const width of widths) {
     await page.setViewportSize({ width, height: 960 });
     await page.goto("/");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    expect(await page.evaluate(() => {
+      if (document.documentElement.scrollWidth <= innerWidth) return true;
+      return [...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > innerWidth + 1).slice(0, 6).map(el => `${el.tagName}.${String(el.className).slice(0, 48)}:${Math.round(el.getBoundingClientRect().right)}`).join(" | ");
+    })).toBe(true);
     await expect(page.locator(".quick-projects")).toHaveCount(0);
     await expect(page.locator(".project-grid > li")).toHaveCount(12);
     const trigger = page.getByRole("button", { name: /^Просто дача\s24$/ });
