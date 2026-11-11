@@ -140,7 +140,8 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-card[data-area="fasteners"],
 .spec-card[data-area="delivery"],
 .spec-card[data-area="floor"],
-.spec-card[data-area="roof"] { position: relative; overflow: hidden; background: #f4f1e6; }
+.spec-card[data-area="roof"],
+.spec-card[data-area="paint"] { position: relative; overflow: hidden; background: #f4f1e6; }
 .spec-card[data-area="foundation"] { grid-area: foundation; }
 .spec-card .spec-figure { object-fit: cover; object-position: center 34%; }
 .spec-card[data-area="fasteners"] .spec-figure { object-position: center; }
@@ -148,17 +149,20 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-card[data-area="delivery"] .spec-figure { object-position: 64% 48%; }
 .spec-card[data-area="floor"] .spec-figure { object-position: center 58%; }
 .spec-card[data-area="roof"] .spec-figure { object-position: center 42%; }
+.spec-card[data-area="paint"] .spec-figure { object-position: right center; }
 .spec-card[data-area="foundation"]::before,
 .spec-card[data-area="fasteners"]::before,
 .spec-card[data-area="delivery"]::before,
 .spec-card[data-area="floor"]::before,
-.spec-card[data-area="roof"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
+.spec-card[data-area="roof"]::before,
+.spec-card[data-area="paint"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
 .spec-card[data-area="fasteners"]::before { height: 50%; }
 .spec-card[data-area="foundation"] > span,
 .spec-card[data-area="fasteners"] > span,
 .spec-card[data-area="delivery"] > span,
 .spec-card[data-area="floor"] > span,
-.spec-card[data-area="roof"] > span { position: relative; z-index: 2; }
+.spec-card[data-area="roof"] > span,
+.spec-card[data-area="paint"] > span { position: relative; z-index: 2; }
 .spec-card[data-area="walls"] { position: relative; overflow: hidden; grid-area: walls; border-color: #004d35; }
 .spec-card[data-area="walls"] .spec-figure { object-position: center; }
 .spec-card[data-area="walls"] > span { position: relative; z-index: 2; }
