@@ -477,7 +477,12 @@ button.project-viewer-nav { position: absolute; top: 50%; z-index: 2; display: g
 button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) scale(0.96); background: #ffffff; }
 .project-viewer-prev { left: 24px; }
 .project-viewer-next { right: 24px; }
-.project-viewer-thumbs { position: absolute; z-index: 2; left: 50%; bottom: 22px; display: flex; justify-content: center; gap: 8px; padding: 6px; border-radius: 14px; background: #ffffffcc; cursor: default; transform: translateX(-50%); }
+.project-viewer-thumbs { position: absolute; z-index: 2; left: 50%; bottom: 22px; display: flex; justify-content: center; gap: 8px; padding: 6px; border-radius: 14px; background: #ffffffcc; cursor: default; transform: translateX(-50%); transition: opacity 180ms ease-out; }
+@media (hover: hover) and (pointer: fine) {
+  .project-viewer-thumbs { opacity: 0; pointer-events: none; }
+  .project-viewer[data-thumbs="near"] .project-viewer-thumbs,
+  .project-viewer-thumbs:focus-within { opacity: 1; pointer-events: auto; }
+}
 .project-viewer-thumbs button { position: relative; width: 72px; height: 54px; padding: 0; border: 0; border-radius: 10px; overflow: hidden; background: #e8ebdf; opacity: 0.55; cursor: pointer; transition: opacity 160ms ease-out; }
 .project-viewer-thumbs button[aria-current="true"] { opacity: 1; }
 .project-viewer-thumbs button:focus-visible { outline: none; }

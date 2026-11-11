@@ -19,6 +19,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   // Просмотрщик фото и планировки поверх окна; остаётся в разметке, чтобы плавно закрываться
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
+  const [thumbsNear, setThumbsNear] = useState(false);
   const viewerIndexRef = useRef(0);
   const stageRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
   const area = slug.replace("dacha-", "");
   function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; metrikaGoal(index >= photos ? dachaId("open_plan", area) : dachaId(`open_photo_${index + 1}`, area)); }
-  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); setViewerOpen(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
@@ -196,7 +197,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
         <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
       </aside>
     </div>
-    <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>
+    <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} data-thumbs={thumbsNear ? "near" : "away"} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerMove={event => { if (event.pointerType !== "mouse") return; const thumbs = event.currentTarget.querySelector(".project-viewer-thumbs"); if (!thumbs) return; const rect = thumbs.getBoundingClientRect(); const pad = 72; const near = event.clientX >= rect.left - pad && event.clientX <= rect.right + pad && event.clientY >= rect.top - pad && event.clientY <= rect.bottom + 24; setThumbsNear(value => value === near ? value : near); }} onPointerLeave={() => setThumbsNear(false)} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>
       <div className="project-viewer-stage" ref={stageRef}><div className="project-viewer-track" ref={trackRef}>{[media[(viewerIndex - 1 + media.length) % media.length], current, media[(viewerIndex + 1) % media.length]].map((item, slot) => <div className="project-viewer-item" data-kind={item.kind} key={slot}><Image src={item.src} alt={item.kind === "plan" ? `Планировка, ${project.name}` : project.name} fill sizes="1360px" unoptimized /></div>)}</div></div>
       <button type="button" className="project-viewer-nav project-viewer-prev" aria-label="Предыдущее изображение" onPointerDown={event => { event.stopPropagation(); viewerIgnoreClick.current = true; }} onClick={event => { event.stopPropagation(); viewerIgnoreClick.current = false; stepViewer(-1); }}><IconChevronLeft size={22} /></button>
       <button type="button" className="project-viewer-nav project-viewer-next" aria-label="Следующее изображение" onPointerDown={event => { event.stopPropagation(); viewerIgnoreClick.current = true; }} onClick={event => { event.stopPropagation(); viewerIgnoreClick.current = false; stepViewer(1); }}><IconChevronRight size={22} /></button>
