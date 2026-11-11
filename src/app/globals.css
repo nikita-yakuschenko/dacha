@@ -137,15 +137,20 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-pick { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); }
 .spec-card { display: flex; flex-direction: column; justify-content: flex-end; min-height: 148px; padding: 18px; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; cursor: pointer; text-align: left; transition: box-shadow 160ms ease-out, background-color 160ms ease-out; }
 .spec-card[data-area="foundation"],
-.spec-card[data-area="fasteners"] { position: relative; overflow: hidden; background: #f4f1e6; }
+.spec-card[data-area="fasteners"],
+.spec-card[data-area="delivery"] { position: relative; overflow: hidden; background: #f4f1e6; }
 .spec-card[data-area="foundation"] { grid-area: foundation; }
 .spec-card .spec-figure { object-fit: cover; object-position: center 34%; }
 .spec-card[data-area="fasteners"] .spec-figure { object-position: center; }
+.spec-card[data-area="delivery"] { min-height: 236px; }
+.spec-card[data-area="delivery"] .spec-figure { object-position: 64% 48%; }
 .spec-card[data-area="foundation"]::before,
-.spec-card[data-area="fasteners"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
+.spec-card[data-area="fasteners"]::before,
+.spec-card[data-area="delivery"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
 .spec-card[data-area="fasteners"]::before { height: 50%; }
 .spec-card[data-area="foundation"] > span,
-.spec-card[data-area="fasteners"] > span { position: relative; z-index: 2; }
+.spec-card[data-area="fasteners"] > span,
+.spec-card[data-area="delivery"] > span { position: relative; z-index: 2; }
 .spec-card[data-area="walls"] { grid-area: walls; }
 .spec-card[data-area="floor"] { grid-area: floor; }
 .spec-card[data-area="roof"] { grid-area: roof; }
