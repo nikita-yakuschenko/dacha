@@ -444,10 +444,13 @@ input::placeholder { color: #6c7363; }
 }
 @media (max-width: 359px) {
   .container { width: calc(100% - 32px); }
-  .header-inner { gap: 6px; }
-  .brand img { width: 72px; }
-  .header-phone { font-size: 10px; }
-  .header-cta { font-size: 10px; padding-inline: 6px; }
+  .header-inner { gap: 4px; }
+  .brand img { width: 64px; }
+  .header-phone { font-size: 9px; }
+  .header-cta { font-size: 9px; padding-inline: 4px; }
+  .footer-top { gap: 8px; }
+  .footer-top img { width: 84px; }
+  .footer-phone { font-size: 12px; }
   .hero h1 { font-size: 38px; }
   .hero-copy .format-switch button { font-size: 9px; gap: 4px; padding-inline: 5px; }
   .hero-actions { flex-direction: column; }
@@ -480,7 +483,7 @@ input::placeholder { color: #6c7363; }
 .hero-facts svg { width: 28px; height: 28px; }
 @media (max-width: 1200px) { .hero-facts { font-size: 14px; gap: 20px; } .hero-facts svg { width: 26px; height: 26px; } }
 @media (max-width: 767px) { .hero-facts { font-size: 13px; gap: 22px; } .hero-facts svg { width: 24px; height: 24px; } }
-@media (max-width: 359px) { .hero-facts { font-size: 12px; gap: 14px; } .hero-facts svg { width: 22px; height: 22px; } }
+@media (max-width: 359px) { .hero-facts { font-size: 9px; gap: 8px; } .hero-facts svg { width: 16px; height: 16px; } }
 /* Окно проекта: появление, смена проекта и общий каркас */
 .project-modal-overlay, .project-modal, .lead-dialog { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); }
 .project-modal-overlay { position: fixed; inset: 0; z-index: 50; background: #142219a6; backdrop-filter: blur(3px); animation: overlay-in 220ms var(--ease-out); }
@@ -843,7 +846,7 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
   .hero .hero-image img { object-position: right center; }
   .hero-facts { gap: 18px; }
 }
-@media (max-width: 359px) { .hero-copy { padding-inline: 0; } .hero h1 { font-size: 36px; } .hero-facts { gap: 12px; } }
+@media (max-width: 359px) { .hero-copy { padding-inline: 0; } .hero h1 { font-size: 36px; } .hero-facts { gap: 8px; } }
 
 
 
