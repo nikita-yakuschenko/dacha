@@ -205,11 +205,11 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     metrikaGoal(item.kind === "plan" ? "card_plan" : `card_photo_${next + 1}`, { project: houseName });
   }
   return <Dialog.Root open onOpenChange={open => { if (!open) { metrikaGoal(dachaId("close", area)); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
+    <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
     <header className="project-modal-header">
       <div className="project-title"><Dialog.Title asChild><h2>{"Просто дача\u00a0"}<span className="name-mark">{project.area}</span></h2></Dialog.Title><p><span>{formatMeters(project.width)} × {formatMeters(project.depth)} м</span><span>{project.area} м²</span></p></div>
       <p className="project-column-label">Комплектация</p>
       <p className="project-column-label">Заявка на расчёт</p>
-      <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
     </header>
     <div className="project-modal-grid">
       <section className="project-media" aria-label="Фото и планировка">
@@ -223,8 +223,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
       <aside className="lead-panel" ref={leadRef} aria-label="Заявка на расчёт">
         <h3>Заявка на расчёт</h3>
         <ul className="lead-receipt">{receipt.map(line => <li key={line.name} data-on={line.on} inert={!line.on}><div><p>
-          <strong>{line.name}</strong>
-          <span className="lead-receipt-price" data-note={line.note ? "" : undefined}>{line.note ?? <AnimatedPrice value={line.price} currency={false} />}</span>
+          {line.note ? <strong>{line.note}</strong> : <><strong>{line.name}</strong><span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span></>}
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
         <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
