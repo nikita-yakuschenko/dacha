@@ -22,6 +22,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+      # Браузер с CDN Playwright. --with-deps качает шрифты с azure.archive.ubuntu.com, это зеркало отваливается.
+      - run: npx playwright install chromium
       - run: mkdir -p .impeccable/review
       - run: npm run test:ui
