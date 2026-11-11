@@ -24,7 +24,8 @@ jobs:
       - run: npm run build
       # azure.archive.ubuntu.com с раннера не резолвится. Те же пакеты Ubuntu берём с зеркала Яндекса.
       - run: |
-          mapfile -t lists < <(grep -l azure.archive.ubuntu.com /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null || true)
+          mapfile -t lists < <(sudo grep -RIl azure.archive.ubuntu.com /etc/apt || true)
+          printf '%s\n' "${lists[@]}"
           test "${#lists[@]}" -gt 0
           sudo sed -i 's/azure\.archive\.ubuntu\.com/mirror.yandex.ru/g' "${lists[@]}"
           sudo apt-get update
