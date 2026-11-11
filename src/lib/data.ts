@@ -1,6 +1,6 @@
 export type Format = "kit" | "assembly" | "help";
 export type ProjectId = string;
-export type ProjectExtra = { id: string; name: string; price: number };
+export type ProjectExtra = { id: string; name: string; price: number; onRequest?: boolean };
 export type Project = { slug: string; name: string; width: number; depth: number; area: number; description: string; prices: { kit: number; assembly: number }; terracePrices: { kit: number; assembly: number }; extras: ProjectExtra[]; plan: string; photos: string[]; usableArea: number | null; wallThickness: number | null; terraceArea: number | null; specification: "pending"; image: string; thumbnail: string };
 const sizes: Record<number, { width: number; depth: number }> = {
   10: { width: 4, depth: 3 }, 16: { width: 6, depth: 3 }, 24: { width: 6, depth: 4.5 }, 25: { width: 6, depth: 4.5 },
@@ -149,7 +149,7 @@ export const projects: Project[] = Object.keys(offers).map(Number).sort((a, b) =
   const extraIds = ["piles", "plinth", "roof", "deck", "gutters", "windows", "cabin"];
   // Окна и аренда бытовки пока не показываем. Утепление цокольной панели в прайсе — это утепление пола.
   const hiddenExtras = new Set(["windows", "cabin"]);
-  return { slug: `dacha-${area}`, name: `Просто дача\u00a0${area}`, width: size.width, depth: size.depth, area, description: "", prices: { kit: offer.kit, assembly: offer.kit + offer.build }, terracePrices: { kit: 0, assembly: 0 }, extras: extras[area].map((item, index) => ({ ...item, id: extraIds[index] })).filter(item => !hiddenExtras.has(item.id)), plan: `/images/houses/dacha-${area}-plan.webp`, photos, usableArea: area, wallThickness: null, terraceArea: null, specification: "pending" as const, image: photos[0], thumbnail: photos[0] };
+  return { slug: `dacha-${area}`, name: `Просто дача\u00a0${area}`, width: size.width, depth: size.depth, area, description: "", prices: { kit: offer.kit, assembly: offer.kit + offer.build }, terracePrices: { kit: 0, assembly: 0 }, extras: [...extras[area].map((item, index) => ({ ...item, id: extraIds[index] })).filter(item => !hiddenExtras.has(item.id)), { id: "paint", name: "Заводская покраска стен", price: 0, onRequest: true }], plan: `/images/houses/dacha-${area}-plan.webp`, photos, usableArea: area, wallThickness: null, terraceArea: null, specification: "pending" as const, image: photos[0], thumbnail: photos[0] };
 });
 // Группы для фильтра плитки по площади наружного контура
 export const areaGroups = [

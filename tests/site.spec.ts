@@ -47,6 +47,7 @@ test("Correct model, popup navigation, persisted options and demo form", async (
   await dialog.getByLabel("Телефон", { exact: true }).fill("89991234567");
   await expect(dialog.getByLabel("Телефон", { exact: true })).toHaveValue("+7 (999) 123-45-67");
   await dialog.getByRole("checkbox", { name: /Соглашаюсь/ }).check();
+  await page.route("**/api/lead", route => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ accepted: true, id: "1" }) }));
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо, Тестер");
   const stored = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([key]) => !key.startsWith("_ym")))));
@@ -88,6 +89,7 @@ test("Calculate buttons open lead dialog in place", async ({ page }) => {
   await dialog.getByLabel("Имя", { exact: true }).fill("Тестер");
   await dialog.getByLabel("Телефон", { exact: true }).fill("9991234567");
   await dialog.getByRole("checkbox", { name: /Соглашаюсь/ }).check();
+  await page.route("**/api/lead", route => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ accepted: true, id: "1" }) }));
   await dialog.getByRole("button", { name: "Получить расчёт", exact: true }).click();
   await expect(dialog.getByRole("status")).toContainText("Спасибо");
   await page.keyboard.press("Escape");

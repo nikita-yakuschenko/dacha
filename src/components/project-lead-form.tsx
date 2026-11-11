@@ -1,7 +1,7 @@
 "use client";
 import { useId, useRef, useState, type FormEvent } from "react";
 import { IconArrowRight, IconCheck, IconLoader2 } from "@tabler/icons-react";
-import { siteConfig, type Project } from "@/lib/data";
+import { type Project } from "@/lib/data";
 import { getAttribution, track } from "@/lib/analytics";
 import { metrikaGoal } from "@/lib/metrika";
 import { useSelection } from "./selection";
@@ -36,7 +36,6 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
   const consentRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const requestId = useRef<string | null>(null);
-  const live = Boolean(siteConfig.endpoint && siteConfig.policyUrl);
   const format = selection.format === "assembly" ? "assembly" : "kit";
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -50,11 +49,10 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
     setErrors(found);
     setSendFailed(false);
     if (found.name || found.phone || found.consent) { (found.name ? nameRef : found.phone ? phoneRef : consentRef).current?.focus(); return; }
-    if (!live) { metrikaGoal(goal); setStatus("done"); return; }
     setStatus("sending");
     requestId.current ||= crypto.randomUUID();
     try {
-      const response = await fetch(siteConfig.endpoint!, { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: project?.slug ?? selection.project, format, terrace: selection.terrace, extras: selection.extras, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
+      const response = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: project?.slug ?? selection.project, format, terrace: selection.terrace, extras: selection.extras, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: project?.slug ?? selection.project, format });

@@ -129,19 +129,17 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 @media (max-width: 359px) { .project-filter { margin-inline: -16px; padding-inline: 16px; } }
 .compact-calculation form { margin-top: 20px; }
 .section-tint { background: #eceedf; }
-.spec-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
-.spec-intro .intro { margin-bottom: 0; }
+.spec-intro { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .spec-intro > :last-child { flex-shrink: 0; }
 .spec-bento { position: relative; display: grid; grid-template-columns: 1.05fr 1fr 1fr 1.15fr; grid-template-areas: "foundation walls walls walls" "foundation floor roof windows" "fasteners fasteners delivery paint"; gap: 10px; margin-top: 36px; }
-.spec-bento > span { display: contents; }
-.spec-pick { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); }
-.spec-card { display: flex; flex-direction: column; justify-content: flex-end; min-height: 148px; padding: 18px; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; cursor: pointer; text-align: left; transition: box-shadow 160ms ease-out, background-color 160ms ease-out; }
+.spec-card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 148px; padding: 18px; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; text-align: left; }
 .spec-card[data-area="foundation"],
 .spec-card[data-area="fasteners"],
 .spec-card[data-area="delivery"],
 .spec-card[data-area="floor"],
 .spec-card[data-area="roof"],
-.spec-card[data-area="paint"] { position: relative; overflow: hidden; background: #f4f1e6; }
+.spec-card[data-area="paint"],
+.spec-card[data-area="windows"] { position: relative; overflow: hidden; background: #f4f1e6; }
 .spec-card[data-area="foundation"] { grid-area: foundation; }
 .spec-card .spec-figure { object-fit: cover; object-position: center 34%; }
 .spec-card[data-area="fasteners"] .spec-figure { object-position: center; }
@@ -149,21 +147,28 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-card[data-area="delivery"] .spec-figure { object-position: 64% 48%; }
 .spec-card[data-area="floor"] .spec-figure { object-position: center 58%; }
 .spec-card[data-area="roof"] .spec-figure { object-position: center 42%; }
-.spec-card[data-area="paint"] .spec-figure { object-position: right center; }
+.spec-card[data-area="paint"] .spec-figure { object-position: center 36%; }
+.spec-card[data-area="windows"] .spec-figure { object-position: center 46%; }
+.spec-card[data-area="delivery"]::after,
+.spec-card[data-area="paint"]::after { content: "Опция"; position: absolute; top: 14px; right: -34px; z-index: 3; width: 112px; padding: 5px 0; background: var(--primary); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-align: center; line-height: 1.1; transform: rotate(45deg); pointer-events: none; }
 .spec-card[data-area="foundation"]::before,
 .spec-card[data-area="fasteners"]::before,
 .spec-card[data-area="delivery"]::before,
 .spec-card[data-area="floor"]::before,
 .spec-card[data-area="roof"]::before,
-.spec-card[data-area="paint"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
+.spec-card[data-area="paint"]::before,
+.spec-card[data-area="windows"]::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 46%; background: linear-gradient(to bottom, #f4f1e600, #f4f1e6 72%); pointer-events: none; }
 .spec-card[data-area="fasteners"]::before { height: 50%; }
+.spec-card[data-area="paint"]::before { height: 32%; }
+.spec-card[data-area="windows"]::before { height: 34%; }
 .spec-card[data-area="foundation"] > span,
 .spec-card[data-area="fasteners"] > span,
 .spec-card[data-area="delivery"] > span,
 .spec-card[data-area="floor"] > span,
 .spec-card[data-area="roof"] > span,
-.spec-card[data-area="paint"] > span { position: relative; z-index: 2; }
-.spec-card[data-area="walls"] { position: relative; overflow: hidden; grid-area: walls; border-color: #004d35; }
+.spec-card[data-area="paint"] > span,
+.spec-card[data-area="windows"] > span { position: relative; z-index: 2; }
+.spec-card[data-area="walls"] { position: relative; overflow: hidden; grid-area: walls; border-color: #5c6b54; }
 .spec-card[data-area="walls"] .spec-figure { object-position: center; }
 .spec-card[data-area="walls"] > span { position: relative; z-index: 2; }
 .spec-card[data-area="floor"] { grid-area: floor; }
@@ -179,8 +184,6 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-card[data-tone="lead"] strong { font-size: 26px; }
 .spec-card[data-tone="aside"] { background: #f3ead4; border-color: #ead9b4; }
 .spec-card[data-tone="aside"] p { color: #6d5a32; }
-.spec-pick:focus-visible + .spec-card { outline: 2px solid var(--primary); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) { .spec-card:hover { box-shadow: 0 10px 24px #14221918; } }
 /* Расчёт: широкая картинка и узкая форма одной высоты */
 .calc-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 420px); gap: 24px; align-items: stretch; }
 .calc-image.house-figure { min-height: 480px; }
@@ -258,7 +261,8 @@ input::placeholder { color: #6c7363; }
 .site-footer { border-top: 1px solid var(--border); }
 .footer-top { padding-block: 40px; display: flex; gap: 30px; align-items: center; font-size: 12px; }
 .footer-top > p { color: #616954; }
-.footer-bottom { border-top: 1px solid var(--border); padding-block: 20px; font-size: 10px; color: #646d59; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.footer-top > .footer-phone { margin-left: auto; }
+.footer-bottom { padding-block: 20px; font-size: 10px; color: #646d59; display: flex; justify-content: center; align-items: center; }
 .footer-phone { font-size: 18px; font-weight: 600; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--foreground); text-decoration: none; }
 .breadcrumbs { display: flex; gap: 12px; align-items: center; padding-block: 22px; font-size: 11px; color: #66705c; min-height: 60px; }
 .breadcrumbs a { min-height: 44px; display: flex; align-items: center; }
@@ -419,7 +423,8 @@ input::placeholder { color: #6c7363; }
   .final-section > div { padding: 30px 25px; }
   .final-section h2 { font-size: 31px; }
   .final-section .house-figure { min-height: 0; aspect-ratio: 1.4; }
-  .footer-top { display: grid; grid-template-columns: 1fr 1fr; padding-block: 30px; gap: 20px; align-items: start; font-size: 11px; }
+  .footer-top { display: grid; grid-template-columns: 1fr auto; padding-block: 30px; gap: 20px; align-items: center; font-size: 11px; }
+.footer-top > .footer-phone { justify-self: end; }
   .footer-top img { width: 120px; height: auto; }
   .footer-bottom { display: flex; flex-direction: column; gap: 8px; font-size: 9px; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
   .breadcrumbs { font-size: 10px; gap: 8px; padding-block: 4px; }
@@ -439,6 +444,10 @@ input::placeholder { color: #6c7363; }
 }
 @media (max-width: 359px) {
   .container { width: calc(100% - 32px); }
+  .header-inner { gap: 6px; }
+  .brand img { width: 72px; }
+  .header-phone { font-size: 10px; }
+  .header-cta { font-size: 10px; padding-inline: 6px; }
   .hero h1 { font-size: 38px; }
   .hero-copy .format-switch button { font-size: 9px; gap: 4px; padding-inline: 5px; }
   .hero-actions { flex-direction: column; }
@@ -722,6 +731,9 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .project-modal[data-density="tightest"] .addon-switch { padding: 6px 12px; }
 .project-modal[data-density="tightest"] .package-addons { gap: 4px; }
 .project-modal[data-density="tightest"] .lead-panel { padding: 16px 18px; }
+.project-modal .lead-panel, .project-modal[data-density] .lead-panel, .project-modal[data-density="tightest"] .lead-panel { padding-top: 14px; }
+.lead-receipt-price[data-note] { flex: 1 0 100%; margin-top: -4px; font-size: 13px; font-weight: 550; letter-spacing: -0.01em; white-space: normal; text-align: left; }
+.lead-receipt p:has(.lead-receipt-price[data-note]) { flex-wrap: wrap; }
 .project-modal[data-density="tightest"] .lead-form { margin-top: 10px; gap: 8px; }
 
 /* Планшет и мобилка: шторка снизу, свайп фото/план, закреплённая панель с ценой */

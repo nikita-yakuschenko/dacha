@@ -100,10 +100,10 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const total = priceFor(project, format, selection.terrace) + extrasTotal(project, selection.extras);
   // Позиции чека: добавки всегда в разметке, выключенные плавно свёрнуты
   const receipt = [
-    { name: "Домокомплект", price: project.prices.kit, on: true },
-    ...(terracePrice(project) > 0 ? [{ name: "Терраса", price: terracePrice(project), on: selection.terrace }] : []),
-    { name: "Сборка", price: assemblyPrice(project, selection.terrace), on: format === "assembly" },
-    ...project.extras.map(item => ({ name: item.id === "piles" ? "Винтовые сваи" : item.id === "deck" ? "Крашенный профнастил" : item.name, price: item.price, on: selection.extras.includes(item.id) })),
+    { name: "Домокомплект", price: project.prices.kit, note: undefined, on: true },
+    ...(terracePrice(project) > 0 ? [{ name: "Терраса", price: terracePrice(project), note: undefined, on: selection.terrace }] : []),
+    { name: "Сборка", price: assemblyPrice(project, selection.terrace), note: undefined, on: format === "assembly" },
+    ...project.extras.map(item => ({ name: item.id === "piles" ? "Винтовые сваи" : item.id === "deck" ? "Крашенный профнастил" : item.name, price: item.price, note: item.onRequest ? "+\u00a0Запрос стоимости покраски" : undefined, on: selection.extras.includes(item.id) })),
   ];
   // Короткая подпись для нижней панели на телефоне
   const parts = [selection.terrace && "террасой", format === "assembly" && "сборкой"].filter(Boolean);
@@ -224,7 +224,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
         <h3>Заявка на расчёт</h3>
         <ul className="lead-receipt">{receipt.map(line => <li key={line.name} data-on={line.on} inert={!line.on}><div><p>
           <strong>{line.name}</strong>
-          <span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span>
+          <span className="lead-receipt-price" data-note={line.note ? "" : undefined}>{line.note ?? <AnimatedPrice value={line.price} currency={false} />}</span>
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
         <ProjectLeadForm project={project} goal={dachaId("lead", area)} />

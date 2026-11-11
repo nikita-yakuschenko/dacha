@@ -52,7 +52,7 @@ export function ProjectPackages({ project }: { project: Project }) {
       <input type="checkbox" role="switch" checked={addon.checked} onChange={e => addon.toggle(e.target.checked)} />
     </label>)}
     {project.extras.map(item => <label className="addon-switch" key={item.id}>
-      <span><strong>{item.name}</strong><small>{"+\u00a0"}<AnimatedPrice value={item.price} /></small></span>
+      <span><strong>{item.name}</strong><small>{item.onRequest ? "Стоимость по\u00a0запросу" : <>{"+\u00a0"}<AnimatedPrice value={item.price} /></>}</small></span>
       <input type="checkbox" role="switch" checked={selection.extras.includes(item.id)} onChange={e => { switched(item.id, e.target.checked); update({ extras: e.target.checked ? [...selection.extras, item.id] : selection.extras.filter(id => id !== item.id) }); }} />
     </label>)}</div>
     <p className="package-extra"><IconTruck size={20} stroke={1.6} aria-hidden="true" />{"Доставка в\u00a0стоимость не\u00a0включена и\u00a0оплачивается отдельно."}</p>
