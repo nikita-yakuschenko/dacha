@@ -32,6 +32,18 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinch = useRef<{ dist: number; scale: number } | null>(null);
   const seenSlide = useRef(0);
+  const zoomTarget = useCallback(() => trackRef.current?.querySelector(".project-viewer-item:nth-child(2) img") as HTMLElement | null, []);
+  const paintZoom = useCallback(() => {
+    const img = zoomTarget();
+    if (!img) return;
+    const { scale, x, y } = zoom.current;
+    img.style.transform = scale === 1 ? "" : `translate(${x}px, ${y}px) scale(${scale})`;
+  }, [zoomTarget]);
+  const resetZoom = useCallback(() => {
+    zoom.current = { scale: 1, x: 0, y: 0 };
+    pinch.current = null;
+    trackRef.current?.querySelectorAll("img").forEach(node => { (node as HTMLElement).style.transform = ""; });
+  }, []);
   useEffect(() => { if (viewerOpen) viewerClose.current?.focus(); }, [viewerOpen]);
   useEffect(() => {
     const stage = stageRef.current;
@@ -45,23 +57,11 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     };
     stage.addEventListener("wheel", onWheel, { passive: false });
     return () => stage.removeEventListener("wheel", onWheel);
-  }, [viewerOpen]);
+  }, [viewerOpen, paintZoom]);
   const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
   const area = slug.replace("dacha-", "");
   function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; metrikaGoal(index >= photos ? dachaId("open_plan", area) : dachaId(`open_photo_${index + 1}`, area)); }
   function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); resetZoom(); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
-  function zoomTarget() { return trackRef.current?.querySelector(".project-viewer-item:nth-child(2) img") as HTMLElement | null; }
-  function paintZoom() {
-    const img = zoomTarget();
-    if (!img) return;
-    const { scale, x, y } = zoom.current;
-    img.style.transform = scale === 1 ? "" : `translate(${x}px, ${y}px) scale(${scale})`;
-  }
-  function resetZoom() {
-    zoom.current = { scale: 1, x: 0, y: 0 };
-    pinch.current = null;
-    trackRef.current?.querySelectorAll("img").forEach(node => { (node as HTMLElement).style.transform = ""; });
-  }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
