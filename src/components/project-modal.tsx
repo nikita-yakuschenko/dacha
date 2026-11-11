@@ -28,12 +28,40 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   const viewerClose = useRef<HTMLButtonElement>(null);
   const viewerDrag = useRef<{ x: number; moved: boolean } | null>(null);
   const viewerIgnoreClick = useRef(false);
+  const zoom = useRef({ scale: 1, x: 0, y: 0 });
+  const pointers = useRef(new Map<number, { x: number; y: number }>());
+  const pinch = useRef<{ dist: number; scale: number } | null>(null);
   const seenSlide = useRef(0);
   useEffect(() => { if (viewerOpen) viewerClose.current?.focus(); }, [viewerOpen]);
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!viewerOpen || !stage) return;
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const next = Math.min(4, Math.max(1, zoom.current.scale * (event.deltaY < 0 ? 1.08 : 1 / 1.08)));
+      zoom.current.scale = next;
+      if (next === 1) { zoom.current.x = 0; zoom.current.y = 0; }
+      paintZoom();
+    };
+    stage.addEventListener("wheel", onWheel, { passive: false });
+    return () => stage.removeEventListener("wheel", onWheel);
+  }, [viewerOpen]);
   const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
   const area = slug.replace("dacha-", "");
   function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; metrikaGoal(index >= photos ? dachaId("open_plan", area) : dachaId(`open_photo_${index + 1}`, area)); }
-  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); resetZoom(); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  function zoomTarget() { return trackRef.current?.querySelector(".project-viewer-item:nth-child(2) img") as HTMLElement | null; }
+  function paintZoom() {
+    const img = zoomTarget();
+    if (!img) return;
+    const { scale, x, y } = zoom.current;
+    img.style.transform = scale === 1 ? "" : `translate(${x}px, ${y}px) scale(${scale})`;
+  }
+  function resetZoom() {
+    zoom.current = { scale: 1, x: 0, y: 0 };
+    pinch.current = null;
+    trackRef.current?.querySelectorAll("img").forEach(node => { (node as HTMLElement).style.transform = ""; });
+  }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
@@ -121,6 +149,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     flushSync(() => setViewerIndex(next));
     if (track) track.style.transform = "translateX(-100%)";
     sliding.current = false;
+    resetZoom();
   }
   function goalLand(index: number) {
     const item = media[index];
@@ -145,34 +174,59 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     const forward = (next - index + media.length) % media.length;
     if (forward === 1) animateStep(1);
     else if (forward === media.length - 1) animateStep(-1);
-    else { viewerIndexRef.current = next; setViewerIndex(next); }
+    else { viewerIndexRef.current = next; setViewerIndex(next); resetZoom(); }
   }
   function stepViewer(delta: number) { if (sliding.current) return; const dir: 1 | -1 = delta < 0 ? -1 : 1; goalLand((viewerIndexRef.current + dir + media.length) % media.length); animateStep(dir); }
   function viewerPointerDown(event: PointerEvent<HTMLElement>) {
-    if ((event.target as HTMLElement).closest("button") || event.pointerType !== "touch" || sliding.current) return;
+    if ((event.target as HTMLElement).closest("button") || sliding.current) return;
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointers.current.size >= 2) {
+      const [a, b] = [...pointers.current.values()];
+      pinch.current = { dist: Math.hypot(a.x - b.x, a.y - b.y) || 1, scale: zoom.current.scale };
+      viewerDrag.current = null;
+      if (trackRef.current) { delete trackRef.current.dataset.drag; trackRef.current.style.transform = "translateX(-100%)"; }
+      return;
+    }
+    if (event.pointerType !== "touch" || zoom.current.scale > 1) {
+      if (event.pointerType !== "touch") { pointers.current.delete(event.pointerId); return; }
+    }
     const width = stageRef.current?.clientWidth ?? 0;
     if (!width) return;
     const pointerId = event.pointerId;
+    const origin = { x: event.clientX, y: event.clientY, moved: false, panX: zoom.current.x, panY: zoom.current.y };
     viewerDrag.current = { x: event.clientX, moved: false };
     const track = trackRef.current;
-    if (track) { track.dataset.drag = "true"; track.style.transform = "translateX(-100%)"; }
+    const panning = zoom.current.scale > 1;
+    if (track && !panning) { track.dataset.drag = "true"; track.style.transform = "translateX(-100%)"; }
     const move = (native: globalThis.PointerEvent) => {
+      const point = pointers.current.get(native.pointerId);
+      if (point) { point.x = native.clientX; point.y = native.clientY; }
+      if (pinch.current && pointers.current.size >= 2) {
+        const [a, b] = [...pointers.current.values()];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+        zoom.current.scale = Math.min(4, Math.max(1, pinch.current.scale * dist / pinch.current.dist));
+        if (zoom.current.scale === 1) { zoom.current.x = 0; zoom.current.y = 0; }
+        paintZoom();
+        return;
+      }
       if (native.pointerId !== pointerId) return;
-      const drag = viewerDrag.current;
-      if (!drag) return;
-      const dx = native.clientX - drag.x;
-      if (Math.abs(dx) > 8) drag.moved = true;
+      const dx = native.clientX - origin.x;
+      const dy = native.clientY - origin.y;
+      if (Math.hypot(dx, dy) > 8) { origin.moved = true; if (viewerDrag.current) viewerDrag.current.moved = true; }
+      if (panning) { zoom.current.x = origin.panX + dx; zoom.current.y = origin.panY + dy; paintZoom(); return; }
       if (track) track.style.transform = `translateX(calc(-100% + ${dx}px))`;
     };
     const up = (native: globalThis.PointerEvent) => {
+      pointers.current.delete(native.pointerId);
+      if (pointers.current.size < 2) pinch.current = null;
       if (native.pointerId !== pointerId) return;
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
       const drag = viewerDrag.current;
       viewerDrag.current = null;
-      if (!drag) return;
-      const dx = native.clientX - drag.x;
+      if (!drag || panning) { if (origin.moved) viewerIgnoreClick.current = true; return; }
+      const dx = native.clientX - origin.x;
       if (drag.moved) viewerIgnoreClick.current = true;
       if (!track || Math.abs(dx) < Math.min(64, width * 0.16)) {
         if (track) { delete track.dataset.drag; track.style.transform = "translateX(-100%)"; }
