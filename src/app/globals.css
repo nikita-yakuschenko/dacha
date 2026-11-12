@@ -387,7 +387,7 @@ input::placeholder { color: #6c7363; }
   .process-list { flex-direction: column; gap: 0; margin-top: 20px; padding-bottom: 0; }
   .process-list li { flex: none; width: 100%; }
   .process-list button { display: grid; grid-template-columns: 42px minmax(0, 1fr); column-gap: 14px; row-gap: 0; align-items: center; padding-block: 10px; }
-  .process-list button::before { inset: 0 -12px; }
+  .process-list button::before { inset: -6px -16px; }
   .process-list p { height: auto; }
   .process-list .process-mark { position: absolute; left: 56px; bottom: 5px; margin: 0; }
   .process-list li:not(:last-child)::before { top: 50%; bottom: auto; left: 21px; right: auto; width: 1px; height: 100%; }
