@@ -260,9 +260,10 @@ input::placeholder { color: #6c7363; }
 .faq-item[data-open="true"] .faq-answer { grid-template-rows: 1fr; }
 .faq-item[data-open="true"] .faq-answer p { opacity: 1; transform: none; transition: opacity 320ms ease-out 80ms, transform 420ms var(--faq-ease); }
 .final-section { background: var(--primary); color: var(--background); border-radius: var(--r-card); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; margin-bottom: 70px; }
-.final-section > div { padding: 50px; }
-.final-section h2 { font-size: clamp(32px, 3.2vw, 43px); margin-bottom: 32px; }
-.final-buy { display: grid; gap: 10px; width: max-content; max-width: 100%; }
+.final-section > div { display: flex; align-items: center; padding: 50px; }
+.final-stack { width: max-content; max-width: 100%; }
+.final-section h2 { font-size: clamp(32px, 3.2vw, 43px); margin-bottom: 20px; }
+.final-buy { display: grid; gap: 10px; width: 100%; }
 .final-buy .lead-field,
 .final-buy .lead-submit { width: 100%; }
 .final-buy .lead-submit { height: 48px; margin-top: 0; padding-inline: 20px; background: #e3edc7; color: var(--primary); }
