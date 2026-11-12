@@ -6,7 +6,7 @@ import { HouseImage } from "@/components/house-image";
 const steps = [
   { title: "Выбираем", text: "Проект и\u00a0комплектацию", src: "/images/step-choose.webp", cutout: true },
   { title: "Согласовываем", text: "Условия и\u00a0сроки", src: "/images/step-agree.webp", cutout: true },
-  { title: "Изготавливаем", text: "Ваш дачный дом", src: "/images/step-make.webp", cutout: true },
+  { title: "Изготавливаем", text: "Ваш дачный дом", src: "/images/step-joint.webp", cutout: true },
   { title: "Отправляем", text: "Комплект на\u00a0участок", src: "/images/step-deliver.webp", cutout: true },
   { title: "Собираем", text: "Своими силами или\u00a0нашей бригадой", src: "/images/step-assemble.webp", cutout: true },
 ] as const;
