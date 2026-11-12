@@ -26,12 +26,7 @@ h2 { font-size: clamp(30px, 3.2vw, 46px); letter-spacing: -0.04em; }
 h3 { font-size: 23px; letter-spacing: -0.025em; }
 p { text-wrap: pretty; }
 .container { max-width: 1440px; width: calc(100% - 112px); margin-inline: auto; }
-.section { padding-top: 64px; padding-bottom: 0; scroll-margin-top: 24px; }
-.section-tint { padding-bottom: 64px; }
-.section-tint + .section { padding-top: 0; }
-main.section { padding-bottom: 64px; }
-.process-section { padding-bottom: 32px; }
-.faq-section { padding-top: 32px; padding-bottom: 64px; }
+.section { padding-block: 48px; scroll-margin-top: 24px; }
 .muted { color: var(--muted-foreground); }
 .small { font-size: 13px; line-height: 1.6; }
 .intro { font-size: 17px; line-height: 1.65; margin-block: 24px; color: var(--muted-foreground); max-width: 53ch; }
@@ -366,11 +361,7 @@ input::placeholder { color: #6c7363; }
   .hero-models { gap: 15px; }
   .hero-models a { padding-left: 16px; }
   .hero-models svg { width: 16px; }
-  .section { padding-top: 48px; padding-bottom: 0; }
-  .section-tint { padding-bottom: 48px; }
-  main.section { padding-bottom: 48px; }
-  .process-section { padding-bottom: 24px; }
-  .faq-section { padding-top: 24px; padding-bottom: 48px; }
+  .section { padding-block: 40px; }
   .section-heading > p { max-width: 34ch; font-size: 12px; }
   .spec-bento { grid-template-columns: 1fr; grid-template-areas: none; }
   .spec-card, .spec-card[data-area="foundation"], .spec-card[data-area="delivery"] { grid-area: auto; min-height: 0; }
@@ -397,11 +388,7 @@ input::placeholder { color: #6c7363; }
   html { scroll-padding-top: 25px; }
   body { font-size: 14px; }
   .container { width: calc(100% - 40px); }
-  .section { padding-top: 40px; padding-bottom: 0; }
-  .section-tint { padding-bottom: 40px; }
-  main.section { padding-bottom: 40px; }
-  .process-section { padding-bottom: 20px; }
-  .faq-section { padding-top: 20px; padding-bottom: 40px; }
+  .section { padding-block: 32px; }
   h1 { font-size: 43px; }
   h2 { font-size: 33px; }
   .header-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); height: 64px; gap: 8px; align-items: center; }
