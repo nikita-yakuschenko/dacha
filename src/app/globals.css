@@ -256,16 +256,16 @@ input::placeholder { color: #6c7363; }
 .process-mark { display: block; width: 36px; height: 2px; margin-top: 4px; background: #fff; transform: scaleX(0); transform-origin: left center; opacity: 0; transition: transform 420ms var(--process-ease), opacity 280ms ease; }
 .process-list li:not(:last-child)::before { content: ""; position: absolute; z-index: 0; top: 21px; left: 21px; right: calc(var(--process-gap) * -1 - 21px); height: 1px; background: #c9d3c0; pointer-events: none; }
 .process-list li:has(+ li[data-open])::before { right: calc(var(--process-gap) * -1); }
-.process-list li[data-open]::before { top: 41px; left: 0; right: 0; height: 0; background: none; border-top: 1px dashed rgba(255, 255, 255, 0.72); }
-.process-list li[data-open]:not(:last-child)::after { content: ""; position: absolute; z-index: 0; top: 41px; left: 100%; width: calc(var(--process-gap) + 21px); height: 1px; background: #c9d3c0; pointer-events: none; }
-.process-list li[data-open] { flex-grow: 2.7; min-height: 248px; margin: -20px 0 0 -20px; padding: 20px 16px 20px 20px; background: var(--primary); color: #fff; }
-.process-list li[data-open] button { justify-content: flex-start; gap: 18px; min-height: 208px; padding: 0 54% 0 0; }
+.process-list li[data-open]::before { top: 39px; left: 0; right: 0; height: 0; background: none; border-top: 1px dashed rgba(255, 255, 255, 0.72); }
+.process-list li[data-open]:not(:last-child)::after { content: ""; position: absolute; z-index: 0; top: 39px; left: 100%; width: calc(var(--process-gap) + 21px); height: 1px; background: #c9d3c0; pointer-events: none; }
+.process-list li[data-open] { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 12px; flex-grow: 2.7; margin: -20px 0 0 -20px; padding: 18px 16px 16px 20px; background: var(--primary); color: #fff; }
+.process-list li[data-open] button { justify-content: flex-start; gap: 14px; width: auto; min-height: 0; padding: 0; }
 .process-list li[data-open] h3 { font-size: 26px; font-weight: 550; color: #fff; letter-spacing: -0.04em; }
 .process-list li[data-open] p { color: #e7eee3; font-size: 15px; }
 .process-list li[data-open] .process-mark { transform: none; opacity: 1; }
-.process-list .process-photo { position: absolute; z-index: 0; top: 74px; right: 18px; bottom: 18px; width: 0; border-radius: 0; overflow: hidden; opacity: 0; background: transparent; pointer-events: none; transition: opacity 320ms ease; }
-.process-list li[data-open] .process-photo { width: calc(52% - 10px); opacity: 1; }
-.process-list .process-photo-cut img { object-fit: contain; object-position: center; }
+.process-list .process-photo { position: absolute; z-index: 0; width: 0; height: 0; border-radius: 0; overflow: hidden; opacity: 0; background: transparent; pointer-events: none; transition: opacity 320ms ease; }
+.process-list li[data-open] .process-photo { position: relative; width: 100%; height: 156px; opacity: 1; }
+.process-list .process-photo-cut img { object-fit: contain; object-position: left center; }
 @media (prefers-reduced-motion: reduce) {
   .process-list li, .process-list button, .process-mark, .process-list .process-photo { transition: none; }
 }
@@ -398,11 +398,11 @@ input::placeholder { color: #6c7363; }
   .process-list li:not([data-open]):last-child::before { content: ""; bottom: 37px; }
   .process-list li[data-open]::before { top: 37px; right: auto; bottom: 0; left: 21px; width: 0; height: auto; border-top: 0; border-left: 1px dashed rgba(255, 255, 255, 0.72); }
   .process-list li[data-open]::after { content: none; }
-  .process-list li[data-open] { flex: none; width: 100%; min-height: 0; margin: 12px 0 0; padding: 0; }
-  .process-list li[data-open] button { min-height: 0; padding: 18px 46% 18px 18px; gap: 14px; }
-  .process-list li[data-open]::before { top: 39px; left: 39px; }
+  .process-list li[data-open] { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 8px; flex: none; width: 100%; min-height: 0; margin: 12px 0 0; padding: 16px 12px 16px 16px; }
+  .process-list li[data-open] button { min-height: 0; width: auto; padding: 0; gap: 12px; }
+  .process-list li[data-open]::before { top: 37px; left: 37px; }
   .process-list li[data-open] h3 { font-size: 22px; }
-  .process-list li[data-open] .process-photo { top: 12px; right: 8px; bottom: 12px; width: 46%; }
+  .process-list li[data-open] .process-photo { position: relative; top: auto; right: auto; bottom: auto; width: 100%; height: 112px; }
   .final-section > div { padding: 35px; }
   .final-section h2 { font-size: 33px; }
   .project-trust { flex-wrap: wrap; }
