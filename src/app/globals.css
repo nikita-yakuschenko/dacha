@@ -133,7 +133,7 @@ button.skip-link { padding: 12px 20px; background: var(--primary); color: white;
 .spec-intro { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .spec-intro > :last-child { flex-shrink: 0; }
 .spec-bento { position: relative; display: grid; grid-template-columns: 1.05fr 1fr 1fr 1.15fr; grid-template-areas: "foundation walls walls walls" "foundation floor roof windows" "fasteners fasteners delivery paint"; gap: 10px; margin-top: 36px; }
-.spec-card { --spec-ease: cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: flex; flex-direction: column; width: 100%; min-height: 148px; padding: 0; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; text-align: left; overflow: hidden; transition: background-color 480ms var(--spec-ease), color 480ms var(--spec-ease), border-color 480ms var(--spec-ease), min-height 480ms var(--spec-ease); }
+.spec-card { --spec-ease: cubic-bezier(0.4, 0, 0.2, 1); position: relative; display: flex; flex-direction: column; width: 100%; min-height: 148px; padding: 0; border: 1px solid #e0e3d7; border-radius: 18px; background: #ffffff; color: inherit; text-align: left; overflow: hidden; transition: background-color 480ms var(--spec-ease), color 480ms var(--spec-ease), border-color 480ms var(--spec-ease); }
 button.spec-card:active { transform: none; }
 .spec-face { display: flex; flex: 1; flex-direction: column; justify-content: flex-end; min-height: 148px; }
 .spec-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 480ms var(--spec-ease); }
@@ -176,14 +176,11 @@ button.spec-card:active { transform: none; }
 .spec-card[data-area="paint"] { grid-area: paint; }
 .spec-card strong { display: block; font-size: 18px; font-weight: 550; letter-spacing: -0.03em; line-height: 1.15; }
 @media (min-width: 1024px) {
-  .spec-detail { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; grid-template-rows: none; opacity: 0; pointer-events: none; transition: opacity 480ms var(--spec-ease); }
-  .spec-detail > span { overflow: visible; }
+  .spec-detail { position: absolute; inset: 0; z-index: 3; display: flex; align-items: flex-start; grid-template-rows: none; opacity: 0; pointer-events: none; transition: opacity 480ms var(--spec-ease); }
+  .spec-detail > span { width: 100%; overflow: visible; }
   .spec-detail p { padding: 18px; max-width: 36em; font-size: 15px; }
   .spec-card[data-open="true"] .spec-detail { opacity: 1; }
   .spec-card[data-open="true"] .spec-face strong { opacity: 0; transition: opacity 480ms var(--spec-ease); }
-  .spec-card[data-open="true"] { min-height: 210px; }
-  .spec-card[data-area="delivery"][data-open="true"],
-  .spec-card[data-area="fasteners"][data-open="true"] { min-height: 236px; }
 }
 .spec-card[data-tone="lead"] { background: var(--primary); border-color: var(--primary); color: #ffffff; }
 .spec-card[data-open="true"],
