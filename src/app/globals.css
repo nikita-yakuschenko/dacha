@@ -628,15 +628,16 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .lead-receipt p { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 14px; padding: 11px 0 0; opacity: 0; transform: translateY(-6px); transition: opacity 260ms ease-out, transform 420ms var(--receipt-ease); }
 .lead-receipt p::after { content: ""; flex-basis: 100%; height: 1px; margin-top: 11px; background: repeating-linear-gradient(90deg, #e3edc7cc 0 4px, transparent 4px 8px); }
 .lead-receipt li[data-on="true"] p { opacity: 1; transform: none; }
-.project-modal[data-measure] .lead-receipt :is(li, p, .lead-note, .lead-note > span) { transition: none; }
+.project-modal[data-measure] .lead-receipt :is(li, p, .lead-note, .lead-note span) { transition: none; }
 .project-modal[data-measure="open"] .lead-receipt li { grid-template-rows: 1fr; }
-@media (prefers-reduced-motion: reduce) { .lead-receipt :is(li, p, .lead-note, .lead-note > span) { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .lead-receipt :is(li, p, .lead-note, .lead-note span) { transition: none; } }
 .lead-receipt strong { font-size: 15px; font-weight: 600; }
 .lead-receipt-price { font-size: 15px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .lead-receipt .lead-note { flex-basis: 100%; display: grid; grid-template-rows: 0fr; transition: grid-template-rows 420ms var(--receipt-ease); }
 .lead-receipt .lead-note[data-on="true"] { grid-template-rows: 1fr; }
-.lead-receipt .lead-note > span { min-height: 0; overflow: hidden; padding-top: 4px; font-size: 12px; font-weight: 450; line-height: 1.35; color: #d7e0cd; opacity: 0; transform: translateY(-6px); transition: opacity 260ms ease-out, transform 420ms var(--receipt-ease); }
-.lead-receipt .lead-note[data-on="true"] > span { opacity: 1; transform: none; }
+.lead-receipt .lead-note > span { min-height: 0; overflow: hidden; }
+.lead-receipt .lead-note > span > span { display: block; padding-top: 4px; font-size: 12px; font-weight: 450; line-height: 1.35; color: #d7e0cd; opacity: 0; transform: translateY(-6px); transition: opacity 260ms ease-out, transform 420ms var(--receipt-ease); }
+.lead-receipt .lead-note[data-on="true"] > span > span { opacity: 1; transform: none; }
 .lead-total { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 16px; }
 .lead-total > span { font-size: 16px; font-weight: 650; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; color: #ffffff; }
 /* Кегль цены ограничен шириной панели: самая длинная цена занимает ~7.8em */
