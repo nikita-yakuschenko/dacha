@@ -7,18 +7,138 @@
 <currencies><currency id="RUR" rate="1"/></currencies>
 <categories><category id="1">Дачные дома</category></categories>
 <offers>
-<offer id="dacha-10" available="true"><url>https://dacha-prosto.ru/#projects</url><price>267000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-plan.jpg</picture><name>Просто дача 10</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 4 × 3 м, площадь 10 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">10 м²</param><param name="Размер">4 × 3 м</param></offer>
-<offer id="dacha-16" available="true"><url>https://dacha-prosto.ru/#projects</url><price>351000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-plan.jpg</picture><name>Просто дача 16</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 3 м, площадь 16 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">16 м²</param><param name="Размер">6 × 3 м</param></offer>
-<offer id="dacha-24" available="true"><url>https://dacha-prosto.ru/#projects</url><price>491000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-plan.jpg</picture><name>Просто дача 24</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 4,5 м, площадь 24 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">24 м²</param><param name="Размер">6 × 4,5 м</param></offer>
-<offer id="dacha-25" available="true"><url>https://dacha-prosto.ru/#projects</url><price>523000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-plan.jpg</picture><name>Просто дача 25</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 4,5 м, площадь 25 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">25 м²</param><param name="Размер">6 × 4,5 м</param></offer>
-<offer id="dacha-26" available="true"><url>https://dacha-prosto.ru/#projects</url><price>708000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-plan.jpg</picture><name>Просто дача 26</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 7,35 × 4,83 м, площадь 26 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">26 м²</param><param name="Размер">7,35 × 4,83 м</param></offer>
-<offer id="dacha-27" available="true"><url>https://dacha-prosto.ru/#projects</url><price>580000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-plan.jpg</picture><name>Просто дача 27</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 5 м, площадь 27 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">27 м²</param><param name="Размер">6 × 5 м</param></offer>
-<offer id="dacha-33" available="true"><url>https://dacha-prosto.ru/#projects</url><price>723000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-plan.jpg</picture><name>Просто дача 33</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 6 м, площадь 33 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">33 м²</param><param name="Размер">6 × 6 м</param></offer>
-<offer id="dacha-36" available="true"><url>https://dacha-prosto.ru/#projects</url><price>557000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-plan.jpg</picture><name>Просто дача 36</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 8,5 × 3,6 м, площадь 36 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">36 м²</param><param name="Размер">8,5 × 3,6 м</param></offer>
-<offer id="dacha-40" available="true"><url>https://dacha-prosto.ru/#projects</url><price>776000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-plan.jpg</picture><name>Просто дача 40</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 6 × 6 м, площадь 40 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">40 м²</param><param name="Размер">6 × 6 м</param></offer>
-<offer id="dacha-43" available="true"><url>https://dacha-prosto.ru/#projects</url><price>891000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-plan.jpg</picture><name>Просто дача 43</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 7,9 × 6 м, площадь 43 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">43 м²</param><param name="Размер">7,9 × 6 м</param></offer>
-<offer id="dacha-47" available="true"><url>https://dacha-prosto.ru/#projects</url><price>822000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-plan.jpg</picture><name>Просто дача 47</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 8,95 × 5,75 м, площадь 47 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">47 м²</param><param name="Размер">8,95 × 5,75 м</param></offer>
-<offer id="dacha-50" available="true"><url>https://dacha-prosto.ru/#projects</url><price>806000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-plan.jpg</picture><name>Просто дача 50</name><description>Дом из мини-бруса 45×145 мм для дачного сезона. Габариты 3,38 × 4,3 м, площадь 50 м². В комплект входят стены, кровля, пол, окна, двери, крепёж и инструкция по сборке. Цена указана за домокомплект. Доставка и сборка рассчитываются отдельно.</description><param name="Площадь">50 м²</param><param name="Размер">3,38 × 4,3 м</param></offer>
+<offer id="dacha-10" available="true"><url>https://dacha-prosto.ru/#projects</url><price>267000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-10-plan.jpg</picture><name>Просто дача 10</name><description>⠀
+☀️ Небольшой домик для больших удовольствий. Утренний кофе, свежий воздух, любимая книга и никаких городских забот. Иногда для счастья нужно совсем немного.
+⠀
+🌿 Легко собирается за несколько часов и отлично подходит для отдыха молодой семьи на дачном или садовом участке.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 10 м²
+Комнат: 1</description><param name="Площадь">10 м²</param><param name="Размер">4 × 3 м</param></offer>
+<offer id="dacha-16" available="true"><url>https://dacha-prosto.ru/#projects</url><price>351000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-16-plan.jpg</picture><name>Просто дача 16</name><description>⠀
+🏡 Свой маленький уголок за городом, куда хочется возвращаться каждые выходные. Натуральное дерево, уютная атмосфера и время, которое принадлежит только вам.
+⠀
+🌿 Компактный дом из мини-бруса для отдыха на собственном участке. Простое и практичное решение для тех, кто давно мечтает о своей даче.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 16 м²
+Комнат: 2</description><param name="Площадь">16 м²</param><param name="Размер">6 × 3 м</param></offer>
+<offer id="dacha-24" available="true"><url>https://dacha-prosto.ru/#projects</url><price>491000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-24-plan.jpg</picture><name>Просто дача 24</name><description>⠀
+☀️ Дача, где у выходных появляется совсем другой ритм. Здесь можно никуда не спешить, наслаждаться тишиной и проводить больше времени с теми, кто действительно дорог.
+⠀
+🌲 Деревянный дом для загородного отдыха с семьёй или друзьями. Натуральный мини-брус создаёт приятную атмосферу и особое ощущение близости к природе.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 24 м²
+Комнат: 2</description><param name="Площадь">24 м²</param><param name="Размер">6 × 4,5 м</param></offer>
+<offer id="dacha-25" available="true"><url>https://dacha-prosto.ru/#projects</url><price>523000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-25-plan.jpg</picture><name>Просто дача 25</name><description>⠀
+☕ Загородная жизнь начинается с простых вещей: завтрака без спешки, свежего воздуха и собственного уютного дома. Место, где каждый выходной становится маленьким отпуском.
+⠀
+🌿 Дом из мини-бруса для тех, кто ценит простоту и естественную красоту дерева. Подойдёт для отдыха и приятного времяпрепровождения на дачном участке.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 25 м²
+Комнат: 2</description><param name="Площадь">25 м²</param><param name="Размер">6 × 4,5 м</param></offer>
+<offer id="dacha-26" available="true"><url>https://dacha-prosto.ru/#projects</url><price>708000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-26-plan.jpg</picture><name>Просто дача 26</name><description>⠀
+🏡 Когда хочется сбежать из города, но не отказываться от уюта. Свой деревянный дом, любимые люди рядом и целые выходные впереди. Что ещё нужно для хорошего отдыха?
+⠀
+🌿 Практичный садовый дом из мини-бруса, который станет вашим любимым местом за городом. Для семейных выходных, отдыха на природе и маленьких дачных традиций.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 26 м²
+Комнат: 2</description><param name="Площадь">26 м²</param><param name="Размер">7,35 × 4,83 м</param></offer>
+<offer id="dacha-27" available="true"><url>https://dacha-prosto.ru/#projects</url><price>580000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-27-plan.jpg</picture><name>Просто дача 27</name><description>⠀
+☀️ Больше времени на природе, меньше поводов торопиться. Уютная дача из мини-бруса, где приятно встречать утро, собираться с друзьями и просто наслаждаться моментом.
+⠀
+🌲 Деревянный дом для комфортного загородного отдыха. Простая конструкция из мини-бруса и естественная красота древесины делают его отличным выбором для дачного участка.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 27 м²
+Комнат: 3</description><param name="Площадь">27 м²</param><param name="Размер">6 × 5 м</param></offer>
+<offer id="dacha-33" available="true"><url>https://dacha-prosto.ru/#projects</url><price>723000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-33-plan.jpg</picture><name>Просто дача 33</name><description>⠀
+❤️ Место для семейных выходных, душевных разговоров и маленьких традиций. Здесь приятно собираться вместе, строить планы на лето и создавать свои загородные истории.
+⠀
+🌿 Дом из натурального мини-бруса для тех, кому хочется проводить больше времени за городом. Пространство для отдыха, семейных встреч и настоящего дачного уюта.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 33 м²
+Комнат: 3</description><param name="Площадь">33 м²</param><param name="Размер">6 × 6 м</param></offer>
+<offer id="dacha-36" available="true"><url>https://dacha-prosto.ru/#projects</url><price>557000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-36-plan.jpg</picture><name>Просто дача 36</name><description>⠀
+☕ Представьте: утро, пение птиц, аромат свежего кофе и никаких срочных дел. Собственная дача из натурального дерева делает такие моменты частью вашей жизни.
+⠀
+🌲 Уютный садовый дом для отдыха с близкими и спокойных выходных на природе. Мини-брус сохраняет естественную фактуру дерева и придаёт дому особый характер.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 36 м²
+Комнат: 1</description><param name="Площадь">36 м²</param><param name="Размер">8,5 × 3,6 м</param></offer>
+<offer id="dacha-40" available="true"><url>https://dacha-prosto.ru/#projects</url><price>776000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-40-plan.jpg</picture><name>Просто дача 40</name><description>⠀
+☀️ Дача для тех, кто любит природу, ценит простоту и умеет наслаждаться моментом. Здесь легко забыть о будничной суете и вспомнить, какими должны быть настоящие выходные.
+⠀
+🌿 Просторный садовый дом из мини-бруса для семейного отдыха и встреч с друзьями. Больше места для ваших планов, любимых занятий и загородной жизни.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 40 м²
+Комнат: 3</description><param name="Площадь">40 м²</param><param name="Размер">6 × 6 м</param></offer>
+<offer id="dacha-43" available="true"><url>https://dacha-prosto.ru/#projects</url><price>891000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-43-plan.jpg</picture><name>Просто дача 43</name><description>⠀
+❤️ Здесь начинается ваша любимая история про лето. С долгими завтраками, семейными встречами, вечерами на свежем воздухе и приятным ощущением, что завтра никуда не нужно спешить.
+⠀
+🌲 Деревянный дом для тех, кто хочет сделать дачу настоящим местом притяжения всей семьи. Натуральный мини-брус, уютная атмосфера и пространство для отдыха.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 43 м²
+Комнат: 4</description><param name="Площадь">43 м²</param><param name="Размер">7,9 × 6 м</param></offer>
+<offer id="dacha-47" available="true"><url>https://dacha-prosto.ru/#projects</url><price>822000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-47-plan.jpg</picture><name>Просто дача 47</name><description>⠀
+🏡 Больше пространства для любимых занятий, встреч с друзьями и семейного отдыха. Деревянная дача, в которой хочется проводить не только выходные, но и всё лето.
+⠀
+🌿 Вместительный дом из мини-бруса для загородной жизни в вашем ритме. Здесь найдётся место для спокойного отдыха, общения и приятных моментов с близкими.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 47 м²
+Комнат: 4</description><param name="Площадь">47 м²</param><param name="Размер">8,95 × 5,75 м</param></offer>
+<offer id="dacha-50" available="true"><url>https://dacha-prosto.ru/#projects</url><price>806000</price><currencyId>RUR</currencyId><categoryId>1</categoryId><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-1.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-2.jpg</picture><picture>https://dacha-prosto.ru/feeds/vk/dacha-50-plan.jpg</picture><name>Просто дача 50</name><description>⠀
+☀️ Своя дача начинается с простого желания: приехать за город и почувствовать себя дома. Отдыхать, принимать гостей, проводить время с семьёй и наслаждаться жизнью в своём ритме.
+⠀
+🌲 Просторный деревянный дом из мини-бруса для тех, кто мечтает о собственной даче. Место для семейных выходных, летнего отдыха и тёплых встреч с друзьями.
+⠀
+🚚 Отправляем по всей России. Сборка в Нижегородской и Московской областях.
+⠀
+📩 Пишите в сообщения сообщества и звоните +7 (831) 234-40-44
+⠀
+Площадь: 50 м²
+Комнат: 3</description><param name="Площадь">50 м²</param><param name="Размер">3,38 × 4,3 м</param></offer>
 </offers>
 </shop>
 </yml_catalog>
