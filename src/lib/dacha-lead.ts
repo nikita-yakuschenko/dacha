@@ -1,11 +1,11 @@
 import { extrasTotal, priceFor, projects } from "./data";
 
-const extraIds = new Set(["piles", "plinth", "roof", "deck", "gutters", "paint"]);
+const extraIds = new Set(["paint"]);
 
 export const dachaLabels = {
   project: new Map<string, string>([...projects.map((project) => [project.slug, project.name.replaceAll("\u00a0", " ")] as const), ["custom", "Свой вариант"]]),
   format: new Map<string, string>([["kit", "Комплект"], ["assembly", "Со сборкой"]]),
-  options: new Map<string, string>([["piles", "Винтовые сваи"], ["plinth", "Утепление пола"], ["roof", "Утепление кровли"], ["deck", "Крашенный профнастил"], ["gutters", "Водосточная система ПВХ"], ["paint", "Заводская покраска стен"]]),
+  options: new Map<string, string>([["paint", "Заводская покраска стен"]]),
 };
 const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
 
