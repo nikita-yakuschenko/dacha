@@ -408,7 +408,6 @@ input::placeholder { color: #6c7363; }
   .spec-face { min-height: 108px; transition: min-height 480ms var(--spec-ease); }
   .spec-card[data-open="true"] .spec-face { min-height: 0; }
   .spec-card .spec-figure { height: 108px; bottom: auto; }
-  .spec-card[data-area="delivery"] .spec-face strong { color: #fff; text-shadow: 0 1px 2px #1c2e2280; }
   .spec-card[data-area="foundation"] .spec-figure { object-position: center 72%; }
   .spec-card[data-area="paint"] .spec-figure { object-position: center 78%; }
 }
