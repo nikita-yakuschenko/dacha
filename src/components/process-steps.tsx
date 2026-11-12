@@ -21,7 +21,7 @@ export function ProcessSteps() {
         <span className="process-index">{String(i + 1).padStart(2, "0")}</span>
         <span className="process-copy"><h3>{step.title}</h3><p>{step.text}</p><span className="process-mark" aria-hidden="true" /></span>
       </button>
-      {on ? <HouseImage className={"cutout" in step ? "process-photo process-photo-cut" : "process-photo"} src={"src" in step ? step.src : undefined} sizes="(max-width: 900px) 46vw, 480px" /> : null}
+      <HouseImage className="process-photo process-photo-cut" src={step.src} sizes="(max-width: 900px) 40vw, 240px" />
     </li>;
   })}</ol>;
 }
