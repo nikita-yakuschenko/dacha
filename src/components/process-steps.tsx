@@ -13,7 +13,7 @@ const steps = [
 
 // Раскрытый шаг — карточка. Наведение или фокус переключает её на этот пункт.
 export function ProcessSteps() {
-  const [open, setOpen] = useState(4);
+  const [open, setOpen] = useState(0);
   return <ol className="process-list">{steps.map((step, i) => {
     const on = open === i;
     return <li key={step.title} data-open={on || undefined}>
@@ -21,7 +21,7 @@ export function ProcessSteps() {
         <span className="process-index">{String(i + 1).padStart(2, "0")}</span>
         <span className="process-copy"><h3>{step.title}</h3><p>{step.text}</p><span className="process-mark" aria-hidden="true" /></span>
       </button>
-      <HouseImage className="process-photo process-photo-cut" src={step.src} sizes="(max-width: 900px) 40vw, 240px" />
+      <HouseImage className="process-photo process-photo-cut" src={step.src} sizes="(max-width: 900px) 46vw, 420px" />
     </li>;
   })}</ol>;
 }
