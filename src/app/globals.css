@@ -276,7 +276,7 @@ input::placeholder { color: #6c7363; }
 .faq-answer p { padding: 0 30px 24px 0; font-size: 13px; color: var(--muted-foreground); opacity: 0; transform: translateY(-6px); transition: opacity 200ms ease-out, transform 420ms var(--faq-ease); }
 .faq-item[data-open="true"] .faq-answer { grid-template-rows: 1fr; }
 .faq-item[data-open="true"] .faq-answer p { opacity: 1; transform: none; transition: opacity 320ms ease-out 80ms, transform 420ms var(--faq-ease); }
-.final-section { background: var(--primary); color: var(--background); border-radius: var(--r-card); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; margin-bottom: 70px; }
+.final-section { background: var(--primary); color: var(--background); border-radius: var(--r-card); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; margin-top: 48px; margin-bottom: 70px; }
 .final-section > div { display: flex; align-items: center; padding: 50px; }
 .final-stack { width: max-content; max-width: 100%; }
 .final-section h2 { font-size: clamp(32px, 3.2vw, 43px); margin-bottom: 20px; }
@@ -362,6 +362,7 @@ input::placeholder { color: #6c7363; }
   .hero-models a { padding-left: 16px; }
   .hero-models svg { width: 16px; }
   .section { padding-block: 40px; }
+  .final-section { margin-top: 40px; }
   .section-heading > p { max-width: 34ch; font-size: 12px; }
   .spec-bento { grid-template-columns: 1fr; grid-template-areas: none; }
   .spec-card, .spec-card[data-area="foundation"], .spec-card[data-area="delivery"] { grid-area: auto; min-height: 0; }
@@ -458,7 +459,7 @@ input::placeholder { color: #6c7363; }
   .faq-section .intro { margin-block: 18px; }
   .faq-section .intro br { display: none; }
   .faq-item button { font-size: 14px; line-height: 1.5; padding-block: 19px; gap: 18px; }
-  .final-section { grid-template-columns: 1fr; margin-bottom: 40px; }
+  .final-section { grid-template-columns: 1fr; margin-top: 32px; margin-bottom: 40px; }
   .final-section > div { padding: 30px 25px; }
   .final-section h2 { font-size: 31px; }
   .final-section .house-figure { min-height: 0; aspect-ratio: 1.4; }
