@@ -591,9 +591,9 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .package-heading:first-child { margin-top: 0; }
 .package-base { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 14px; row-gap: 8px; width: 100%; padding: 16px 18px; border: 0; border-radius: var(--r-control); background: var(--surface); box-shadow: inset 0 0 0 1px #dfe3d6; font: inherit; color: inherit; text-align: left; }
 .package-addons { display: grid; gap: 14px; margin-top: 12px; }
-.package-name { display: flex; align-items: flex-start; gap: 7px; min-width: 0; font-size: 16px; font-weight: 550; line-height: 22px; }
-.package-name svg { margin-top: 2px; color: var(--primary); }
-.package-name small { display: block; margin-top: 2px; font-size: 14px; font-weight: 550; line-height: 18px; }
+.package-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 16px; font-weight: 550; line-height: 22px; }
+.package-name svg { flex-shrink: 0; color: var(--primary); }
+.package-badge { display: inline-flex; align-items: center; flex-shrink: 0; height: 18px; padding: 0 7px; border-radius: 999px; background: #e3edc7; color: var(--primary); font-size: 9px; font-weight: 650; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; }
 .package-price { font-size: 17px; font-weight: 600; line-height: 22px; white-space: nowrap; color: var(--primary); font-variant-numeric: tabular-nums; }
 .package-contents { margin-top: 12px; padding: 14px 16px; border-radius: var(--r-control); background: #f7f6f0; }
 .package-contents > p { margin: 0 0 12px; font-size: 15px; font-weight: 550; letter-spacing: -0.02em; line-height: 1.2; }
@@ -622,7 +622,8 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .lead-receipt li { --receipt-ease: cubic-bezier(0.32, 0.72, 0, 1); display: grid; grid-template-rows: 0fr; transition: grid-template-rows 420ms var(--receipt-ease); }
 .lead-receipt li[data-on="true"] { grid-template-rows: 1fr; }
 .lead-receipt li > div { min-height: 0; overflow: hidden; }
-.lead-receipt p { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px dashed #ffffff40; opacity: 0; transform: translateY(-6px); transition: opacity 260ms ease-out, transform 420ms var(--receipt-ease); }
+.lead-receipt p { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 14px; padding: 11px 0 0; opacity: 0; transform: translateY(-6px); transition: opacity 260ms ease-out, transform 420ms var(--receipt-ease); }
+.lead-receipt p::after { content: ""; flex-basis: 100%; height: 1px; margin-top: 11px; background: repeating-linear-gradient(90deg, #e3edc7cc 0 4px, transparent 4px 8px); }
 .lead-receipt li[data-on="true"] p { opacity: 1; transform: none; }
 .project-modal[data-measure] .lead-receipt :is(li, p) { transition: none; }
 .project-modal[data-measure="open"] .lead-receipt li { grid-template-rows: 1fr; }
@@ -630,6 +631,7 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .lead-receipt strong { font-size: 15px; font-weight: 600; }
 .lead-receipt-price { font-size: 15px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .lead-total { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.lead-note { margin: 8px 0 0; font-size: 13px; line-height: 1.35; color: #d7e0cd; }
 .lead-total > span { font-size: 16px; font-weight: 650; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; color: #ffffff; }
 /* Кегль цены ограничен шириной панели: самая длинная цена занимает ~7.8em */
 .lead-panel { container-type: inline-size; }
@@ -711,7 +713,8 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .project-modal[data-density] .package-extra { margin-top: 12px; padding-block: 10px; }
 .project-modal[data-density] .lead-panel { padding: 24px; }
 .project-modal[data-density] .lead-receipt { margin-top: 0; }
-.project-modal[data-density] .lead-receipt p { padding-block: 8px; }
+.project-modal[data-density] .lead-receipt p { padding-top: 8px; }
+.project-modal[data-density] .lead-receipt p::after { margin-top: 8px; }
 .project-modal[data-density] .lead-total { margin-top: 12px; gap: 4px; }
 .project-modal[data-density] .lead-price { font-size: min(34px, 12.5cqi); }
 .project-modal[data-density] .lead-form { margin-top: 18px; }
@@ -736,13 +739,15 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .project-modal[data-density="tightest"] .package-base { padding: 8px 14px; }
 .project-modal[data-density="tightest"] .package-includes strong { font-size: 13.5px; }
 .project-modal[data-density="tightest"] .lead-price { font-size: min(28px, 12.5cqi); }
-.project-modal[data-density="tightest"] .lead-receipt p { padding-block: 6px; }
+.project-modal[data-density="tightest"] .lead-receipt p { padding-top: 6px; }
+.project-modal[data-density="tightest"] .lead-receipt p::after { margin-top: 6px; }
 .project-modal[data-density="tightest"] .lead-receipt { margin-top: 0; }
 .project-modal[data-density="tightest"] .lead-total { margin-top: 8px; gap: 2px; }
 .project-modal[data-density="tightest"] :is(.lead-receipt strong, .lead-receipt-price) { font-size: 14px; }
 /* Чек в потоке сетки: окно вырастает по самой высокой колонке, без своей прокрутки */
 /* Если чек со всеми позициями не помещается в ряд — ужимаем только форму */
-.project-modal[data-receipt] .lead-receipt p { padding-block: 5px; }
+.project-modal[data-receipt] .lead-receipt p { padding-top: 5px; }
+.project-modal[data-receipt] .lead-receipt p::after { margin-top: 5px; }
 .project-modal[data-receipt] .lead-receipt { margin-top: 0; }
 .project-modal[data-receipt] .lead-total { margin-top: 8px; gap: 0; }
 .project-modal[data-receipt] .lead-form { margin-top: 16px; }
@@ -763,7 +768,7 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
   .project-modal-header { display: flex; flex-shrink: 0; align-items: flex-start; gap: 12px; padding: 14px 68px 12px 16px; margin: 0; background: var(--background); border-radius: var(--r-card) var(--r-card) 0 0; border-bottom-color: #dce2d9b3; }
   .project-column-label { display: none; }
   .project-modal .package-heading, .project-modal .lead-panel > h3 { display: block; font-size: 22px; font-weight: 550; letter-spacing: -0.025em; line-height: 1.1; }
-  .project-modal .lead-receipt { margin-top: 16px; border-top: 1px dashed #ffffff40; }
+  .project-modal .lead-receipt { margin-top: 16px; }
   .project-title h2 { font-size: 28px; }
   .project-title p { margin-top: 6px; font-size: 13px; gap: 6px; }
   .project-modal-grid { display: flex; flex-direction: column; align-items: stretch; gap: 28px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 16px calc(96px + env(safe-area-inset-bottom)); }
@@ -808,7 +813,8 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 @media (max-width: 767px) {
   .project-modal .lead-panel h3 { font-size: 22px; }
   .project-modal :is(.lead-receipt strong, .lead-receipt-price) { font-size: 13px; }
-  .project-modal .lead-receipt p { gap: 10px; padding-block: 9px; }
+  .project-modal .lead-receipt p { column-gap: 10px; padding-top: 9px; }
+  .project-modal .lead-receipt p::after { margin-top: 9px; }
   .project-modal .lead-total > span { font-size: 14px; }
   .project-modal .lead-price { font-size: min(28px, 11cqi); }
 }

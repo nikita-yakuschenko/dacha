@@ -285,6 +285,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
           {line.note ? <strong>{line.note}</strong> : <><strong>{line.name}</strong><span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span></>}
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
+        {format !== "assembly" ? <p className="lead-note">{"Домокомплект для\u00a0самостоятельной сборки."}</p> : null}
         <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
       </aside>
     </div>
