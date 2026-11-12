@@ -22,7 +22,7 @@ function maskPhone(value: string) {
   return masked;
 }
 
-export function ProjectLeadForm({ project, goal }: { project?: Project; goal: string }) {
+export function ProjectLeadForm({ project, projectSlug, goal, submitLabel = "Получить расчёт", done }: { project?: Project; projectSlug?: string; goal: string; submitLabel?: string; done?: string }) {
   const { selection } = useSelection();
   const id = useId();
   const [name, setName] = useState("");
@@ -52,10 +52,11 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
     setStatus("sending");
     requestId.current ||= crypto.randomUUID();
     try {
-      const response = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: project?.slug ?? selection.project, format, terrace: selection.terrace, extras: selection.extras, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
+      const slug = project?.slug ?? projectSlug ?? selection.project;
+      const response = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: name.trim(), channel: "phone", contact: phone, project: slug, format: projectSlug ? "kit" : format, terrace: projectSlug ? false : selection.terrace, extras: projectSlug ? [] : selection.extras, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
-      track({ event: "lead_accepted", project: project?.slug ?? selection.project, format });
+      track({ event: "lead_accepted", project: slug, format: projectSlug ? "kit" : format });
       metrikaGoal(goal);
       setStatus("done");
     } catch {
@@ -67,7 +68,7 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
   if (status === "done") return <div className="lead-done" role="status">
     <span className="lead-done-icon"><IconCheck size={26} stroke={2.2} /></span>
     <h3>Спасибо{name.trim() && `, ${name.trim()}`}!</h3>
-    <p>{project ? `Перезвоним на ${phone} и рассчитаем дом «${project.name}» под ваш участок.` : `Перезвоним на ${phone}, поможем выбрать дом и посчитаем стоимость.`}</p>
+    <p>{done ? <>{"Перезвоним на\u00a0"}{phone}{". "}{done}</> : project ? `Перезвоним на ${phone} и рассчитаем дом «${project.name}» под ваш участок.` : `Перезвоним на ${phone}, поможем выбрать дом и посчитаем стоимость.`}</p>
   </div>;
 
   return <form className="lead-form" onSubmit={submit} noValidate>
@@ -81,7 +82,7 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
       <label htmlFor={`${id}-phone`}>Телефон</label>
       {errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}
     </div>
-    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>Получить расчёт<IconArrowRight size={20} /></>}</button>
+    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>{submitLabel}<IconArrowRight size={20} /></>}</button>
     <label className="lead-consent" data-invalid={!!errors.consent}>
       <input ref={consentRef} type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(prev => ({ ...prev, consent: undefined })); }} aria-invalid={!!errors.consent} />
       <span>Соглашаюсь на <PrivacyLink>обработку персональных данных</PrivacyLink></span>

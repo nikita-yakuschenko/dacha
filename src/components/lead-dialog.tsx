@@ -24,7 +24,7 @@ function liftAboveKeyboard(node: HTMLDivElement | null) {
 }
 
 // Кнопка расчёта открывает окно с формой заявки прямо на месте
-export function CalculateButton({ children = "Получить расчёт", project, format, className, variant = "default", goal }: { children?: ReactNode; project?: ProjectId; format?: Format; className?: string; variant?: "default" | "outline" | "ghost" | "light"; goal: string }) {
+export function CalculateButton({ children = "Получить расчёт", project, format, className, variant = "default", goal, title = "Заявка на\u00a0расчёт", note, projectSlug, submitLabel, done }: { children?: ReactNode; project?: ProjectId; format?: Format; className?: string; variant?: "default" | "outline" | "ghost" | "light"; goal: string; title?: string; note?: ReactNode; projectSlug?: string; submitLabel?: string; done?: string }) {
   const { selection, update } = useSelection();
   function open() {
     update({ ...(project ? { project } : {}), ...(format ? { format } : {}) });
@@ -36,8 +36,9 @@ export function CalculateButton({ children = "Получить расчёт", pr
     <Dialog.Portal>
       <Dialog.Overlay className="project-modal-overlay" />
       <Dialog.Content ref={liftAboveKeyboard} className="lead-panel lead-dialog" aria-describedby={undefined} onOpenAutoFocus={event => { event.preventDefault(); (event.currentTarget as HTMLElement).focus(); }}>
-        <Dialog.Title asChild><h3>Заявка на расчёт</h3></Dialog.Title>
-        <ProjectLeadForm goal="lead_popup" />
+        <Dialog.Title asChild><h3>{title}</h3></Dialog.Title>
+        {note ? <p className="lead-dialog-note">{note}</p> : null}
+        <ProjectLeadForm goal="lead_popup" projectSlug={projectSlug} submitLabel={submitLabel} done={done} />
         <Dialog.Close className="lead-dialog-close" aria-label="Закрыть"><IconX size={20} /></Dialog.Close>
       </Dialog.Content>
     </Dialog.Portal>

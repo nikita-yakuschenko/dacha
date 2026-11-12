@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProjectTrigger } from "./project-trigger";
+import { CalculateButton } from "./lead-dialog";
 import { areaGroups, formatMeters, formatPrice, projects } from "@/lib/data";
 import { filterGoalId } from "@/lib/metrika-goals";
 import { metrikaGoal } from "@/lib/metrika";
@@ -24,5 +25,6 @@ export function ProjectGrid() {
         </div>
       </article></li>)}
     </ul>
+    <div className="project-more"><CalculateButton variant="outline" goal="lead_popup_custom" title={"Ещё проекты"} projectSlug="custom" submitLabel="Обсудить проект" done={"Обсудим индивидуальный проект."} note={"Новые проекты сейчас в\u00a0разработке. Ваш дом готовы спроектировать и\u00a0изготовить индивидуально."}>Ещё проекты</CalculateButton></div>
   </>;
 }
