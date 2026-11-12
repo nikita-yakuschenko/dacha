@@ -4,7 +4,7 @@ import { FaqList } from "@/components/faq-list";
 import { IconArrowDown, IconLeaf, IconTools, IconWallet } from "@tabler/icons-react";
 import { CalculateButton } from "@/components/lead-dialog";
 import { HouseImage } from "@/components/house-image";
-import { ProjectLeadForm } from "@/components/project-lead-form";
+import { BuyPhoneForm, ProjectLeadForm } from "@/components/project-lead-form";
 import { faq } from "@/lib/data";
 import { SpecKit } from "@/components/spec-kit";
 export const metadata = { alternates: { canonical: "/" } };
@@ -15,5 +15,5 @@ export default function Home() { return <main id="main">
   <section id="calculation" tabIndex={-1} className="container section calc-section"><div className="section-heading"><h2>Просто заказать</h2></div><div className="calc-layout"><HouseImage className="calc-image" /><div className="lead-panel calc-lead"><h3>Заявка на расчёт</h3><p>Перезвоним, поможем выбрать проект и посчитаем стоимость с доставкой и монтажом.</p><ProjectLeadForm goal="lead_page" /></div></div></section>
   <section className="container section process-section"><h2>Просто пять шагов</h2><ol className="process-list">{[["Выбираем", "Проект и комплектацию"], ["Согласовываем", "Условия и сроки"], ["Изготавливаем", "Ваш дачный дом"], ["Отправляем", "Комплект на участок"], ["Собираем", "Своими силами или нашей бригадой"]].map(([title, text], i) => <li key={title}><span>{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
   <section id="faq" className="container section faq-section"><div><h2>Просто отвечаем</h2><p className="intro">То, что важно знать до выбора дома.</p><CalculateButton goal="lead_popup_faq">Обсудить свой вопрос</CalculateButton></div><FaqList items={faq} /></section>
-  <section className="container final-section"><div><h2>Есть участок?<br />Просто купи дом!</h2><CalculateButton project="custom" variant="light" goal="lead_popup_custom">Рассчитать мой вариант</CalculateButton></div><HouseImage /></section>
+  <section className="container final-section"><div><h2>Есть участок?<br />Просто купи дом!</h2><BuyPhoneForm /></div><HouseImage /></section>
 </main>; }

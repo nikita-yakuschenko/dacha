@@ -88,3 +88,56 @@ export function ProjectLeadForm({ project, goal }: { project?: Project; goal: st
     </label>
   </form>;
 }
+
+// Финальный блок: только телефон. Имя в сделке — сам номер, чтобы менеджер видел, кто звонил
+export function BuyPhoneForm() {
+  const id = useId();
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
+  const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [errors, setErrors] = useState<{ phone?: string; consent?: string }>({});
+  const [sendFailed, setSendFailed] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
+  const requestId = useRef<string | null>(null);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (status === "sending") return;
+    const found = {
+      phone: phone.replace(/\D/g, "").length === 11 ? undefined : "Нужно 10 цифр после +7",
+      consent: consent ? undefined : "Нужно согласие",
+    };
+    setErrors(found);
+    setSendFailed(false);
+    if (found.phone || found.consent) { (found.phone ? phoneRef : consentRef).current?.focus(); return; }
+    setStatus("sending");
+    requestId.current ||= crypto.randomUUID();
+    try {
+      const response = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: phone, channel: "phone", contact: phone, project: "custom", format: "kit", terrace: false, extras: [], attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
+      const receipt: { accepted?: boolean; id?: string } = await response.json();
+      if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
+      track({ event: "lead_accepted", project: "custom", format: "kit" });
+      metrikaGoal("lead_popup_custom");
+      setStatus("done");
+    } catch {
+      setSendFailed(true);
+      setStatus("idle");
+    }
+  }
+
+  if (status === "done") return <div className="lead-done" role="status"><span className="lead-done-icon"><IconCheck size={26} stroke={2.2} /></span><h3>Спасибо!</h3><p>{"Перезвоним на\u00a0"}{phone}{" и\u00a0поможем купить дом."}</p></div>;
+
+  return <form className="final-buy" onSubmit={submit} noValidate>
+    <div className="lead-field" data-filled={phone.length > 0} data-invalid={!!errors.phone}>
+      <input ref={phoneRef} id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setErrors(prev => ({ ...prev, phone: undefined })); }} type="tel" inputMode="tel" autoComplete="tel" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-error` : undefined} />
+      <label htmlFor={`${id}-phone`}>Телефон</label>
+      {errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}
+    </div>
+    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>{"Купить дом"}<IconArrowRight size={20} /></>}</button>
+    <label className="lead-consent" data-invalid={!!errors.consent}>
+      <input ref={consentRef} type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(prev => ({ ...prev, consent: undefined })); }} aria-invalid={!!errors.consent} />
+      <span>Соглашаюсь на <PrivacyLink>обработку персональных данных</PrivacyLink></span>
+    </label>
+  </form>;
+}

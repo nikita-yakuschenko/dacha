@@ -262,6 +262,11 @@ input::placeholder { color: #6c7363; }
 .final-section { background: var(--primary); color: var(--background); border-radius: var(--r-card); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; margin-bottom: 70px; }
 .final-section > div { padding: 50px; }
 .final-section h2 { font-size: clamp(32px, 3.2vw, 43px); margin-bottom: 32px; }
+.final-buy { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; max-width: 520px; }
+.final-buy .lead-field { flex: 1 1 220px; min-width: 0; }
+.final-buy .lead-submit { flex: 0 0 auto; height: 52px; margin-top: 0; padding-inline: 20px; background: #ffffff; color: var(--primary); }
+.final-buy .lead-consent { flex: 1 0 100%; }
+.final-buy .lead-done { margin-top: 0; }
 .final-section .house-figure { border-radius: 0; min-height: 370px; }
 .site-footer { border-top: 1px solid var(--border); }
 .footer-top { padding-block: 40px; display: flex; gap: 30px; align-items: center; font-size: 12px; }
