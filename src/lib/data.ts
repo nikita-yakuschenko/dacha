@@ -147,8 +147,8 @@ export const projects: Project[] = Object.keys(offers).map(Number).sort((a, b) =
   const offer = offers[area];
   const photos = [`/images/houses/dacha-${area}-1.webp`, `/images/houses/dacha-${area}-2.webp`];
   const extraIds = ["piles", "plinth", "roof", "deck", "gutters", "windows", "cabin"];
-  // Окна и аренда бытовки пока не показываем. Утепление цокольной панели в прайсе — это утепление пола.
-  const hiddenExtras = new Set(["windows", "cabin"]);
+  // В карточке остаются сборка и покраска. Остальные допы из прайса скрыты.
+  const hiddenExtras = new Set(["windows", "cabin", "piles", "plinth", "roof", "deck", "gutters"]);
   return { slug: `dacha-${area}`, name: `Просто дача\u00a0${area}`, width: size.width, depth: size.depth, area, description: "", prices: { kit: offer.kit, assembly: offer.kit + offer.build }, terracePrices: { kit: 0, assembly: 0 }, extras: [...extras[area].map((item, index) => ({ ...item, id: extraIds[index] })).filter(item => !hiddenExtras.has(item.id)), { id: "paint", name: "Заводская покраска стен", price: 0, onRequest: true }], plan: `/images/houses/dacha-${area}-plan.webp`, photos, usableArea: area, wallThickness: null, terraceArea: null, specification: "pending" as const, image: photos[0], thumbnail: photos[0] };
 });
 // Группы для фильтра плитки по площади наружного контура
