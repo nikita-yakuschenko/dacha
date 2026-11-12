@@ -22,6 +22,7 @@ export function ProjectPackages({ project }: { project: Project }) {
     <div className="package-base">
       <strong className="package-name"><IconPackage size={18} stroke={1.6} /><span className="package-label"><span className="package-badge">Под ключ</span>Домокомплект</span></strong>
       <span className="package-price">{formatAmount(project.prices.kit)}<span className="package-currency">{"\u00a0руб."}</span></span>
+      {format !== "assembly" ? <p className="package-caption">{"Комплект для\u00a0самостоятельной сборки."}</p> : null}
     </div>
     <div className="package-addons">{addons.map(addon => <label className="addon-switch" key={addon.name}>
       <span><strong>{addon.name}</strong><small>{"+\u00a0"}<AnimatedPrice value={addon.add} /></small></span>

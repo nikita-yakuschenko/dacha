@@ -477,6 +477,7 @@ input::placeholder { color: #6c7363; }
 }
 @media (max-width: 350px) {
   .package-name svg { display: none; }
+  .package-caption { padding-left: 0; }
   .package-currency { display: none; }
   .package-price::after { content: "\00a0₽"; }
 }
@@ -591,10 +592,11 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 .package-heading:first-child { margin-top: 0; }
 .package-base { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 14px; row-gap: 8px; width: 100%; padding: 16px 18px; border: 0; border-radius: var(--r-control); background: var(--surface); box-shadow: inset 0 0 0 1px #dfe3d6; font: inherit; color: inherit; text-align: left; }
 .package-addons { display: grid; gap: 14px; margin-top: 12px; }
-.package-name { display: flex; align-items: flex-end; gap: 8px; min-width: 0; font-size: 16px; font-weight: 550; line-height: 22px; }
-.package-name svg { flex-shrink: 0; margin-bottom: 2px; color: var(--primary); }
-.package-label { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 0; }
+.package-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 16px; font-weight: 550; line-height: 22px; }
+.package-name svg { flex-shrink: 0; color: var(--primary); }
+.package-label { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
 .package-badge { display: inline-flex; align-items: center; height: 16px; padding: 0 6px; border-radius: 999px; background: var(--primary); color: #ffffff; font-size: 9px; font-weight: 650; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; }
+.package-caption { grid-column: 1 / -1; margin: 0; padding-left: 26px; font-size: 13px; line-height: 1.35; color: var(--muted-foreground); }
 .package-price { font-size: 17px; font-weight: 600; line-height: 22px; white-space: nowrap; color: var(--primary); font-variant-numeric: tabular-nums; }
 .package-contents { margin-top: 12px; padding: 14px 16px; border-radius: var(--r-control); background: #f7f6f0; }
 .package-contents > p { margin: 0 0 12px; font-size: 15px; font-weight: 550; letter-spacing: -0.02em; line-height: 1.2; }
@@ -631,8 +633,8 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 @media (prefers-reduced-motion: reduce) { .lead-receipt :is(li, p) { transition: none; } }
 .lead-receipt strong { font-size: 15px; font-weight: 600; }
 .lead-receipt-price { font-size: 15px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lead-receipt .lead-note { flex-basis: 100%; margin: 4px 0 0; font-size: 12px; font-weight: 450; line-height: 1.35; color: #d7e0cd; }
 .lead-total { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 16px; }
-.lead-note { margin: 8px 0 0; font-size: 13px; line-height: 1.35; color: #d7e0cd; }
 .lead-total > span { font-size: 16px; font-weight: 650; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; color: #ffffff; }
 /* Кегль цены ограничен шириной панели: самая длинная цена занимает ~7.8em */
 .lead-panel { container-type: inline-size; }

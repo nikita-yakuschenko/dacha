@@ -282,10 +282,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
       <aside className="lead-panel" ref={leadRef} aria-label="Заявка на расчёт">
         <h3>Заявка на расчёт</h3>
         <ul className="lead-receipt">{receipt.map(line => <li key={line.name} data-on={line.on} inert={!line.on}><div><p>
-          {line.note ? <strong>{line.note}</strong> : <><strong>{line.name}</strong><span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span></>}
+          {line.note ? <strong>{line.note}</strong> : <><strong>{line.name}</strong><span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span>{line.name === "Домокомплект" && format !== "assembly" ? <span className="lead-note">{"Комплект для\u00a0самостоятельной сборки."}</span> : null}</>}
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
-        {format !== "assembly" ? <p className="lead-note">{"Домокомплект для\u00a0самостоятельной сборки."}</p> : null}
         <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
       </aside>
     </div>
