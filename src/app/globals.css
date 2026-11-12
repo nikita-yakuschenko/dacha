@@ -384,12 +384,15 @@ input::placeholder { color: #6c7363; }
   .spec-card, .spec-card[data-area="foundation"], .spec-card[data-area="delivery"] { grid-area: auto; min-height: 0; }
   .spec-face { min-height: 108px; }
   .intro { font-size: 15px; }
-  .process-list { flex-direction: column; gap: 0; margin-top: 28px; padding-bottom: 0; }
+  .process-list { flex-direction: column; gap: 0; margin-top: 20px; padding-bottom: 0; }
   .process-list li { flex: none; width: 100%; }
-  .process-list button { display: grid; grid-template-columns: 42px minmax(0, 1fr); column-gap: 18px; align-items: start; padding-block: 16px; }
-  .process-list button::before { inset: 4px -16px; }
+  .process-list button { display: grid; grid-template-columns: 42px minmax(0, 1fr); column-gap: 14px; align-items: center; padding-block: 8px; }
+  .process-list button::before { inset: 2px -12px; }
+  .process-list p { height: auto; }
+  .process-list .process-mark { display: none; }
+  .process-list li[data-open] .process-mark { display: block; }
   .process-list .process-index { grid-row: 1 / span 2; }
-  .process-list li:not(:last-child)::before { top: 37px; bottom: -37px; left: 21px; right: auto; width: 1px; height: auto; }
+  .process-list li:not(:last-child)::before { top: 29px; bottom: -29px; left: 21px; right: auto; width: 1px; height: auto; }
   .final-section > div { padding: 35px; }
   .final-section h2 { font-size: 33px; }
   .project-trust { flex-wrap: wrap; }
