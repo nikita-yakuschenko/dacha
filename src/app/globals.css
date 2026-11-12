@@ -264,6 +264,8 @@ input::placeholder { color: #6c7363; }
 .process-list li[data-open] p { max-width: 16ch; color: #e7eee3; font-size: 15px; }
 .process-list li[data-open] .process-mark { display: block; width: 42px; height: 2px; margin-top: 10px; background: #fff; }
 .process-list .process-photo { border-radius: 0; height: 100%; min-height: 228px; }
+.process-list .process-photo-cut { background: transparent; }
+.process-list .process-photo-cut img { object-fit: contain; object-position: center bottom; }
 .faq-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 420px); gap: 24px; align-items: start; border-top: 1px solid var(--border); }
 @media (max-width: 1023px) { .faq-section { grid-template-columns: minmax(0, 1fr) minmax(300px, 360px); gap: 16px; } }
 .faq-main .intro { max-width: 36ch; margin-bottom: 28px; }
@@ -391,8 +393,9 @@ input::placeholder { color: #6c7363; }
   .process-list li[data-open] + li::before { top: 37px; }
   .process-list li:not([data-open]):has(+ li[data-open])::before,
   .process-list li:not([data-open]):last-child::before { content: ""; bottom: 37px; }
-  .process-list li[data-open] { margin-top: 12px; }
-  .process-list li[data-open] h3 { font-size: 28px; }
+  .process-list li[data-open] { grid-template-columns: minmax(0, 1.35fr) 118px; min-height: 0; margin-top: 12px; }
+  .process-list li[data-open] h3 { font-size: 22px; }
+  .process-list .process-photo { height: 168px; min-height: 0; align-self: center; }
   .final-section > div { padding: 35px; }
   .final-section h2 { font-size: 33px; }
   .project-trust { flex-wrap: wrap; }
