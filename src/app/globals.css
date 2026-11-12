@@ -306,8 +306,10 @@ input::placeholder { color: #6c7363; }
 .footer-top { padding-block: 40px; display: flex; gap: 26px; align-items: center; font-size: 12px; }
 .footer-top img { width: auto; height: 50px; }
 .footer-contacts { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-.footer-social { display: flex; gap: 14px; }
-.footer-social a { display: flex; color: var(--primary); }
+.footer-social { display: flex; align-items: center; gap: 14px; }
+.footer-social a { position: relative; display: inline-flex; width: 22px; height: 22px; }
+.footer-social__icon { display: block; width: 22px; height: 22px; object-fit: contain; transition: opacity 0.2s ease-out; }
+.footer-social__icon--original { position: absolute; inset: 0; opacity: 0; }
 .footer-bottom { padding-block: 20px; font-size: 10px; color: var(--muted-foreground); display: flex; justify-content: center; align-items: center; }
 .footer-phone { font-size: 22px; font-weight: 600; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--foreground); text-decoration: none; }
 .breadcrumbs { display: flex; gap: 12px; align-items: center; padding-block: 22px; font-size: 11px; color: #66705c; min-height: 60px; }
@@ -337,7 +339,9 @@ input::placeholder { color: #6c7363; }
 .legal-page > p { color: #5a6650; }
 .legal-page > :is(a, button) { margin-top: 30px; }
 @media (hover: hover) and (pointer: fine) {
-  .header-inner nav :is(a, button):hover, .header-phone:hover, .footer-phone:hover, .footer-social a:hover, .text-link:hover { color: #69805a; }
+  .header-inner nav :is(a, button):hover, .header-phone:hover, .footer-phone:hover, .text-link:hover { color: #69805a; }
+  .footer-social a:hover .footer-social__icon--light, .footer-social a:focus-visible .footer-social__icon--light { opacity: 0; }
+  .footer-social a:hover .footer-social__icon--original, .footer-social a:focus-visible .footer-social__icon--original { opacity: 1; }
   .hero-models a:hover { background: #e9ecdf; }
   .choice:hover, .size-choice:hover { border-color: #829674; }
   .faq-item button:hover { color: #71855f; }
