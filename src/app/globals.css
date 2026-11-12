@@ -589,18 +589,13 @@ button.project-viewer-nav:active:not(:disabled) { transform: translateY(-50%) sc
 /* Комплектация: база-домокомплект и переключатели-добавки */
 .package-heading { padding: 0; margin: 30px 0 14px; font-size: 22px; font-weight: 550; letter-spacing: -0.025em; line-height: 1.1; }
 .package-heading:first-child { margin-top: 0; }
-.package-base { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 14px; row-gap: 8px; width: 100%; padding: 16px 18px; border: 0; border-radius: var(--r-control); background: var(--surface); box-shadow: inset 0 0 0 1px #dfe3d6; font: inherit; color: inherit; text-align: left; cursor: pointer; }
-.package-more { justify-self: end; font-size: 13px; line-height: 18px; color: var(--primary); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
-.package-reveal { position: relative; z-index: 2; }
-.package-kit { position: absolute; z-index: 3; left: 0; right: 0; top: calc(100% + 6px); display: grid; grid-template-rows: 0fr; overflow: hidden; pointer-events: none; border-radius: var(--r-control); background: #f7f6f0; box-shadow: 0 16px 36px #14221938; transition: grid-template-rows 420ms cubic-bezier(0.32, 0.72, 0, 1); }
-.package-kit[data-open="true"] { grid-template-rows: 1fr; pointer-events: auto; }
-.package-kit > div { min-height: 0; overflow: hidden; }
+.package-base { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 14px; row-gap: 8px; width: 100%; padding: 16px 18px; border: 0; border-radius: var(--r-control); background: var(--surface); box-shadow: inset 0 0 0 1px #dfe3d6; font: inherit; color: inherit; text-align: left; }
 .package-addons { display: grid; gap: 14px; margin-top: 12px; }
 .package-name { display: flex; align-items: center; gap: 7px; min-width: 0; font-size: 16px; font-weight: 550; line-height: 22px; }
 .package-name svg { color: var(--primary); }
 .package-note { font-size: 13px; line-height: 18px; color: var(--muted-foreground); }
 .package-price { font-size: 17px; font-weight: 600; line-height: 22px; white-space: nowrap; color: var(--primary); font-variant-numeric: tabular-nums; }
-.package-includes { display: grid; gap: 12px; margin: 0; padding: 14px 16px; list-style: none; }
+.package-includes { display: grid; gap: 12px; margin: 12px 0 0; padding: 14px 16px; list-style: none; border-radius: var(--r-control); background: #f7f6f0; }
 .package-includes li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; align-items: start; }
 .package-tick { display: grid; place-items: center; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; background: #dfe7d3; color: var(--primary); }
 .package-includes strong { display: block; font-size: 14.5px; font-weight: 550; line-height: 1.35; }
