@@ -17,12 +17,13 @@ export type DachaLead = {
   terrace: boolean;
   extras: string[];
   attribution: Partial<Record<(typeof utmKeys)[number], string>>;
+  question?: string;
   requestId: string;
 };
 
 // Сумму и площадь считает сервер по каталогу, клиент их не присылает
 export function describeLead(lead: DachaLead) {
-  if (lead.project === "custom") return { title: `Свой вариант — ${lead.name}`, area: null as number | null, opportunity: null as number | null };
+  if (lead.project === "custom") return { title: lead.question ? `Вопрос — ${lead.name}` : `Свой вариант — ${lead.name}`, area: null as number | null, opportunity: null as number | null };
   const project = projects.find((item) => item.slug === lead.project);
   if (!project) return null;
   const opportunity = priceFor(project, lead.format, lead.terrace) + extrasTotal(project, lead.extras);
@@ -40,6 +41,11 @@ export function parseLead(body: unknown, requestId: string | null): { ok: true; 
   const knownProject = project === "custom" || projects.some((item) => item.slug === project);
   const extras = Array.isArray(input.extras) ? input.extras.filter((item): item is string => typeof item === "string") : null;
   const attribution = input.attribution;
+  let question: string | undefined;
+  if (Object.prototype.hasOwnProperty.call(input, "question")) {
+    question = typeof input.question === "string" ? input.question.trim().replace(/\s+/g, " ") : "";
+    if (!question || question.length > 400 || /[\u0000-\u001f]/.test(question)) return { ok: false };
+  }
   if (!name || name.length > 80 || /[\u0000-\u001f]/.test(name)) return { ok: false };
   if (!/^7\d{10}$/.test(phoneDigits)) return { ok: false };
   if (input.channel !== "phone" || (input.format !== "kit" && input.format !== "assembly") || typeof input.terrace !== "boolean") return { ok: false };
@@ -50,5 +56,5 @@ export function parseLead(body: unknown, requestId: string | null): { ok: true; 
     if (!utmKeys.includes(key as (typeof utmKeys)[number]) || typeof value !== "string" || value.length > 200) return { ok: false };
     if (value) utm[key as (typeof utmKeys)[number]] = value;
   }
-  return { ok: true, lead: { name, phone: `+${phoneDigits}`, project, format: input.format, terrace: input.terrace, extras, attribution: utm, requestId } };
+  return { ok: true, lead: { name, phone: `+${phoneDigits}`, project, format: input.format, terrace: input.terrace, extras, attribution: utm, question, requestId } };
 }

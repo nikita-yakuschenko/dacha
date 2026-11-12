@@ -73,6 +73,7 @@ async function createDeal(lead: DachaLead) {
     UTM_CONTENT: lead.attribution.utm_content,
     UTM_TERM: lead.attribution.utm_term,
   };
+  if (lead.question) fields.COMMENTS = lead.question;
   if (described.area != null) fields.UF_CRM_DACHA_AREA = described.area;
   if (described.opportunity != null) {
     fields.OPPORTUNITY = described.opportunity;

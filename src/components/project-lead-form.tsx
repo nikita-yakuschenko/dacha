@@ -142,3 +142,65 @@ export function BuyPhoneForm() {
     </label>
   </form>;
 }
+
+// Вопрос со страницы: телефон и текст. Имя в сделке — номер, вопрос — в комментарии
+export function FaqQuestionForm() {
+  const id = useId();
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const questionRef = useRef<HTMLTextAreaElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
+  const [phone, setPhone] = useState("");
+  const [question, setQuestion] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [errors, setErrors] = useState<{ phone?: string; question?: string; consent?: string }>({});
+  const [sendFailed, setSendFailed] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
+  const requestId = useRef<string | null>(null);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (status === "sending") return;
+    const text = question.trim().replace(/\s+/g, " ");
+    const found = {
+      phone: phone.replace(/\D/g, "").length === 11 ? undefined : "Нужно 10 цифр после +7",
+      question: text ? undefined : "Напишите вопрос",
+      consent: consent ? undefined : "Нужно согласие",
+    };
+    setErrors(found);
+    setSendFailed(false);
+    if (found.phone || found.question || found.consent) { (found.phone ? phoneRef : found.question ? questionRef : consentRef).current?.focus(); return; }
+    setStatus("sending");
+    requestId.current ||= crypto.randomUUID();
+    try {
+      const response = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": requestId.current }, body: JSON.stringify({ name: phone, channel: "phone", contact: phone, project: "custom", format: "kit", terrace: false, extras: [], question: text, attribution: getAttribution() }), signal: AbortSignal.timeout(15000) });
+      const receipt: { accepted?: boolean; id?: string } = await response.json();
+      if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
+      track({ event: "lead_accepted", project: "custom", format: "kit" });
+      metrikaGoal("lead_popup_faq");
+      setStatus("done");
+    } catch {
+      setSendFailed(true);
+      setStatus("idle");
+    }
+  }
+
+  if (status === "done") return <div className="lead-done" role="status"><span className="lead-done-icon"><IconCheck size={26} stroke={2.2} /></span><h3>Спасибо!</h3><p>{"Перезвоним на\u00a0"}{phone}{" и\u00a0ответим на\u00a0вопрос."}</p></div>;
+
+  return <form className="lead-form faq-question" onSubmit={submit} noValidate>
+    <div className="lead-field" data-filled={phone.length > 0} data-invalid={!!errors.phone}>
+      <input ref={phoneRef} id={`${id}-phone`} value={phone} onChange={e => { setPhone(maskPhone(e.target.value)); setErrors(prev => ({ ...prev, phone: undefined })); }} type="tel" inputMode="tel" autoComplete="tel" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-error` : undefined} />
+      <label htmlFor={`${id}-phone`}>Телефон</label>
+      {errors.phone && <span className="lead-error" id={`${id}-phone-error`} role="alert">{errors.phone}</span>}
+    </div>
+    <div className="lead-field" data-filled={question.length > 0} data-invalid={!!errors.question}>
+      <textarea ref={questionRef} id={`${id}-question`} value={question} onChange={e => { setQuestion(e.target.value.slice(0, 400)); setErrors(prev => ({ ...prev, question: undefined })); }} rows={4} aria-invalid={!!errors.question} aria-describedby={errors.question ? `${id}-question-error` : undefined} />
+      <label htmlFor={`${id}-question`}>Вопрос</label>
+      {errors.question && <span className="lead-error" id={`${id}-question-error`} role="alert">{errors.question}</span>}
+    </div>
+    <button className="lead-submit" type="submit" disabled={status === "sending"}>{status === "sending" ? <><IconLoader2 className="loading-icon" size={20} />Отправляем…</> : sendFailed ? <span role="alert">Не отправилось, ещё раз</span> : <>{"Обсудить вопрос"}<IconArrowRight size={20} /></>}</button>
+    <label className="lead-consent" data-invalid={!!errors.consent}>
+      <input ref={consentRef} type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(prev => ({ ...prev, consent: undefined })); }} aria-invalid={!!errors.consent} />
+      <span>Соглашаюсь на <PrivacyLink>обработку персональных данных</PrivacyLink></span>
+    </label>
+  </form>;
+}

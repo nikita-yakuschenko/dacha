@@ -4,7 +4,7 @@ import { FaqList } from "@/components/faq-list";
 import { IconArrowDown, IconLeaf, IconTools, IconWallet } from "@tabler/icons-react";
 import { CalculateButton } from "@/components/lead-dialog";
 import { HouseImage } from "@/components/house-image";
-import { BuyPhoneForm, ProjectLeadForm } from "@/components/project-lead-form";
+import { BuyPhoneForm, FaqQuestionForm, ProjectLeadForm } from "@/components/project-lead-form";
 import { faq } from "@/lib/data";
 import { SpecKit } from "@/components/spec-kit";
 export const metadata = { alternates: { canonical: "/" } };
@@ -14,6 +14,6 @@ export default function Home() { return <main id="main">
   <section id="specification" className="section section-tint"><div className="container"><div className="spec-intro"><h2>Простой набор</h2><CalculateButton goal="lead_popup_specification">Обсудить комплектацию</CalculateButton></div><SpecKit /></div></section>
   <section id="calculation" tabIndex={-1} className="container section calc-section"><div className="section-heading"><h2>Просто заказать</h2></div><div className="calc-layout"><HouseImage className="calc-image" /><div className="lead-panel calc-lead"><h3>Заявка на расчёт</h3><p>Перезвоним, поможем выбрать проект и посчитаем стоимость с доставкой и монтажом.</p><ProjectLeadForm goal="lead_page" /></div></div></section>
   <section className="container section process-section"><h2>Просто пять шагов</h2><ol className="process-list">{[["Выбираем", "Проект и комплектацию"], ["Согласовываем", "Условия и сроки"], ["Изготавливаем", "Ваш дачный дом"], ["Отправляем", "Комплект на участок"], ["Собираем", "Своими силами или нашей бригадой"]].map(([title, text], i) => <li key={title}><span>{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
-  <section id="faq" className="container section faq-section"><div><h2>Просто отвечаем</h2><p className="intro">То, что важно знать до выбора дома.</p><CalculateButton goal="lead_popup_faq">Обсудить свой вопрос</CalculateButton></div><FaqList items={faq} /></section>
+  <section id="faq" className="container section faq-section"><div className="faq-main"><h2>Просто отвечаем</h2><p className="intro">То, что важно знать до выбора дома.</p><FaqList items={faq} /></div><div className="lead-panel faq-ask"><h3>Свой вопрос</h3><FaqQuestionForm /></div></section>
   <section className="container final-section"><div><div className="final-stack"><h2>Есть участок?<br />Просто купи дачу!</h2><BuyPhoneForm /></div></div><HouseImage /></section>
 </main>; }
