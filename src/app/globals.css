@@ -253,7 +253,7 @@ input::placeholder { color: #6c7363; }
 .process-index { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #e4ead8; color: var(--primary); font-size: 13px; font-weight: 550; letter-spacing: -0.03em; }
 .process-copy { display: grid; gap: 6px; min-width: 0; }
 .process-list h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.03em; white-space: nowrap; transition: color 420ms ease; }
-.process-list p { margin: 0; font-size: 13px; line-height: 1.35; color: var(--muted-foreground); white-space: nowrap; transition: color 420ms ease; }
+.process-list p { margin: 0; height: calc(1.35em * 2); font-size: 13px; line-height: 1.35; color: var(--muted-foreground); transition: color 420ms ease; }
 .process-mark { display: block; width: 36px; height: 2px; margin-top: 4px; background: #fff; transform: scaleX(0); transform-origin: left center; opacity: 0; transition: transform 420ms var(--process-ease), opacity 280ms ease; }
 .process-list li:not(:last-child)::before { content: ""; position: absolute; z-index: 0; top: 21px; left: 21px; right: calc(var(--process-gap) * -1 - 21px); height: 1px; background: #c9d3c0; pointer-events: none; }
 .process-list li[data-open] { color: #fff; }
