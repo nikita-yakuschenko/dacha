@@ -262,10 +262,11 @@ input::placeholder { color: #6c7363; }
 .final-section { background: var(--primary); color: var(--background); border-radius: var(--r-card); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; margin-bottom: 70px; }
 .final-section > div { padding: 50px; }
 .final-section h2 { font-size: clamp(32px, 3.2vw, 43px); margin-bottom: 32px; }
-.final-buy { display: grid; justify-items: start; gap: 10px; width: min(280px, 100%); }
-.final-buy .lead-field { width: 100%; }
-.final-buy .lead-submit { width: auto; height: 48px; margin-top: 0; padding-inline: 20px; background: #e3edc7; color: var(--primary); }
-.final-buy .lead-consent { width: 100%; }
+.final-buy { display: grid; gap: 10px; width: max-content; max-width: 100%; }
+.final-buy .lead-field,
+.final-buy .lead-submit { width: 100%; }
+.final-buy .lead-submit { height: 48px; margin-top: 0; padding-inline: 20px; background: #e3edc7; color: var(--primary); }
+.final-buy .lead-consent { width: max-content; white-space: nowrap; }
 .final-buy .lead-done { margin-top: 0; }
 .final-section .house-figure { border-radius: 0; min-height: 370px; }
 .site-footer { border-top: 1px solid var(--border); }
