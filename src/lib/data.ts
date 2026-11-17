@@ -7,20 +7,20 @@ const sizes: Record<number, { width: number; depth: number }> = {
   26: { width: 7.35, depth: 4.83 }, 27: { width: 6, depth: 5 }, 33: { width: 6, depth: 6 }, 36: { width: 8.5, depth: 3.6 },
   40: { width: 6, depth: 6 }, 43: { width: 7.9, depth: 6 }, 47: { width: 8.95, depth: 5.75 }, 50: { width: 3.38, depth: 4.3 },
 };
-// Специальная цена домокомплекта и стоимость сборки из прайса «НН МБ»
+// Базовая стоимость домокомплекта и сборка из прайса «НН МБ»
 const offers: Record<number, { kit: number; build: number }> = {
-  10: { kit: 253000, build: 94000 },
-  16: { kit: 334000, build: 122000 },
-  24: { kit: 464000, build: 142000 },
-  25: { kit: 488000, build: 154000 },
-  26: { kit: 648000, build: 198000 },
-  27: { kit: 554000, build: 173000 },
-  33: { kit: 677000, build: 209000 },
-  36: { kit: 516000, build: 173000 },
-  40: { kit: 722000, build: 237000 },
-  43: { kit: 821000, build: 261000 },
-  47: { kit: 785000, build: 260000 },
-  50: { kit: 747000, build: 240000 },
+  10: { kit: 266000, build: 94000 },
+  16: { kit: 351000, build: 122000 },
+  24: { kit: 488000, build: 142000 },
+  25: { kit: 513000, build: 154000 },
+  26: { kit: 682000, build: 198000 },
+  27: { kit: 583000, build: 173000 },
+  33: { kit: 712000, build: 209000 },
+  36: { kit: 543000, build: 173000 },
+  40: { kit: 760000, build: 237000 },
+  43: { kit: 864000, build: 261000 },
+  47: { kit: 826000, build: 260000 },
+  50: { kit: 786000, build: 240000 },
 };
 // Допы из прайса, кроме сборки: она уже переключается отдельно
 const extras: Record<number, { name: string; price: number }[]> = {
