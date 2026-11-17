@@ -22,13 +22,16 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build
-      # azure.archive.ubuntu.com с раннера не резолвится. Те же пакеты Ubuntu берём с зеркала Яндекса.
+      # azure.archive.ubuntu.com с раннера не резолвится. Если он есть в списках — меняем на зеркало Яндекса.
       - run: |
           mapfile -t lists < <(sudo grep -RIl azure.archive.ubuntu.com /etc/apt || true)
-          printf '%s\n' "${lists[@]}"
-          test "${#lists[@]}" -gt 0
-          sudo sed -i 's/azure\.archive\.ubuntu\.com/mirror.yandex.ru/g' "${lists[@]}"
-          sudo apt-get update
+          if [ "${#lists[@]}" -gt 0 ]; then
+            printf '%s\n' "${lists[@]}"
+            sudo sed -i 's/azure\.archive\.ubuntu\.com/mirror.yandex.ru/g' "${lists[@]}"
+            sudo apt-get update
+          else
+            echo "azure.archive.ubuntu.com not found in apt sources; skip mirror rewrite"
+          fi
       - run: npx playwright install --with-deps chromium
       - run: mkdir -p .impeccable/review
       - run: npm run test:ui
