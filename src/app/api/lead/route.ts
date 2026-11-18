@@ -5,6 +5,10 @@ export const dynamic = "force-dynamic";
 type EnumMap = Map<string, string>;
 let cachedEnums: { project: EnumMap; format: EnumMap; options: EnumMap } | null = null;
 
+function enumLabel(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase("ru-RU");
+}
+
 function webhook() {
   const value = process.env.BITRIX_WEBHOOK;
   return value ? (value.endsWith("/") ? value : `${value}/`) : null;
@@ -30,8 +34,8 @@ async function enums() {
   const wanted = new Map(listed.filter((field) => field.FIELD_NAME.startsWith("UF_CRM_DACHA_")).map((field) => [field.FIELD_NAME, field.ID]));
   async function mapOf(name: string, labels: Map<string, string>) {
     const field = await bitrix("crm.deal.userfield.get", { id: wanted.get(name) }) as { LIST?: { ID: string; VALUE: string }[] };
-    const byValue = new Map((field.LIST || []).map((item) => [item.VALUE, item.ID]));
-    return new Map([...labels].map(([code, label]) => [code, byValue.get(label) || ""]));
+    const byValue = new Map((field.LIST || []).map((item) => [enumLabel(item.VALUE), item.ID]));
+    return new Map([...labels].map(([code, label]) => [code, byValue.get(enumLabel(label)) || ""]));
   }
   cachedEnums = { project: await mapOf("UF_CRM_DACHA_PROJECT", dachaLabels.project), format: await mapOf("UF_CRM_DACHA_FORMAT", dachaLabels.format), options: await mapOf("UF_CRM_DACHA_OPTIONS", dachaLabels.options) };
   return cachedEnums;
