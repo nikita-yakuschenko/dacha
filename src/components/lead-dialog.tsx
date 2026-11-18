@@ -24,21 +24,21 @@ function liftAboveKeyboard(node: HTMLDivElement | null) {
 }
 
 // Кнопка расчёта открывает окно с формой заявки прямо на месте
-export function CalculateButton({ children = "Получить расчёт", project, format, className, variant = "default", goal, title = "Заявка на\u00a0расчёт", note, projectSlug, submitLabel, done }: { children?: ReactNode; project?: ProjectId; format?: Format; className?: string; variant?: "default" | "outline" | "ghost" | "light"; goal: string; title?: string; note?: ReactNode; projectSlug?: string; submitLabel?: string; done?: string }) {
+export function CalculateButton({ children = "Получить расчёт", project, format, className, variant = "default", source, title = "Заявка на\u00a0расчёт", note, projectSlug, submitLabel, done }: { children?: ReactNode; project?: ProjectId; format?: Format; className?: string; variant?: "default" | "outline" | "ghost" | "light"; source: string; title?: string; note?: ReactNode; projectSlug?: string; submitLabel?: string; done?: string }) {
   const { selection, update } = useSelection();
   function open() {
     update({ ...(project ? { project } : {}), ...(format ? { format } : {}) });
     track({ event: "calculation_open", project: project || selection.project, format: format || selection.format });
-    metrikaGoal(goal);
+    metrikaGoal("calculation_open", { source });
   }
-  return <Dialog.Root onOpenChange={isOpen => { if (isOpen) open(); else metrikaGoal("lead_popup_close"); }}>
+  return <Dialog.Root onOpenChange={isOpen => { if (isOpen) open(); }}>
     <Dialog.Trigger asChild><Button className={className} variant={variant}>{children}<IconArrowUpRight size={18} aria-hidden="true" /></Button></Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="project-modal-overlay" />
       <Dialog.Content ref={liftAboveKeyboard} className="lead-panel lead-dialog" aria-describedby={undefined} onOpenAutoFocus={event => { event.preventDefault(); (event.currentTarget as HTMLElement).focus(); }}>
         <Dialog.Title asChild><h3>{title}</h3></Dialog.Title>
         {note ? <p className="lead-dialog-note">{note}</p> : null}
-        <ProjectLeadForm goal="lead_popup" projectSlug={projectSlug} submitLabel={submitLabel} done={done} />
+        <ProjectLeadForm source={source} projectSlug={projectSlug} submitLabel={submitLabel} done={done} />
         <Dialog.Close className="lead-dialog-close" aria-label="Закрыть"><IconX size={20} /></Dialog.Close>
       </Dialog.Content>
     </Dialog.Portal>

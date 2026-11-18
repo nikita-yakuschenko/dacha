@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, type ComponentProps } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { metrikaGoal } from "@/lib/metrika";
 
 // Раздел, к которому нужно докрутить после перехода на главную
 let pending: string | null = null;
@@ -41,11 +40,10 @@ function scrollToSection(id: string) {
 }
 
 // Кнопка-переход к разделу главной без ссылок с #
-export function ScrollTo({ to, goal, onClick, ...props }: ComponentProps<"button"> & { to: string; goal?: string }) {
+export function ScrollTo({ to, onClick, ...props }: ComponentProps<"button"> & { to: string }) {
   const router = useRouter();
   return <button type="button" {...props} onClick={event => {
     onClick?.(event);
-    if (goal) metrikaGoal(goal);
     if (scrollToSection(to)) return;
     pending = to;
     router.push("/", { scroll: false });

@@ -2,8 +2,7 @@
 import { IconCheck, IconPackage, IconTruck } from "@tabler/icons-react";
 import { assemblyPrice, formatAmount, specification, terracePrice, type Project } from "@/lib/data";
 import { track } from "@/lib/analytics";
-import { switchGoalId } from "@/lib/metrika-goals";
-import { metrikaGoal, plain } from "@/lib/metrika";
+import { metrikaGoal } from "@/lib/metrika";
 import { useSelection } from "./selection";
 import { AnimatedPrice } from "./animated-price";
 
@@ -11,8 +10,7 @@ import { AnimatedPrice } from "./animated-price";
 export function ProjectPackages({ project }: { project: Project }) {
   const { selection, update } = useSelection();
   const format = selection.format === "assembly" ? "assembly" : "kit";
-  const house = plain(project.name);
-  function switched(id: string, on: boolean) { metrikaGoal(switchGoalId(id, on), { project: house }); }
+  function switched(id: string, on: boolean) { metrikaGoal("project_option_change", { project: project.slug, option: id, selected: on ? "yes" : "no" }); }
   const addons = [
     ...(terracePrice(project) > 0 ? [{ name: "Добавить террасу", add: terracePrice(project), checked: selection.terrace, toggle: (on: boolean) => { switched("terrace", on); update({ terrace: on }); } }] : []),
     { name: "Добавить сборку", add: assemblyPrice(project, selection.terrace), checked: format === "assembly", toggle: (on: boolean) => { const next = on ? "assembly" : "kit"; switched("assembly", on); update({ format: next }); track({ event: "format_select", format: next }); } },

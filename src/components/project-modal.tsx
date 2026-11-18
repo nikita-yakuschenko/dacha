@@ -9,8 +9,7 @@ import { AnimatedPrice } from "./animated-price";
 import { ProjectPackages } from "./project-packages";
 import { ProjectLeadForm } from "./project-lead-form";
 import { useSelection } from "./selection";
-import { dachaId } from "@/lib/metrika-goals";
-import { metrikaGoal, plain } from "@/lib/metrika";
+import { metrikaGoal } from "@/lib/metrika";
 
 export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; onClose: () => void; returnFocus: HTMLElement }) {
   const [slide, setSlide] = useState(0);
@@ -58,10 +57,15 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     stage.addEventListener("wheel", onWheel, { passive: false });
     return () => stage.removeEventListener("wheel", onWheel);
   }, [viewerOpen, paintZoom]);
-  const houseName = plain(projects.find(item => item.slug === slug)?.name ?? slug);
-  const area = slug.replace("dacha-", "");
-  function openViewer(index: number, trigger: HTMLButtonElement) { viewerTrigger.current = trigger; viewerIndexRef.current = index; sliding.current = false; setViewerIndex(index); setViewerOpen(true); const photos = projects.find(item => item.slug === slug)?.photos.length ?? index; metrikaGoal(index >= photos ? dachaId("open_plan", area) : dachaId(`open_photo_${index + 1}`, area)); }
-  function closeViewer() { metrikaGoal(dachaId("close_viewer", area)); resetZoom(); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
+  function openViewer(index: number, trigger: HTMLButtonElement) {
+    viewerTrigger.current = trigger;
+    viewerIndexRef.current = index;
+    sliding.current = false;
+    setViewerIndex(index);
+    setViewerOpen(true);
+    trackViewerAction("open", index);
+  }
+  function closeViewer() { resetZoom(); setViewerOpen(false); setThumbsNear(false); viewerTrigger.current?.focus({ preventScroll: true }); }
   // Прячем нижнюю панель на мобилке, когда форма уже на экране
   const dialogNode = useRef<HTMLDivElement | null>(null);
   const measureGeneration = useRef(0);
@@ -150,10 +154,14 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     if (track) track.style.transform = "translateX(-100%)";
     sliding.current = false;
     resetZoom();
+    trackViewerAction("slide", next);
   }
-  function goalLand(index: number) {
-    const item = media[index];
-    metrikaGoal(item.kind === "plan" ? dachaId("slide_plan", area) : dachaId(`slide_photo_${index + 1}`, area));
+  function trackViewerAction(action: "open" | "slide", index: number) {
+    metrikaGoal("project_media", {
+      project: slug,
+      action: media[index].kind === "plan" ? [action, "plan"] : action,
+      source: "viewer",
+    });
   }
   // Сдвиг на один кадр: лента уезжает, затем кадры переставляются без скачка
   function animateStep(dir: 1 | -1) {
@@ -171,13 +179,12 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
   function goViewer(next: number) {
     const index = viewerIndexRef.current;
     if (next === index || sliding.current) return;
-    goalLand(next);
     const forward = (next - index + media.length) % media.length;
     if (forward === 1) animateStep(1);
     else if (forward === media.length - 1) animateStep(-1);
-    else { viewerIndexRef.current = next; setViewerIndex(next); resetZoom(); }
+    else { viewerIndexRef.current = next; setViewerIndex(next); resetZoom(); trackViewerAction("slide", next); }
   }
-  function stepViewer(delta: number) { if (sliding.current) return; const dir: 1 | -1 = delta < 0 ? -1 : 1; goalLand((viewerIndexRef.current + dir + media.length) % media.length); animateStep(dir); }
+  function stepViewer(delta: number) { if (sliding.current) return; const dir: 1 | -1 = delta < 0 ? -1 : 1; animateStep(dir); }
   function viewerPointerDown(event: PointerEvent<HTMLElement>) {
     if ((event.target as HTMLElement).closest("button") || sliding.current) return;
     // Иначе телефон отдаёт жест прокрутке или перетаскиванию картинки, и лента не едет
@@ -237,7 +244,6 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
         return;
       }
       const dir: 1 | -1 = dx < 0 ? 1 : -1;
-      goalLand((viewerIndexRef.current + dir + media.length) % media.length);
       sliding.current = true;
       delete track.dataset.drag;
       track.style.transform = `translateX(calc(-100% + ${dir === 1 ? -width : width}px))`;
@@ -250,7 +256,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     window.addEventListener("pointercancel", up);
   }
   function openLead() {
-    metrikaGoal(dachaId("cta", area));
+    metrikaGoal("calculation_open", { project: slug, source: "project" });
     const lead = document.querySelector<HTMLElement>(".project-modal .lead-panel");
     lead?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -261,9 +267,9 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
     seenSlide.current = next;
     setSlide(next);
     const item = media[next];
-    metrikaGoal(item.kind === "plan" ? "card_plan" : `card_photo_${next + 1}`, { project: houseName });
+    if (item.kind === "plan") metrikaGoal("project_media", { project: slug, action: "plan", source: "card" });
   }
-  return <Dialog.Root open onOpenChange={open => { if (!open) { metrikaGoal(dachaId("close", area)); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
+  return <Dialog.Root open onOpenChange={open => { if (!open) { metrikaGoal("project_dialog", { project: slug, action: "close" }); onClose(); } }}><Dialog.Portal><Dialog.Overlay className="project-modal-overlay" /><Dialog.Content ref={dialogRef} className="project-modal" aria-describedby={undefined} onEscapeKeyDown={event => { if (viewerOpen) { event.preventDefault(); closeViewer(); } }} onCloseAutoFocus={event => { event.preventDefault(); returnFocus?.focus(); }}>
     <Dialog.Close className="project-modal-close" aria-label="Закрыть проект"><IconX size={20} /></Dialog.Close>
     <header className="project-modal-header">
       <div className="project-title"><Dialog.Title asChild><h2>{"Просто дача\u00a0"}<span className="name-mark">{project.area}</span></h2></Dialog.Title><p><span>{formatMeters(project.width)} × {formatMeters(project.depth)} м</span><span>{project.area} м²</span></p></div>
@@ -285,7 +291,7 @@ export function ProjectModal({ slug, onClose, returnFocus }: { slug: ProjectId; 
           {line.note ? <strong>{line.note}</strong> : <><strong>{line.name}</strong><span className="lead-receipt-price"><AnimatedPrice value={line.price} currency={false} /></span>{line.name === "Домокомплект" ? <span className="lead-note" data-on={format !== "assembly"} inert={format === "assembly"}><span><span>{"Комплект для\u00a0самостоятельной сборки."}</span></span></span> : null}</>}
         </p></div></li>)}</ul>
         <p className="lead-total"><span>Итого</span><strong className="lead-price"><AnimatedPrice value={total} currency={false} /></strong></p>
-        <ProjectLeadForm project={project} goal={dachaId("lead", area)} />
+        <ProjectLeadForm project={project} source="project" />
       </aside>
     </div>
     <div className="project-viewer" data-open={viewerOpen} data-kind={current.kind} data-thumbs={thumbsNear ? "near" : "away"} inert={!viewerOpen} role="group" aria-label={current.label} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); stepViewer(1); } if (event.key === "ArrowLeft") { event.preventDefault(); stepViewer(-1); } }} onPointerMove={event => { if (event.pointerType !== "mouse") return; const thumbs = event.currentTarget.querySelector(".project-viewer-thumbs"); if (!thumbs) return; const rect = thumbs.getBoundingClientRect(); const pad = 72; const near = event.clientX >= rect.left - pad && event.clientX <= rect.right + pad && event.clientY >= rect.top - pad && event.clientY <= rect.bottom + 24; setThumbsNear(value => value === near ? value : near); }} onPointerLeave={() => setThumbsNear(false)} onPointerDown={viewerPointerDown} onClick={event => { if ((event.target as HTMLElement).closest("button")) return; if (viewerIgnoreClick.current) { viewerIgnoreClick.current = false; return; } closeViewer(); }}>

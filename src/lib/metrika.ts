@@ -1,3 +1,5 @@
+import type { MetrikaGoal } from "./metrika-goals";
+
 export const metrikaId = 114175449;
 
 type MetrikaFn = ((...args: unknown[]) => void) & { a?: unknown[][] };
@@ -12,12 +14,14 @@ function ym(): MetrikaFn {
   return host.ym;
 }
 
-export function reachGoal(name: string, params?: Record<string, string>) {
+type GoalParams = Record<string, string | string[]>;
+
+export function reachGoal(name: string, params?: GoalParams) {
   if (params) ym()(metrikaId, "reachGoal", name, params);
   else ym()(metrikaId, "reachGoal", name);
 }
 
-export function metrikaGoal(id: string, params?: Record<string, string>) {
+export function metrikaGoal(id: MetrikaGoal, params?: GoalParams) {
   reachGoal(id, params);
 }
 

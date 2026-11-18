@@ -22,7 +22,7 @@ function maskPhone(value: string) {
   return masked;
 }
 
-export function ProjectLeadForm({ project, projectSlug, goal, submitLabel = "Получить расчёт", done }: { project?: Project; projectSlug?: string; goal: string; submitLabel?: string; done?: string }) {
+export function ProjectLeadForm({ project, projectSlug, source, submitLabel = "Получить расчёт", done }: { project?: Project; projectSlug?: string; source: string; submitLabel?: string; done?: string }) {
   const { selection } = useSelection();
   const id = useId();
   const [name, setName] = useState("");
@@ -57,7 +57,7 @@ export function ProjectLeadForm({ project, projectSlug, goal, submitLabel = "П�
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: slug, format: projectSlug ? "kit" : format });
-      metrikaGoal(goal);
+      metrikaGoal("lead_accepted", { source, project: slug, kind: slug === "custom" && source === "custom" ? "custom" : "calculation" });
       setStatus("done");
     } catch {
       setSendFailed(true);
@@ -119,7 +119,7 @@ export function BuyPhoneForm() {
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: "custom", format: "kit" });
-      metrikaGoal("lead_popup_custom");
+      metrikaGoal("lead_accepted", { source: "buy", kind: "callback" });
       setStatus("done");
     } catch {
       setSendFailed(true);
@@ -176,7 +176,7 @@ export function FaqQuestionForm() {
       const receipt: { accepted?: boolean; id?: string } = await response.json();
       if (!response.ok || receipt.accepted !== true || !receipt.id) throw new Error("No receipt");
       track({ event: "lead_accepted", project: "custom", format: "kit" });
-      metrikaGoal("lead_popup_faq");
+      metrikaGoal("lead_accepted", { source: "faq", kind: "question" });
       setStatus("done");
     } catch {
       setSendFailed(true);

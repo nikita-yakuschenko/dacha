@@ -4,7 +4,6 @@ import Image from "next/image";
 import { ProjectTrigger } from "./project-trigger";
 import { CalculateButton } from "./lead-dialog";
 import { areaGroups, formatMeters, formatPrice, projects } from "@/lib/data";
-import { filterGoalId } from "@/lib/metrika-goals";
 import { metrikaGoal } from "@/lib/metrika";
 
 export function ProjectGrid() {
@@ -13,7 +12,7 @@ export function ProjectGrid() {
   const visible = projects.filter(group.test);
   return <>
     <div className="project-filter" role="group" aria-label="Площадь дома">
-      {areaGroups.map(g => <button key={g.id} type="button" aria-pressed={g.id === groupId} onClick={() => { setGroupId(g.id); metrikaGoal(filterGoalId[g.id]); }}>{g.label}<span>{projects.filter(g.test).length}</span></button>)}
+      {areaGroups.map(g => <button key={g.id} type="button" aria-pressed={g.id === groupId} onClick={() => { setGroupId(g.id); if (g.id !== groupId) metrikaGoal("catalog_filter_change", { group: g.id }); }}>{g.label}<span>{projects.filter(g.test).length}</span></button>)}
     </div>
     <ul className="project-grid">
       {visible.map(p => <li key={p.slug}><article className="project-tile">
@@ -25,6 +24,6 @@ export function ProjectGrid() {
         </div>
       </article></li>)}
     </ul>
-    <div className="project-more"><CalculateButton variant="outline" goal="lead_popup_custom" title={"Ещё проекты"} projectSlug="custom" submitLabel="Обсудить проект" done={"Обсудим индивидуальный проект."} note={"Новые проекты сейчас в\u00a0разработке. Ваш дом готовы спроектировать и\u00a0изготовить индивидуально."}>Ещё проекты</CalculateButton></div>
+    <div className="project-more"><CalculateButton variant="outline" source="custom" title={"Ещё проекты"} projectSlug="custom" submitLabel="Обсудить проект" done={"Обсудим индивидуальный проект."} note={"Новые проекты сейчас в\u00a0разработке. Ваш дом готовы спроектировать и\u00a0изготовить индивидуально."}>Ещё проекты</CalculateButton></div>
   </>;
 }
